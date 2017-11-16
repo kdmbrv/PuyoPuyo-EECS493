@@ -621,8 +621,6 @@ class Puyo {
     create() {
         this.sprite = this.game.add.sprite(this.x, this.y, 'puyo');
         this.sprite.frame = this.frameNum;
-        this.sprite.animations.add('meow');
-        this.sprite.animations.play('meow', 1, true);
     }
     
     changeFrame(name) {
