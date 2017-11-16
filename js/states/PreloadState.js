@@ -14,6 +14,7 @@ PuyoPuyo.PreloadState = {
         this.load.image('fake_menu', 'img/fake_menu.png');
     },
     create: function() {
-        this.state.start("MainMenuState");
+        console.log("here");
+        PuyoPuyo.game.state.start("MainMenuState");
     }
 };
