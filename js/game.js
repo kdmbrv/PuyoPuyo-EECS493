@@ -70,6 +70,7 @@ class PlayerBoard {
         if(this.puyo1y == this.rows-1 || this.grid[this.puyo1y+1][this.puyo1x] != 0) {
             //lock movement and spawn
             this.prepareSpawn();
+            this.findChains();
         }
         else {
             this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -94,6 +95,7 @@ class PlayerBoard {
         }
         else if(this.downKey.isDown && this.puyo1y < this.rows-1  && this.grid[this.puyo1y+1][this.puyo1x] != 0 && !this.verticalLock) {
             this.prepareSpawn();
+            this.findChains();
             return false;
         }
     }
@@ -124,6 +126,91 @@ class PlayerBoard {
             this.game.time.events.remove(this.movementTimer);
             this.print();
         }
+    }
+    findChains() {
+        //some kind of recursive formula
+        //some array that tracks if you've gone over that point
+        //
+        this.checkedGrid = [];
+        for(var i = 0; i < this.rows; i++) {
+            this.checkedGrid.push([]);
+            for(var j = 0; j < this.cols; j++) {
+                this.checkedGrid[i].push(0);
+            }
+        }
+        for(var i = 0; i < this.rows; i++) {
+            for(var j = 0; j < this.cols; j++) {
+                if(this.grid[i][j] != 0) {
+                    this.findChainsHelper(j, i, this.grid[i][j]);
+                }
+            }
+        }
+        for(var i = 0; i < this.rows; i++) {
+            for(var j = 0; j < this.cols; j++) {
+                if(this.checkedGrid[i][j] >= 4) {
+                    this.deleteChain(j,i,this.grid[i][j]);
+                }
+            }
+        }
+        this.dropAllBlocks();
+    }
+    findChainsHelper(x, y, variation) {
+        if(x < 0 || x >= this.cols) {
+            return 0;
+        }
+        else if(y < 0 || y >= this.rows) {
+            return 0;
+        }
+        else if(this.checkedGrid[y][x] != 0) {
+            return 0;
+        }
+        else if(this.grid[y][x] != variation) {
+            return 0;
+        }
+        this.checkedGrid[y][x] = 1;
+        this.checkedGrid[y][x] = this.checkedGrid[y][x] + this.findChainsHelper(x,y-1,variation) + this.findChainsHelper(x,y+1,variation) + this.findChainsHelper(x-1,y,variation) + this.findChainsHelper(x+1,y,variation);
+        return this.checkedGrid[y][x];
+    }
+    deleteChain(x,y,variation) {
+        if(x < 0 || x >= this.cols) {
+            return;
+        }
+        else if(y < 0 || y >= this.rows) {
+            return;
+        }
+        else if(this.grid[y][x] != variation) {
+            return;
+        }
+        this.checkedGrid[y][x] = 0;
+        this.grid[y][x] = 0;
+        this.deleteChain(x+1,y,variation);
+        this.deleteChain(x-1,y,variation);
+        this.deleteChain(x,y+1,variation);
+        this.deleteChain(x,y-1,variation);
+    }
+    dropAllBlocks() {
+        for(var i = this.rows-2; i >= 0; i--) {
+            for(var j = 0; j < this.cols; j++) {
+                if(this.grid[i][j] != 0 && this.grid[i+1][j] === 0) {
+                    this.dropBlock(j,i);
+                }
+            }
+        }
+    }
+    dropBlock(x,y) {
+        let newY = y+1;
+        while(newY < this.rows-1 && this.grid[newY][x] === 0) {
+            newY++;
+        }
+        if(newY == this.rows-1 && this.grid[newY][x] === 0) {
+            //do nothing
+        }
+        else {
+            newY--;
+        }
+        let variation = this.grid[y][x];
+        this.grid[y][x] = 0;
+        this.grid[newY][x] = variation;
     }
     unlockHorizontalMovement() {
         this.horizontalLock = false;
