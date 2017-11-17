@@ -11,7 +11,7 @@ PuyoPuyo.PreloadState = {
         this.load.image('inGame', 'img/inGame.png');
         this.load.spritesheet('puyo', 'img/puyo.png', 16, 16);
         this.load.spritesheet('mm_blob', 'img/blob.png', 18, 16);
-        this.load.image('fake_menu', 'img/fake_menu.png');
+        this.load.image('menu', 'img/menu_background.png');
     },
     create: function() {
         console.log("here");

@@ -61,27 +61,46 @@ PuyoPuyo.MainMenuState = {
         this.mm_bg5_2.height = this.game.height * (42/224);
         this.mm_bg5_2.width = this.game.width;
         
-        this.fake_menu = this.game.add.sprite(0, 0, 'fake_menu');
-        this.fake_menu.x = this.game.width / 2 ;
-        this.fake_menu.y = this.game.height / 2 ;
-        this.fake_menu.anchor.x = 0.5;
-        this.fake_menu.anchor.y = 0.5;
-        this.fake_menu.height = this.game.height * (160/224);
-        this.fake_menu.width = this.game.width * (272/320);
-        this.fake_menu.inputEnabled = true;
-        this.fake_menu.events.onInputDown.add(this.startGame, this);
+        // Add menu
+        this.menu = this.game.add.sprite(0, 0, 'menu');
+        this.menu.x = this.game.width / 2 ;
+        this.menu.y = this.game.height / 2 ;
+        this.menu.anchor.x = 0.5;
+        this.menu.anchor.y = 0.5;
+        this.menu.height = this.game.height * (140/224);
+        this.menu.width = this.game.width * (272/320);
+        this.menu.inputEnabled = true;
+        this.menu.events.onInputDown.add(this.startGame, this);
+        
+        // Add menu options
+        this.tutorial_option = this.game.add.text(this.game.width * (75/320), this.game.height * (70/224), "Tutorial", {
+            font: "32px Arial",
+            fill: "#fff"
+        });
+        this.pvc_option = this.game.add.text(this.tutorial_option.x, this.tutorial_option.y + 50, "Player vs Computer", {
+            font: "32px Arial",
+            fill: "#fff"
+        });
+        this.pvp_option = this.game.add.text(this.tutorial_option.x, this.pvc_option.y + 50, "Player vs Player", {
+            font: "32px Arial",
+            fill: "#fff"
+        });
+        this.settings_option = this.game.add.text(this.tutorial_option.x, this.pvp_option.y + 50, "Settings", {
+            font: "32px Arial",
+            fill: "#fff"
+        });
         
         this.sprite = this.add.sprite(0, 0, 'mm_blob');
         this.sprite.x = this.game.width * (60/320);
-        this.sprite.y = this.game.height * (90/224);
+        this.sprite.y = this.game.height * (79/224);
         this.sprite.anchor.x = 0.5;
         this.sprite.anchor.y = 0.5;
         this.sprite.height = this.game.height * (16/224);
         this.sprite.width = this.game.width * (18/320);
         this.sprite.animations.add('wobble');
         this.sprite.animations.play('wobble', 8, true);
-        this.puyo = new Puyo("Red0100", this.game, 10, 10);
-        this.puyo.create();
+        //this.puyo = new Puyo("Red0100", this.game, 10, 10);
+        //this.puyo.create();
     },
     
     updateBackground(delta) {
