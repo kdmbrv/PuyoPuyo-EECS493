@@ -65,6 +65,15 @@ PuyoPuyo.MainMenuState = {
         this.mm_bg5_2.height = this.game.height * (42/224);
         this.mm_bg5_2.width = this.game.width;
         
+        // Add logo
+        this.logo = this.game.add.sprite(0, 0, 'logo');
+        this.logo.x = this.game.width / 2;
+        this.logo.y = this.game.height / 8;
+        this.logo.anchor.x = 0.5;
+        this.logo.anchor.y = 0.5;
+        this.logo.height = 100;
+        this.logo.width = this.game.width * (272/320);
+        
         // Add menu
         this.menu = this.game.add.sprite(0, 0, 'menu');
         this.menu.x = this.game.width / 2 ;
@@ -77,22 +86,37 @@ PuyoPuyo.MainMenuState = {
         this.menu.events.onInputDown.add(this.startGame, this);
         
         // Add menu options
-        this.tutorial_option = this.game.add.text(this.game.width * (75/320), this.game.height * (70/224), "Tutorial", {
-            font: "32px Arial",
-            fill: "#fff"
-        });
-        this.pvc_option = this.game.add.text(this.tutorial_option.x, this.tutorial_option.y + 50, "Player vs Computer", {
-            font: "32px Arial",
-            fill: "#fff"
-        });
-        this.pvp_option = this.game.add.text(this.tutorial_option.x, this.pvc_option.y + 50, "Player vs Player", {
-            font: "32px Arial",
-            fill: "#fff"
-        });
-        this.settings_option = this.game.add.text(this.tutorial_option.x, this.pvp_option.y + 50, "Settings", {
-            font: "32px Arial",
-            fill: "#fff"
-        });
+        this.tutorial_option = this.game.add.sprite(0, 0, 'tutorial_graphic');
+        this.tutorial_option.x = this.menu.x - 60;
+        this.tutorial_option.y = this.menu.y - 70;
+        this.tutorial_option.anchor.x = 0.5;
+        this.tutorial_option.anchor.y = 0.5;
+        this.tutorial_option.height = 50;
+        this.tutorial_option.width = 200;
+        
+        this.pvc_option = this.game.add.sprite(0, 0, 'pvc_graphic');
+        this.pvc_option.x = this.menu.x + 30;
+        this.pvc_option.y = this.tutorial_option.y + 50;
+        this.pvc_option.anchor.x = 0.5;
+        this.pvc_option.anchor.y = 0.5;
+        this.pvc_option.height = 60;
+        this.pvc_option.width = 350;
+        
+        this.pvp_option = this.game.add.sprite(0, 0, 'pvp_graphic');
+        this.pvp_option.x = this.menu.x + 25;
+        this.pvp_option.y = this.pvc_option.y + 50;
+        this.pvp_option.anchor.x = 0.5;
+        this.pvp_option.anchor.y = 0.5;
+        this.pvp_option.height = 50;
+        this.pvp_option.width = 350;
+        
+        this.settings_option = this.game.add.sprite(0, 0, 'settings_graphic');
+        this.settings_option.x = this.menu.x - 55;
+        this.settings_option.y = this.pvp_option.y + 50;
+        this.settings_option.anchor.x = 0.5;
+        this.settings_option.anchor.y = 0.5;
+        this.settings_option.height = 50;
+        this.settings_option.width = 200;
         
         this.sprite = this.add.sprite(0, 0, 'mm_blob');
         this.sprite.x = this.game.width * (60/320);
@@ -112,10 +136,10 @@ PuyoPuyo.MainMenuState = {
         
         // Array of menu options for sprite to jump to 
         this.menu_options = [
-            this.tutorial_option.y + 20,
-            this.pvc_option.y + 20,
-            this.pvp_option.y + 20,
-            this.settings_option.y + 20
+            this.tutorial_option.y,
+            this.pvc_option.y,
+            this.pvp_option.y,
+            this.settings_option.y
         ];
     },
     
