@@ -9,6 +9,7 @@ class PlayerBoard {
         this.cols = 6;
         this.puyoVariations = 5;
         this.grid = [];
+        this.gameOver = false;
         this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 	    this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 	    this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
@@ -36,16 +37,28 @@ class PlayerBoard {
         }
         console.log(formatString);
     }
-    checkGameOver() {
+    GameOver() {
         if(this.grid[0][2] != 0) {
             console.log("game over");
+            return true;
         }
+        return false;
+    }
+    prepareSpawn() {
+        this.game.time.events.remove(this.movementTimer);
+        this.game.time.events.remove(this.timer);
+        this.spawnTimer = this.game.time.events.add(Phaser.Timer.SECOND, this.spawnNewPuyo, this);
+        this.horizontalLock = true;
+        this.verticalLock = true;
+        this.print();
     }
     spawnNewPuyo() {
-        console.log("spawning");
-        console.log(this.grid[0][2]);
-        this.game.time.events.remove(this.movementTimer);
-        this.checkGameOver();
+        this.horizontalLock = false;
+        this.verticalLock = false;
+        if(this.GameOver()) {
+            this.gameOver = true;
+            return;
+        }
         this.puyo1 = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.puyo1x = 2;
         this.puyo1y = 0
@@ -53,19 +66,17 @@ class PlayerBoard {
         this.movementTimer = this.game.time.events.loop(Phaser.Timer.SECOND, this.movePuyo, this);
         this.print();
     }
-    checkIfPlaced() {
-        this.print();
-        if(this.puyo1y == this.rows-1 || this.grid[this.puyo1y+1][this.puyo1x] != 0) {
-            this.game.time.events.remove(this.movementTimer);
-            this.spawnTimer = this.game.time.events.add(Phaser.Timer.SECOND, this.spawnNewPuyo, this);
-        }
-    }
     movePuyo() {
-        this.grid[this.puyo1y][this.puyo1x] = 0;
-        this.puyo1y++;
-        this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
-        this.print();
-        this.checkIfPlaced();
+        if(this.puyo1y == this.rows-1 || this.grid[this.puyo1y+1][this.puyo1x] != 0) {
+            //lock movement and spawn
+            this.prepareSpawn();
+        }
+        else {
+            this.grid[this.puyo1y][this.puyo1x] = 0;
+            this.puyo1y++;
+            this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+            this.print();
+        }
     }
     canMoveLeft() {
         if(this.leftKey.isDown && this.puyo1x > 0 && this.grid[this.puyo1y][this.puyo1x-1] === 0 && !this.horizontalLock) {
@@ -77,40 +88,49 @@ class PlayerBoard {
             return true;
         }
     }
+    canMoveDown() {
+        if (this.downKey.isDown && this.puyo1y < this.rows-1  && this.grid[this.puyo1y+1][this.puyo1x] === 0 && !this.verticalLock) {
+            return true;
+        }
+        else if(this.downKey.isDown && this.puyo1y < this.rows-1  && this.grid[this.puyo1y+1][this.puyo1x] != 0 && !this.verticalLock) {
+            this.prepareSpawn();
+            return false;
+        }
+    }
     update() {
-        if (this.canMoveLeft()) {
+        if (!this.gameOver && this.canMoveLeft()) {
             this.grid[this.puyo1y][this.puyo1x] = 0;
             this.puyo1x--;
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.horizontalLock = true;
             this.timer = this.game.time.events.add(Phaser.Timer.SECOND/10, this.unlockHorizontalMovement, this);
-            this.checkIfPlaced();
+            this.print();
         }
-        if (this.canMoveRight()) {
+        else if (!this.gameOver && this.canMoveRight()) {
             this.grid[this.puyo1y][this.puyo1x] = 0;
             this.puyo1x++;
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.horizontalLock = true;
             this.timer = this.game.time.events.add(Phaser.Timer.SECOND/10, this.unlockHorizontalMovement, this);
-            this.checkIfPlaced();
+            this.print();
+            //this.checkIfPlaced();
         }
-        /*if (this.downKey.isDown && this.puyo1y < 11  && !this.verticalLock) {
-            console.log("down");
+        else if (!this.gameOver && this.canMoveDown()) {
             this.grid[this.puyo1y][this.puyo1x] = 0;
             this.puyo1y++;
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.verticalLock = true;
             this.timer = this.game.time.events.add(Phaser.Timer.SECOND/10, this.unlockVerticalMovement, this);
             this.game.time.events.remove(this.movementTimer);
-            this.movementTimer = this.game.time.events.loop(Phaser.Timer.SECOND, this.movePuyo, this);
-            this.checkIfPlaced();
-        }*/
+            this.print();
+        }
     }
     unlockHorizontalMovement() {
         this.horizontalLock = false;
     }
     unlockVerticalMovement() {
         this.verticalLock = false;
+        this.movementTimer = this.game.time.events.loop(Phaser.Timer.SECOND, this.movePuyo, this);
     }
 };
 
@@ -193,8 +213,3 @@ PuyoPuyo.game.state.add('PreloadState', PuyoPuyo.PreloadState);
 PuyoPuyo.game.state.add('InGameState', PuyoPuyo.InGameState);
 PuyoPuyo.game.state.add('MainMenuState', PuyoPuyo.MainMenuState);
 PuyoPuyo.game.state.start('PreloadState');
-
-
-//When press a button, lock any input for a sec then unlock it
-//for left press, when press it, lock it for a 5th of a second then unlock it
-//for update, check for press and not locked
