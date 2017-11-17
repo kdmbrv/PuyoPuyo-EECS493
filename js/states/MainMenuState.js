@@ -2,6 +2,10 @@ var PuyoPuyo = PuyoPuyo || {};
 
 var puyo;
 
+var cursors;
+//var enter;
+var frameCounter = 0;
+
 PuyoPuyo.MainMenuState = {
     
     preload() {
@@ -101,6 +105,18 @@ PuyoPuyo.MainMenuState = {
         this.sprite.animations.play('wobble', 8, true);
         //this.puyo = new Puyo("Red0100", this.game, 10, 10);
         //this.puyo.create();
+        
+        this.cursors = this.game.input.keyboard.createCursorKeys();
+        //this.enter = this.game.input.keyboard.addKey(Phaser.keyboard.ENTER);
+        this.currentPuyoPos = 0;
+        
+        // Array of menu options for sprite to jump to 
+        this.menu_options = [
+            this.tutorial_option.y + 20,
+            this.pvc_option.y + 20,
+            this.pvp_option.y + 20,
+            this.settings_option.y + 20
+        ];
     },
     
     updateBackground(delta) {
@@ -138,6 +154,18 @@ PuyoPuyo.MainMenuState = {
     },
     
     update: function() {
+        frameCounter++;
+        if (frameCounter == 7) {
+            if (this.cursors.down.isDown && this.currentPuyoPos != 3) {
+                this.currentPuyoPos++;
+            } else if (this.cursors.up.isDown && this.currentPuyoPos != 0) {
+                this.currentPuyoPos--;
+            }
+            frameCounter = 0;
+        }
+        
+        this.sprite.y = this.menu_options[this.currentPuyoPos];
+        
         // Move sprite up and down smoothly for show
         var delta = this.game.time.elapsed;
         this.updateBackground(delta);
