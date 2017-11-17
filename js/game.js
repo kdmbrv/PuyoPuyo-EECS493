@@ -54,6 +54,7 @@ class PlayerBoard {
         this.print();
     }
     checkIfPlaced() {
+        this.print();
         if(this.puyo1y == this.rows-1 || this.grid[this.puyo1y+1][this.puyo1x] != 0) {
             this.game.time.events.remove(this.movementTimer);
             this.spawnTimer = this.game.time.events.add(Phaser.Timer.SECOND, this.spawnNewPuyo, this);
@@ -78,7 +79,6 @@ class PlayerBoard {
     }
     update() {
         if (this.canMoveLeft()) {
-            console.log("left");
             this.grid[this.puyo1y][this.puyo1x] = 0;
             this.puyo1x--;
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
@@ -87,7 +87,6 @@ class PlayerBoard {
             this.checkIfPlaced();
         }
         if (this.canMoveRight()) {
-            console.log("right");
             this.grid[this.puyo1y][this.puyo1x] = 0;
             this.puyo1x++;
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
@@ -106,7 +105,6 @@ class PlayerBoard {
             this.movementTimer = this.game.time.events.loop(Phaser.Timer.SECOND, this.movePuyo, this);
             this.checkIfPlaced();
         }*/
-        this.print();
     }
     unlockHorizontalMovement() {
         this.horizontalLock = false;
