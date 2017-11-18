@@ -1,6 +1,9 @@
 /* global Phaser */
 var PuyoPuyo = PuyoPuyo || {};
 
+//TODO: Functions To Change for 2 Block
+//canMoveDown
+
 class PlayerBoard {
     constructor(game, state) {
         this.game = game
@@ -10,6 +13,7 @@ class PlayerBoard {
         this.puyoVariations = 5;
         this.grid = [];
         this.gameOver = false;
+        this.pairIsVertical = true;
         this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 	    this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 	    this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
@@ -38,7 +42,7 @@ class PlayerBoard {
         console.log(formatString);
     }
     GameOver() {
-        if(this.grid[0][2] != 0) {
+        if(this.grid[1][2] != 0) {
             console.log("game over");
             return true;
         }
@@ -60,67 +64,163 @@ class PlayerBoard {
             return;
         }
         this.puyo1 = Math.floor(Math.random() * this.puyoVariations) + 1;
+        this.puyo2 = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.puyo1x = 2;
         this.puyo1y = 0
+        this.puyo2x = 2;
+        this.puyo2y = 1;
         this.grid[0][2] = this.puyo1;
+        this.grid[1][2] = this.puyo2;
         this.movementTimer = this.game.time.events.loop(Phaser.Timer.SECOND, this.movePuyo, this);
         this.print();
     }
     movePuyo() {
-        if(this.puyo1y == this.rows-1 || this.grid[this.puyo1y+1][this.puyo1x] != 0) {
+        if(this.puyo2y == this.rows-1 || this.grid[this.puyo2y+1][this.puyo2x] != 0) {
             //lock movement and spawn
             this.prepareSpawn();
             this.findChains();
         }
         else {
             this.grid[this.puyo1y][this.puyo1x] = 0;
+            this.grid[this.puyo2y][this.puyo2x] = 0;
             this.puyo1y++;
+            this.puyo2y++;
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.print();
         }
     }
     canMoveLeft() {
-        if(this.leftKey.isDown && this.puyo1x > 0 && this.grid[this.puyo1y][this.puyo1x-1] === 0 && !this.horizontalLock) {
-            return true;
+        if(!this.leftKey.isDown || this.horizontalLock) {
+            return false;
+        }
+        else if(this.pairIsVertical) {
+            if(this.puyo1x > 0 
+            && this.puyo2x > 0
+            && this.grid[this.puyo1y][this.puyo1x-1] === 0 
+            && this.grid[this.puyo2y][this.puyo2x-1] === 0) {
+                return true;
+            }
+        }
+        else {
+            if(this.puyo1x < this.puyo2x) {
+                if(this.puyo1x > 0
+                && this.grid[this.puyo1y][this.puyo1x-1] === 0) {
+                    return true;
+                }
+            }
+            else {
+                if(this.puyo2x > 0
+                && this.grid[this.puyo2y][this.puyo2x-1] === 0) {
+                    return true;
+                }
+            }
         }
     }
     canMoveRight() {
-        if(this.rightKey.isDown && this.puyo1x < 5 && this.grid[this.puyo1y][this.puyo1x+1] === 0 && !this.horizontalLock) {
-            return true;
+        if(!this.rightKey.isDown || this.horizontalLock) {
+            return false;
+        }
+        else if(this.pairIsVertical) {
+            if(this.puyo1x < this.cols-1 
+            && this.puyo2x < this.cols-1
+            && this.grid[this.puyo1y][this.puyo1x+1] === 0 
+            && this.grid[this.puyo2y][this.puyo2x+1] === 0) {
+                return true;
+            }
+        }
+        else {
+            if(this.puyo1x < this.puyo2x) {
+                if(this.puyo1x < this.cols-1
+                && this.grid[this.puyo1y][this.puyo1x+1] === 0) {
+                    return true;
+                }
+            }
+            else {
+                if(this.puyo2x < this.cols-1
+                && this.grid[this.puyo2y][this.puyo2x+1] === 0) {
+                    return true;
+                }
+            }
         }
     }
     canMoveDown() {
-        if (this.downKey.isDown && this.puyo1y < this.rows-1  && this.grid[this.puyo1y+1][this.puyo1x] === 0 && !this.verticalLock) {
-            return true;
-        }
-        else if(this.downKey.isDown && this.puyo1y < this.rows-1  && this.grid[this.puyo1y+1][this.puyo1x] != 0 && !this.verticalLock) {
-            this.prepareSpawn();
-            this.findChains();
+        if(!this.downKey.isDown || this.verticalLock) {
             return false;
+        }
+        else if(this.pairIsVertical) {
+            if(this.puyo1y > this.puyo2y) {
+                if(this.puyo1y < this.rows-1
+                && this.grid[this.puyo1y+1][this.puyo1x] === 0) {
+                    return true;
+                }
+                else if(this.puyo1y < this.rows-1
+                && this.grid[this.puyo1y+1][this.puyo1x] != 0) {
+                    this.prepareSpawn();
+                    this.findChains();
+                    return false;
+                }
+            }
+            else {
+                if(this.puyo2y < this.rows-1
+                && this.grid[this.puyo2y+1][this.puyo2x] === 0) {
+                    return true;
+                }
+                else if(this.puyo2y < this.rows-1
+                && this.grid[this.puyo2y+1][this.puyo2x] != 0) {
+                    this.prepareSpawn();
+                    this.findChains();
+                    return false;
+                }
+            }
+        }
+        else {
+            if(this.puyo1y < this.rows-1
+            && this.puyo2y < this.rows-1
+            && this.grid[this.puyo1y+1][this.puyo1x] === 0
+            && this.grid[this.puyo2y+1][this.puyo2x] === 0) {
+                return true;
+            }
+            else if(this.puyo1y < this.rows-1
+            && this.puyo2y < this.rows-1
+            && (this.grid[this.puyo1y+1][this.puyo1x] != 0
+            || this.grid[this.puyo2y+1][this.puyo2x] != 0)) {
+                this.prepareSpawn();
+                this.findChains();
+                return false;
+            }
         }
     }
     update() {
         if (!this.gameOver && this.canMoveLeft()) {
             this.grid[this.puyo1y][this.puyo1x] = 0;
+            this.grid[this.puyo2y][this.puyo2x] = 0;
             this.puyo1x--;
+            this.puyo2x--;
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.horizontalLock = true;
             this.timer = this.game.time.events.add(Phaser.Timer.SECOND/10, this.unlockHorizontalMovement, this);
             this.print();
         }
         else if (!this.gameOver && this.canMoveRight()) {
             this.grid[this.puyo1y][this.puyo1x] = 0;
+            this.grid[this.puyo2y][this.puyo2x] = 0;
             this.puyo1x++;
+            this.puyo2x++;
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.horizontalLock = true;
             this.timer = this.game.time.events.add(Phaser.Timer.SECOND/10, this.unlockHorizontalMovement, this);
             this.print();
-            //this.checkIfPlaced();
         }
         else if (!this.gameOver && this.canMoveDown()) {
             this.grid[this.puyo1y][this.puyo1x] = 0;
+            this.grid[this.puyo2y][this.puyo2x] = 0;
             this.puyo1y++;
+            this.puyo2y++;
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.verticalLock = true;
             this.timer = this.game.time.events.add(Phaser.Timer.SECOND/10, this.unlockVerticalMovement, this);
             this.game.time.events.remove(this.movementTimer);
