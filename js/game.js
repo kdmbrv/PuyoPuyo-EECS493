@@ -1,11 +1,11 @@
 /* global Phaser */
 var PuyoPuyo = PuyoPuyo || {};
 
-//TODO: Functions To Change for 2 Block
-//canMoveDown
-
 class PlayerBoard {
-    constructor(game, state) {
+    //Eventually want to pass in the size and coords for where the board will be placed
+    //I believe so that the logic for the InGameState just has to worry about passing in
+    //the right numbers... may be wrong though
+    constructor(game, state, leftKey, rightKey, downKey, rotateLKey, rotateRKey) {
         this.game = game
         this.state = state;
         this.rows = 12;
@@ -14,10 +14,19 @@ class PlayerBoard {
         this.grid = [];
         this.gameOver = false;
         this.pairIsVertical = true;
-        this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-	    this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-	    this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+        this.leftKey = game.input.keyboard.addKey(leftKey);
+	    this.rightKey = game.input.keyboard.addKey(rightKey);
+	    this.downKey = game.input.keyboard.addKey(downKey);
+	    this.rotateLKey = game.input.keyboard.addKey(rotateLKey);
+	    this.rotateRKey = game.input.keyboard.addKey(rotateRKey);
+	    this.horizontalLockTimerConstant = Phaser.Timer.SECOND/10;
+	    this.verticalLockTimerConstant = Phaser.Timer.SECOND/10;
+	    this.rotationLockTimerConstant = Phaser.Timer.SECOND/10;
+	    this.autoDownwardTimerConstant = Phaser.Timer.SECOND;
+	    this.spawnTimerConstant = Phaser.Timer.SECOND;
+	    this.manualDownwardTimerConstant = 
         this.horizontalLock = false;
+        this.rotateLock = false;
         this.verticalLock = false;
         for(var i = 0; i < this.rows; i++) {
             this.grid.push([]);
@@ -26,9 +35,13 @@ class PlayerBoard {
             }
         }
     }
+    
+    //Spawn first pair
     create() {
         this.spawnNewPuyo();
     }
+    
+    //Prints the game board in the console
     print() {
         var formatString = '';
         formatString += '\n';
@@ -41,6 +54,8 @@ class PlayerBoard {
         }
         console.log(formatString);
     }
+    
+    //Check if the game is over
     GameOver() {
         if(this.grid[1][2] != 0) {
             console.log("game over");
@@ -48,14 +63,18 @@ class PlayerBoard {
         }
         return false;
     }
+    
+    //Halts timers and locks movement in preparation for next spawn
     prepareSpawn() {
         this.game.time.events.remove(this.movementTimer);
         this.game.time.events.remove(this.timer);
-        this.spawnTimer = this.game.time.events.add(Phaser.Timer.SECOND, this.spawnNewPuyo, this);
+        this.spawnTimer = this.game.time.events.add(this.spawnTimerConstant, this.spawnNewPuyo, this);
         this.horizontalLock = true;
         this.verticalLock = true;
         this.print();
     }
+    
+    //Spawn a new pair of blobs
     spawnNewPuyo() {
         this.horizontalLock = false;
         this.verticalLock = false;
@@ -63,6 +82,7 @@ class PlayerBoard {
             this.gameOver = true;
             return;
         }
+        this.pairIsVertical = true;
         this.puyo1 = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.puyo2 = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.puyo1x = 2;
@@ -71,25 +91,186 @@ class PlayerBoard {
         this.puyo2y = 1;
         this.grid[0][2] = this.puyo1;
         this.grid[1][2] = this.puyo2;
-        this.movementTimer = this.game.time.events.loop(Phaser.Timer.SECOND, this.movePuyo, this);
+        this.movementTimer = this.game.time.events.loop(this.autoDownwardTimerConstant, 
+                                                                    this.movePuyo, this);
         this.print();
     }
+    
+    //Automatic downward movement of blob every second(default)
     movePuyo() {
-        if(this.puyo2y == this.rows-1 || this.grid[this.puyo2y+1][this.puyo2x] != 0) {
-            //lock movement and spawn
-            this.prepareSpawn();
-            this.findChains();
+        if(this.pairIsVertical) {
+            if(this.puyo1y < this.puyo2y) {
+                if(this.puyo2y == this.rows-1 || this.grid[this.puyo2y+1][this.puyo2x] != 0) {
+                    //lock movement and spawn
+                    this.prepareSpawn();
+                    this.findChains();
+                    return;
+                }
+            }
+            else {
+                if(this.puyo1y == this.rows-1 || this.grid[this.puyo1y+1][this.puyo1x] != 0) {
+                    //lock movement and spawn
+                    this.prepareSpawn();
+                    this.findChains();
+                    return;
+                }
+            }
         }
         else {
-            this.grid[this.puyo1y][this.puyo1x] = 0;
-            this.grid[this.puyo2y][this.puyo2x] = 0;
-            this.puyo1y++;
-            this.puyo2y++;
-            this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
-            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
-            this.print();
+            //if on the bottom or one doesn not equal 0
+            if(this.puyo1y == this.rows-1) {
+                this.prepareSpawn();
+                this.findChains();
+                return;
+            }
+            else if (this.grid[this.puyo1y+1][this.puyo1x] != 0
+            || this.grid[this.puyo2y+1][this.puyo2x] != 0){
+                if(this.grid[this.puyo1y+1][this.puyo1x] === 0) {
+                    this.dropBlock(this.puyo1x, this.puyo1y);
+                    this.prepareSpawn();
+                    this.findChains();
+                    return;
+                }
+                else if(this.grid[this.puyo2y+1][this.puyo2x] === 0) {
+                    this.dropBlock(this.puyo2x, this.puyo2y);
+                    this.prepareSpawn();
+                    this.findChains();
+                    return;
+                }
+            }
+        }
+        this.grid[this.puyo1y][this.puyo1x] = 0;
+        this.grid[this.puyo2y][this.puyo2x] = 0;
+        this.puyo1y++;
+        this.puyo2y++;
+        this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+        this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
+        this.print();
+    }
+    
+    //Checks to see if the blob pair can rotate left
+    canRotateLeft() {
+        if(!this.rotateLKey.isDown || this.rotateLock) {
+            if(this.rotateLock) {
+            }
+            return false;
+        }
+        if(this.pairIsVertical) {
+            if(this.puyo1y > this.puyo2y) {
+                if(this.grid[this.puyo1y][this.puyo1x+1] === 0 
+                && this.grid[this.puyo2y][this.puyo2x+1] === 0) {
+                    this.grid[this.puyo1y][this.puyo1x] = 0;
+                    this.puyo1x++;
+                    this.puyo1y--;
+                    this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+                    this.pairIsVertical = false;
+                    return true;
+                }
+                return false;
+            }
+            else {
+                if(this.grid[this.puyo1y][this.puyo1x-1] === 0 
+                && this.grid[this.puyo2y][this.puyo2x-1] === 0) {
+                    this.grid[this.puyo1y][this.puyo1x] = 0;
+                    this.puyo1x--;
+                    this.puyo1y++;
+                    this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+                    this.pairIsVertical = false;
+                    return true;
+                }
+                return false;
+            }
+        }
+        else {
+            if(this.puyo1x > this.puyo2x) {
+                if(this.grid[this.puyo1y-1][this.puyo1x] === 0 
+                && this.grid[this.puyo2y-1][this.puyo2x] === 0) {
+                    this.grid[this.puyo1y][this.puyo1x] = 0;
+                    this.puyo1x--;
+                    this.puyo1y--;
+                    this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+                    this.pairIsVertical = true;
+                    return true;
+                }
+                return false;
+            }
+            else {
+                if(this.grid[this.puyo1y+1][this.puyo1x] === 0 
+                && this.grid[this.puyo2y+1][this.puyo2x] === 0) {
+                    this.grid[this.puyo1y][this.puyo1x] = 0;
+                    this.puyo1x++;
+                    this.puyo1y++;
+                    this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+                    this.pairIsVertical = true;
+                    return true;
+                }
+                return false;
+            }
         }
     }
+    
+    //Checks if the blob pair can rotate right
+    canRotateRight() {
+        if(!this.rotateRKey.isDown || this.rotateLock) {
+            if(this.rotateLock) {
+            }
+            return false;
+        }
+        if(this.pairIsVertical) {
+            if(this.puyo1y > this.puyo2y) {
+                if(this.grid[this.puyo1y][this.puyo1x-1] === 0 
+                && this.grid[this.puyo2y][this.puyo2x-1] === 0) {
+                    this.grid[this.puyo1y][this.puyo1x] = 0;
+                    this.puyo1x--;
+                    this.puyo1y--;
+                    this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+                    this.pairIsVertical = false;
+                    return true;
+                }
+                return false;
+            }
+            else {
+                if(this.grid[this.puyo1y][this.puyo1x+1] === 0 
+                && this.grid[this.puyo2y][this.puyo2x+1] === 0) {
+                    this.grid[this.puyo1y][this.puyo1x] = 0;
+                    this.puyo1x++;
+                    this.puyo1y++;
+                    this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+                    this.pairIsVertical = false;
+                    return true;
+                }
+                return false;
+            }
+        }
+        else {
+            if(this.puyo1x > this.puyo2x) {
+                if(this.grid[this.puyo1y+1][this.puyo1x] === 0 
+                && this.grid[this.puyo2y+1][this.puyo2x] === 0) {
+                    this.grid[this.puyo1y][this.puyo1x] = 0;
+                    this.puyo1x--;
+                    this.puyo1y++;
+                    this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+                    this.pairIsVertical = true;
+                    return true;
+                }
+                return false;
+            }
+            else {
+                if(this.grid[this.puyo1y-1][this.puyo1x] === 0 
+                && this.grid[this.puyo2y-1][this.puyo2x] === 0) {
+                    this.grid[this.puyo1y][this.puyo1x] = 0;
+                    this.puyo1x++;
+                    this.puyo1y--;
+                    this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+                    this.pairIsVertical = true;
+                    return true;
+                }
+                return false;
+            }
+        }
+    }
+    
+    //Checks if the blob pair can move left
     canMoveLeft() {
         if(!this.leftKey.isDown || this.horizontalLock) {
             return false;
@@ -117,6 +298,8 @@ class PlayerBoard {
             }
         }
     }
+    
+    //Checks if the blob pair can move right
     canMoveRight() {
         if(!this.rightKey.isDown || this.horizontalLock) {
             return false;
@@ -131,19 +314,22 @@ class PlayerBoard {
         }
         else {
             if(this.puyo1x < this.puyo2x) {
-                if(this.puyo1x < this.cols-1
-                && this.grid[this.puyo1y][this.puyo1x+1] === 0) {
-                    return true;
-                }
-            }
-            else {
                 if(this.puyo2x < this.cols-1
                 && this.grid[this.puyo2y][this.puyo2x+1] === 0) {
                     return true;
                 }
             }
+            else {
+                if(this.puyo1x < this.cols-1
+                && this.grid[this.puyo1y][this.puyo1x+1] === 0) {
+                    return true;
+                }
+            }
         }
     }
+    
+    //Checks if the blob pair can manually move down
+    //Resets automatic downward movement timer
     canMoveDown() {
         if(!this.downKey.isDown || this.verticalLock) {
             return false;
@@ -176,61 +362,29 @@ class PlayerBoard {
         }
         else {
             if(this.puyo1y < this.rows-1
-            && this.puyo2y < this.rows-1
             && this.grid[this.puyo1y+1][this.puyo1x] === 0
             && this.grid[this.puyo2y+1][this.puyo2x] === 0) {
                 return true;
             }
             else if(this.puyo1y < this.rows-1
-            && this.puyo2y < this.rows-1
             && (this.grid[this.puyo1y+1][this.puyo1x] != 0
             || this.grid[this.puyo2y+1][this.puyo2x] != 0)) {
+                //If a block is hanging, drop it
+                if(this.grid[this.puyo1y+1][this.puyo1x] === 0) {
+                    this.dropBlock(this.puyo1x, this.puyo1y);
+                }
+                else if(this.grid[this.puyo2y+1][this.puyo2x] === 0) {
+                    this.dropBlock(this.puyo2x, this.puyo2y);
+                }
                 this.prepareSpawn();
                 this.findChains();
                 return false;
             }
         }
     }
-    update() {
-        if (!this.gameOver && this.canMoveLeft()) {
-            this.grid[this.puyo1y][this.puyo1x] = 0;
-            this.grid[this.puyo2y][this.puyo2x] = 0;
-            this.puyo1x--;
-            this.puyo2x--;
-            this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
-            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
-            this.horizontalLock = true;
-            this.timer = this.game.time.events.add(Phaser.Timer.SECOND/10, this.unlockHorizontalMovement, this);
-            this.print();
-        }
-        else if (!this.gameOver && this.canMoveRight()) {
-            this.grid[this.puyo1y][this.puyo1x] = 0;
-            this.grid[this.puyo2y][this.puyo2x] = 0;
-            this.puyo1x++;
-            this.puyo2x++;
-            this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
-            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
-            this.horizontalLock = true;
-            this.timer = this.game.time.events.add(Phaser.Timer.SECOND/10, this.unlockHorizontalMovement, this);
-            this.print();
-        }
-        else if (!this.gameOver && this.canMoveDown()) {
-            this.grid[this.puyo1y][this.puyo1x] = 0;
-            this.grid[this.puyo2y][this.puyo2x] = 0;
-            this.puyo1y++;
-            this.puyo2y++;
-            this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
-            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
-            this.verticalLock = true;
-            this.timer = this.game.time.events.add(Phaser.Timer.SECOND/10, this.unlockVerticalMovement, this);
-            this.game.time.events.remove(this.movementTimer);
-            this.print();
-        }
-    }
+    
+    //Checks game board for chains
     findChains() {
-        //some kind of recursive formula
-        //some array that tracks if you've gone over that point
-        //
         this.checkedGrid = [];
         for(var i = 0; i < this.rows; i++) {
             this.checkedGrid.push([]);
@@ -252,8 +406,12 @@ class PlayerBoard {
                 }
             }
         }
-        this.dropAllBlocks();
+        if(this.dropAllBlocks()) {
+            this.findChains();
+        }
     }
+    
+    //Recursive helper function to help check for chains
     findChainsHelper(x, y, variation) {
         if(x < 0 || x >= this.cols) {
             return 0;
@@ -268,9 +426,15 @@ class PlayerBoard {
             return 0;
         }
         this.checkedGrid[y][x] = 1;
-        this.checkedGrid[y][x] = this.checkedGrid[y][x] + this.findChainsHelper(x,y-1,variation) + this.findChainsHelper(x,y+1,variation) + this.findChainsHelper(x-1,y,variation) + this.findChainsHelper(x+1,y,variation);
+        this.checkedGrid[y][x] = this.checkedGrid[y][x] 
+                                + this.findChainsHelper(x,y-1,variation) 
+                                + this.findChainsHelper(x,y+1,variation) 
+                                + this.findChainsHelper(x-1,y,variation) 
+                                + this.findChainsHelper(x+1,y,variation);
         return this.checkedGrid[y][x];
     }
+    
+    //Recrusive function to delete chains
     deleteChain(x,y,variation) {
         if(x < 0 || x >= this.cols) {
             return;
@@ -288,15 +452,26 @@ class PlayerBoard {
         this.deleteChain(x,y+1,variation);
         this.deleteChain(x,y-1,variation);
     }
+    
+    //Drops all hanging blocks after deletion of chains
+    //Also returns true if a block is dropped, meaning 
+    //that a chain was deleted, which means there could 
+    //be new chains, and the finding chains process will
+    //bre repeated
     dropAllBlocks() {
+        var droppedBlock = false;
         for(var i = this.rows-2; i >= 0; i--) {
             for(var j = 0; j < this.cols; j++) {
                 if(this.grid[i][j] != 0 && this.grid[i+1][j] === 0) {
                     this.dropBlock(j,i);
+                    droppedBlock = true;
                 }
             }
         }
+        return droppedBlock;
     }
+    
+    //Drops a block with given x and y coords
     dropBlock(x,y) {
         let newY = y+1;
         while(newY < this.rows-1 && this.grid[newY][x] === 0) {
@@ -311,13 +486,74 @@ class PlayerBoard {
         let variation = this.grid[y][x];
         this.grid[y][x] = 0;
         this.grid[newY][x] = variation;
+        this.print();
     }
+    
     unlockHorizontalMovement() {
         this.horizontalLock = false;
     }
+    
     unlockVerticalMovement() {
         this.verticalLock = false;
-        this.movementTimer = this.game.time.events.loop(Phaser.Timer.SECOND, this.movePuyo, this);
+        this.movementTimer = this.game.time.events.loop(this.autoDownwardTimerConstant, 
+                                                                    this.movePuyo, this);
+    }
+    
+    unlockRotation() {
+        this.rotateLock = false;
+    }
+    
+    //Called many times per second to check for keyboard inputs
+    update() {
+        if (!this.gameOver && this.canMoveLeft()) {
+            this.grid[this.puyo1y][this.puyo1x] = 0;
+            this.grid[this.puyo2y][this.puyo2x] = 0;
+            this.puyo1x--;
+            this.puyo2x--;
+            this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
+            this.horizontalLock = true;
+            this.timer = this.game.time.events.add(this.horizontalLockTimerConstant, 
+                                                    this.unlockHorizontalMovement, this);
+            this.print();
+        }
+        else if (!this.gameOver && this.canMoveRight()) {
+            this.grid[this.puyo1y][this.puyo1x] = 0;
+            this.grid[this.puyo2y][this.puyo2x] = 0;
+            this.puyo1x++;
+            this.puyo2x++;
+            this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
+            this.horizontalLock = true;
+            this.timer = this.game.time.events.add(this.horizontalLockTimerConstant, 
+                                                    this.unlockHorizontalMovement, this);
+            this.print();
+        }
+        else if (!this.gameOver && this.canMoveDown()) {
+            this.grid[this.puyo1y][this.puyo1x] = 0;
+            this.grid[this.puyo2y][this.puyo2x] = 0;
+            this.puyo1y++;
+            this.puyo2y++;
+            this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
+            this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
+            this.verticalLock = true;
+            this.timer = this.game.time.events.add(this.verticalLockTimerConstant, 
+                                                    this.unlockVerticalMovement, this);
+            this.game.time.events.remove(this.movementTimer);
+            this.print();
+        }
+        else if(!this.gameOver && this.canRotateLeft()) {
+            this.rotateLock = true;
+            this.timer = this.game.time.events.add(this.rotationLockTimerConstant, 
+                                                        this.unlockRotation, this);
+            this.print();
+        }
+        else if(!this.gameOver && this.canRotateRight()) {
+            this.rotateLock = true;
+            this.timer = this.game.time.events.add(this.rotationLockTimerConstant, 
+                                                        this.unlockRotation, this);
+            this.print();
+        }
     }
 };
 
