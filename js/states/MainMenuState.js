@@ -195,6 +195,10 @@ PuyoPuyo.MainMenuState = {
         this.updateBackground(delta);
     },
     
+    init: function() {
+      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;  
+    },
+    
     startGame() {
         this.state.start('InGameState');
     }
