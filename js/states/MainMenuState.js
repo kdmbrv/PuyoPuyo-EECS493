@@ -3,7 +3,7 @@ var PuyoPuyo = PuyoPuyo || {};
 var puyo;
 
 var cursors;
-//var enter;
+var enter;
 var frameCounter = 0;
 
 PuyoPuyo.MainMenuState = {
@@ -131,7 +131,7 @@ PuyoPuyo.MainMenuState = {
         //this.puyo.create();
         
         this.cursors = this.game.input.keyboard.createCursorKeys();
-        //this.enter = this.game.input.keyboard.addKey(Phaser.keyboard.ENTER);
+        this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.currentPuyoPos = 0;
         
         // Array of menu options for sprite to jump to 
@@ -184,6 +184,16 @@ PuyoPuyo.MainMenuState = {
                 this.currentPuyoPos++;
             } else if (this.cursors.up.isDown && this.currentPuyoPos != 0) {
                 this.currentPuyoPos--;
+            } else if (this.enter.isDown) {
+                if (this.currentPuyoPos == 0) {
+                    this.state.start('TutorialState');
+                } else if (this.currentPuyoPos == 1) {
+                    this.state.start('CPUState');
+                } else if (this.currentPuyoPos == 2) {
+                    this.state.start('InGameState');
+                } else if (this.currentPuyoPos == 3) {
+                    this.state.start('SettingsState');
+                }
             }
             frameCounter = 0;
         }
