@@ -631,7 +631,7 @@ class Puyo {
     }
 };
 
-PuyoPuyo.game = new Phaser.Game("100", "100", Phaser.AUTO, '', '', false, false);
+PuyoPuyo.game = new Phaser.Game(550, 500, Phaser.AUTO, '', '', false, false);
 PuyoPuyo.game.state.add('PreloadState', PuyoPuyo.PreloadState);
 PuyoPuyo.game.state.add('InGameState', PuyoPuyo.InGameState);
 PuyoPuyo.game.state.add('MainMenuState', PuyoPuyo.MainMenuState);
