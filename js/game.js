@@ -5,7 +5,7 @@ class PlayerBoard {
     //Eventually want to pass in the size and coords for where the board will be placed
     //I believe so that the logic for the InGameState just has to worry about passing in
     //the right numbers... may be wrong though
-    constructor(game, state, leftKey, rightKey, downKey, rotateLKey, rotateRKey) {
+    constructor(game, state, xCorner, leftKey, rightKey, downKey, rotateLKey, rotateRKey) {
         this.game = game
         this.state = state;
         this.rows = 12;
@@ -34,6 +34,21 @@ class PlayerBoard {
                 this.grid[i].push(0);
             }
         }
+        
+        //Draw Boards
+        var board;
+        var width = 204 // example;
+        var height = 408 // example;
+        var bmd = this.game.add.bitmapData(width, height);
+        
+        bmd.ctx.beginPath();
+        bmd.ctx.rect(0, 0, width, height);
+        bmd.ctx.fillStyle = '#ffffff';
+        bmd.ctx.fill();
+        board = this.game.add.sprite(xCorner, 20, bmd);
+        
+        this.colWidth = 34;
+        this.rowHeight = 34;
     }
     
     //Spawn first pair
@@ -629,7 +644,7 @@ class Puyo {
     }
 };
 
-PuyoPuyo.game = new Phaser.Game(550, 500, Phaser.AUTO, '', '', false, false);
+PuyoPuyo.game = new Phaser.Game(650, 450, Phaser.AUTO, '', '', false, false);
 PuyoPuyo.game.state.add('PreloadState', PuyoPuyo.PreloadState);
 PuyoPuyo.game.state.add('InGameState', PuyoPuyo.InGameState);
 PuyoPuyo.game.state.add('MainMenuState', PuyoPuyo.MainMenuState);
