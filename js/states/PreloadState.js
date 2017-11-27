@@ -9,6 +9,11 @@ PuyoPuyo.PreloadState = {
         this.load.image('mm_bg4', 'img/mm_bg4.png');
         this.load.image('mm_bg5', 'img/mm_bg5.png');
         this.load.image('inGame', 'img/inGame.png');
+        this.load.image('redCircle', 'img/redCircle.png');
+        this.load.image('blueCircle', 'img/blueCircle.png');
+        this.load.image('greenCircle', 'img/greenCircle.png');
+        this.load.image('yellowCircle', 'img/yellowCircle.png');
+        this.load.image('purpleCircle', 'img/purpleCircle.png');
         this.load.spritesheet('puyo', 'img/puyo.png', 16, 16);
         this.load.spritesheet('mm_blob', 'img/blob.png', 18, 16);
         this.load.image('menu', 'img/menu_background.png');

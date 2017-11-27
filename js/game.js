@@ -1,17 +1,112 @@
 /* global Phaser */
 var PuyoPuyo = PuyoPuyo || {};
 
+class testBlob {
+    constructor(row, col, variation, game, rowHeight, colWidth) {
+        this.row = row;
+        this.col = col;
+        this.variation = variation;
+        this.game = game;
+        this.rowHeight = rowHeight;
+        this.colWidth = colWidth;
+        if(variation == 1) {
+            this.src = "redCircle";
+        }
+        else if(variation == 2) {
+            this.src = "blueCircle";
+        }
+        else if(variation == 3) {
+            this.src = "greenCircle";
+        }
+        else if(variation == 4) {
+            this.src = "purpleCircle";
+        }
+        else if(variation == 5) {
+            this.src = "yellowCircle";
+        }
+    }
+    
+    create(x, y) {
+        this.blob = this.game.add.sprite(x,y,this.src);
+    }
+    
+    moveLeft() {
+        this.blob.x -= this.colWidth;
+    }
+    
+    moveRight() {
+        this.blob.x += this.colWidth;
+    }
+    
+    moveDown() {
+        this.blob.y += this.rowHeight;
+    }
+    
+    rotateLeft(type) {
+        //x++, y--
+        if(type == 0) {
+            this.blob.x += this.colWidth;
+            this.blob.y -= this.rowHeight; 
+        }
+        //x--, y++
+        else if(type == 1) {
+            this.blob.x -= this.colWidth;
+            this.blob.y += this.rowHeight;
+        }
+        //x--, y--
+        else if(type == 2) {
+            this.blob.x -= this.colWidth;
+            this.blob.y -= this.rowHeight;
+        }
+        //x++, y++
+        else if(type == 3) {
+            this.blob.x += this.colWidth;
+            this.blob.y += this.rowHeight;
+        }
+    }
+    
+    rotateRight(type) {
+        //x--, y--
+        if(type == 0) {
+            this.blob.x -= this.colWidth;
+            this.blob.y -= this.rowHeight; 
+        }
+        //x++, y++
+        else if(type == 1) {
+            this.blob.x += this.colWidth;
+            this.blob.y += this.rowHeight;
+        }
+        //x--, y++
+        else if(type == 2) {
+            this.blob.x -= this.colWidth;
+            this.blob.y += this.rowHeight;
+        }
+        //x++, y--
+        else if(type == 3) {
+            this.blob.x += this.colWidth;
+            this.blob.y -= this.rowHeight;
+        }
+    }
+    drop(numSpacesDropped) {
+        this.blob.y += numSpacesDropped*this.rowHeight;
+    }
+    destroy() {
+        this.blob.destroy();
+    }
+};
+
+//TODO for graphics:
+//find chains
+
 class PlayerBoard {
     //Eventually want to pass in the size and coords for where the board will be placed
     //I believe so that the logic for the InGameState just has to worry about passing in
     //the right numbers... may be wrong though
-    constructor(game, state, xCorner, leftKey, rightKey, downKey, rotateLKey, rotateRKey) {
+    constructor(game, state, xOffset, leftKey, rightKey, downKey, rotateLKey, rotateRKey) {
         this.game = game
         this.state = state;
-        this.rows = 12;
-        this.cols = 6;
-        this.puyoVariations = 5;
         this.grid = [];
+        this.blobGrid = [];
         this.gameOver = false;
         this.pairIsVertical = true;
         this.leftKey = game.input.keyboard.addKey(leftKey);
@@ -19,36 +114,47 @@ class PlayerBoard {
 	    this.downKey = game.input.keyboard.addKey(downKey);
 	    this.rotateLKey = game.input.keyboard.addKey(rotateLKey);
 	    this.rotateRKey = game.input.keyboard.addKey(rotateRKey);
-	    this.horizontalLockTimerConstant = Phaser.Timer.SECOND/10;
+        this.horizontalLock = false;
+        this.rotateLock = false;
+        this.verticalLock = false;
+        
+        
+        //constants
+        this.rows = 12;
+        this.cols = 6;
+        this.puyoVariations = 5;
+        this.colWidth = 34;
+        this.rowHeight = 34;
+        this.xOffset = xOffset;
+        this.yOffset = 20;
+        this.width = 204 // example;
+        this.height = 408 // example;
+        
+        //timer Constants
+        this.horizontalLockTimerConstant = Phaser.Timer.SECOND/10;
 	    this.verticalLockTimerConstant = Phaser.Timer.SECOND/10;
 	    this.rotationLockTimerConstant = Phaser.Timer.SECOND/10;
 	    this.autoDownwardTimerConstant = Phaser.Timer.SECOND;
 	    this.spawnTimerConstant = Phaser.Timer.SECOND;
-	    this.manualDownwardTimerConstant = 
-        this.horizontalLock = false;
-        this.rotateLock = false;
-        this.verticalLock = false;
-        for(var i = 0; i < this.rows; i++) {
-            this.grid.push([]);
-            for(var j = 0; j < this.cols; j++) {
-                this.grid[i].push(0);
-            }
-        }
         
         //Draw Boards
         var board;
-        var width = 204 // example;
-        var height = 408 // example;
-        var bmd = this.game.add.bitmapData(width, height);
+        var bmd = this.game.add.bitmapData(this.width, this.height);
         
         bmd.ctx.beginPath();
-        bmd.ctx.rect(0, 0, width, height);
+        bmd.ctx.rect(0, 0, this.width, this.height);
         bmd.ctx.fillStyle = '#ffffff';
         bmd.ctx.fill();
-        board = this.game.add.sprite(xCorner, 20, bmd);
+        board = this.game.add.sprite(xOffset, this.yOffset, bmd);
         
-        this.colWidth = 34;
-        this.rowHeight = 34;
+        for(var i = 0; i < this.rows; i++) {
+            this.grid.push([]);
+            this.blobGrid.push([]);
+            for(var j = 0; j < this.cols; j++) {
+                this.grid[i].push(0);
+                this.blobGrid.push(new testBlob(null,null,null,null,null));
+            }
+        }
     }
     
     //Spawn first pair
@@ -106,6 +212,12 @@ class PlayerBoard {
         this.puyo2y = 1;
         this.grid[0][2] = this.puyo1;
         this.grid[1][2] = this.puyo2;
+        this.blob1 = new testBlob(0,2, this.puyo1, this.game, this.rowHeight, this.colWidth);
+        this.blob2 = new testBlob(1,2,this.puyo2, this.game, this.rowHeight, this.colWidth);
+        this.blobGrid[0][2] = this.blob1;
+        this.blobGrid[1][2] = this.blob2;
+        this.blob1.create(this.xOffset + 2*this.colWidth, this.yOffset);
+        this.blob2.create(this.xOffset + 2*this.colWidth, this.yOffset + this.rowHeight);
         this.movementTimer = this.game.time.events.loop(this.autoDownwardTimerConstant, 
                                                                     this.movePuyo, this);
         this.print();
@@ -158,6 +270,10 @@ class PlayerBoard {
         this.grid[this.puyo2y][this.puyo2x] = 0;
         this.puyo1y++;
         this.puyo2y++;
+        this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+        this.blobGrid[this.puyo2y][this.puyo2x] = this.blob2;
+        this.blob1.moveDown();
+        this.blob2.moveDown();
         this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
         this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
         this.print();
@@ -177,6 +293,8 @@ class PlayerBoard {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
                     this.puyo1x++;
                     this.puyo1y--;
+                    this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+                    this.blob1.rotateLeft(0);
                     this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
                     this.pairIsVertical = false;
                     return true;
@@ -189,6 +307,8 @@ class PlayerBoard {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
                     this.puyo1x--;
                     this.puyo1y++;
+                    this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+                    this.blob1.rotateLeft(1);
                     this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
                     this.pairIsVertical = false;
                     return true;
@@ -203,6 +323,8 @@ class PlayerBoard {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
                     this.puyo1x--;
                     this.puyo1y--;
+                    this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+                    this.blob1.rotateLeft(2);
                     this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
                     this.pairIsVertical = true;
                     return true;
@@ -215,6 +337,8 @@ class PlayerBoard {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
                     this.puyo1x++;
                     this.puyo1y++;
+                    this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+                    this.blob1.rotateLeft(3);
                     this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
                     this.pairIsVertical = true;
                     return true;
@@ -238,6 +362,8 @@ class PlayerBoard {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
                     this.puyo1x--;
                     this.puyo1y--;
+                    this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+                    this.blob1.rotateRight(0);
                     this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
                     this.pairIsVertical = false;
                     return true;
@@ -250,6 +376,8 @@ class PlayerBoard {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
                     this.puyo1x++;
                     this.puyo1y++;
+                    this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+                    this.blob1.rotateRight(1);
                     this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
                     this.pairIsVertical = false;
                     return true;
@@ -264,6 +392,8 @@ class PlayerBoard {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
                     this.puyo1x--;
                     this.puyo1y++;
+                    this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+                    this.blob1.rotateRight(2);
                     this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
                     this.pairIsVertical = true;
                     return true;
@@ -276,6 +406,8 @@ class PlayerBoard {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
                     this.puyo1x++;
                     this.puyo1y--;
+                    this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+                    this.blob1.rotateRight(3);
                     this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
                     this.pairIsVertical = true;
                     return true;
@@ -462,6 +594,7 @@ class PlayerBoard {
         }
         this.checkedGrid[y][x] = 0;
         this.grid[y][x] = 0;
+        this.blobGrid[y][x].destroy();
         this.deleteChain(x+1,y,variation);
         this.deleteChain(x-1,y,variation);
         this.deleteChain(x,y+1,variation);
@@ -501,6 +634,8 @@ class PlayerBoard {
         let variation = this.grid[y][x];
         this.grid[y][x] = 0;
         this.grid[newY][x] = variation;
+        this.blobGrid[newY][x] = this.blobGrid[y][x];
+        this.blobGrid[y][x].drop(newY-y);
         this.print();
     }
     
@@ -525,6 +660,10 @@ class PlayerBoard {
             this.grid[this.puyo2y][this.puyo2x] = 0;
             this.puyo1x--;
             this.puyo2x--;
+            this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+            this.blobGrid[this.puyo2y][this.puyo2x] = this.blob2;
+            this.blob1.moveLeft();
+            this.blob2.moveLeft();
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.horizontalLock = true;
@@ -537,6 +676,10 @@ class PlayerBoard {
             this.grid[this.puyo2y][this.puyo2x] = 0;
             this.puyo1x++;
             this.puyo2x++;
+            this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+            this.blobGrid[this.puyo2y][this.puyo2x] = this.blob2;
+            this.blob1.moveRight();
+            this.blob2.moveRight();
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.horizontalLock = true;
@@ -549,6 +692,10 @@ class PlayerBoard {
             this.grid[this.puyo2y][this.puyo2x] = 0;
             this.puyo1y++;
             this.puyo2y++;
+            this.blobGrid[this.puyo1y][this.puyo1x] = this.blob1;
+            this.blobGrid[this.puyo2y][this.puyo2x] = this.blob2;
+            this.blob1.moveDown();
+            this.blob2.moveDown();
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.verticalLock = true;
