@@ -1,6 +1,7 @@
 /* global Phaser */
 var PuyoPuyo = PuyoPuyo || {};
 var Score = 0;
+var nuisancePoint = 0;
 var chainPower = [0, 8, 16, 32, 64, 128, 256, 512, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999];
 var colorBonus = [0, 3, 6, 12, 24]; // red, blue, green, purple, yellow
 var groupBonus = [0, 2, 3, 4, 5, 6, 7, 10];
@@ -563,12 +564,11 @@ class PlayerBoard {
         }
     }
 
-    // TODO: Modified to advanced score system
     // Reference: https://puyonexus.com/wiki/Scoring
     calculateScore(groupNum, color) {
         var PC = groupNum;
         var CP = chainPower[groupNum - 1];
-        var CB = colorBonus[color - 1]; // TODO: change it corresponding to color number in game
+        var CB = colorBonus[color - 1];
         var GB = groupBonus[groupNum - 1];
 
         Score += (10 * PC) * (CP + CB + GB);
@@ -653,6 +653,23 @@ class PlayerBoard {
         this.blobGrid[newY][x] = this.blobGrid[y][x];
         this.blobGrid[y][x].drop(newY-y);
         this.print();
+    }
+
+    // Drop nuisance
+    dropNuisanceNum(groupNum) {
+        var SC = chainPower[groupNum];
+        var TP = 70;
+        var NL = nuisancePoint;
+
+        nuisancePoint = SC/TP + NL;
+        var NC = Math.floor(nuisancePoint);
+        nuisancePoint = nuisancePoint - NC;
+
+        return NC;
+    }
+
+    dropNuisance(x, y, numNuisance) {
+        // drop Nuisance
     }
     
     unlockHorizontalMovement() {
