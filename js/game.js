@@ -1,5 +1,6 @@
 /* global Phaser */
 var PuyoPuyo = PuyoPuyo || {};
+var Score = 0;
 
 class testBlob {
     constructor(row, col, variation, game, rowHeight, colWidth) {
@@ -550,12 +551,18 @@ class PlayerBoard {
             for(var j = 0; j < this.cols; j++) {
                 if(this.checkedGrid[i][j] >= 4) {
                     this.deleteChain(j,i,this.grid[i][j]);
+                    this.calculateScore();
                 }
             }
         }
         if(this.dropAllBlocks()) {
             this.findChains();
         }
+    }
+
+    // TODO: Modified to advanced score system
+    calculateScore() {
+        ++Score;
     }
     
     //Recursive helper function to help check for chains
