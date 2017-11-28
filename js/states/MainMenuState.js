@@ -82,8 +82,6 @@ PuyoPuyo.MainMenuState = {
         this.menu.anchor.y = 0.5;
         this.menu.height = this.game.height * (140/224);
         this.menu.width = this.game.width * (272/320);
-        this.menu.inputEnabled = true;
-        this.menu.events.onInputDown.add(this.startGame, this);
         
         // Add menu options
         this.tutorial_option = this.game.add.sprite(0, 0, 'tutorial_graphic');
@@ -93,6 +91,8 @@ PuyoPuyo.MainMenuState = {
         this.tutorial_option.anchor.y = 0;
         this.tutorial_option.height = this.menu.height * (1/6);
         this.tutorial_option.width = 200;
+        this.tutorial_option.inputEnabled = true;
+        this.tutorial_option.events.onInputDown.add(this.startTutorial, this);
         
         this.pvc_option = this.game.add.sprite(0, 0, 'pvc_graphic');
         this.pvc_option.x = this.game.width * (75/320);
@@ -109,6 +109,8 @@ PuyoPuyo.MainMenuState = {
         this.pvp_option.anchor.y = 0;
         this.pvp_option.height = this.menu.height * (1/6);
         this.pvp_option.width = 350;
+        this.pvp_option.inputEnabled = true;
+        this.pvp_option.events.onInputDown.add(this.startGame, this);
         
         this.settings_option = this.game.add.sprite(0, 0, 'settings_graphic');
         this.settings_option.x = this.game.width * (67/320);
@@ -213,5 +215,9 @@ PuyoPuyo.MainMenuState = {
     
     startGame() {
         this.state.start('InGameState');
+    },
+    
+    startTutorial() {
+        this.state.start('TutorialState');
     }
 };

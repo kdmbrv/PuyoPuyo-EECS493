@@ -791,8 +791,20 @@ class Puyo {
     }
 };
 
+WebFontConfig = {
+    //  'active' means all requested fonts have finished loading
+    //  We set a 1 second delay before calling 'createText'.
+    //  For some reason if we don't the browser cannot render the text the first time it's created.
+    active: function() { console.log("loaded fonts"); },
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: {
+      families: ['Berkshire+Swash']
+    }
+};
+
 PuyoPuyo.game = new Phaser.Game(650, 450, Phaser.AUTO, '', '', false, false);
 PuyoPuyo.game.state.add('PreloadState', PuyoPuyo.PreloadState);
 PuyoPuyo.game.state.add('InGameState', PuyoPuyo.InGameState);
 PuyoPuyo.game.state.add('MainMenuState', PuyoPuyo.MainMenuState);
+PuyoPuyo.game.state.add('TutorialState', PuyoPuyo.TutorialState);
 PuyoPuyo.game.state.start('PreloadState');
