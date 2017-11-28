@@ -5,7 +5,7 @@ var PuyoPuyo = PuyoPuyo || {};
 PuyoPuyo.InGameState = {
     create: function() {
         console.log("INGAME");
-        this.game.stage.backgroundColor = "#bbc1cc";
+        this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'brick_wall');
         //var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" };
         //text = this.game.add.text(0, 0, "inspect with console to play", style);
         //Eventually will pass in x and y placement coords as well as size

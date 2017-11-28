@@ -145,8 +145,8 @@ class PlayerBoard {
         bmd.ctx.rect(0, 0, this.width, this.height);
         bmd.ctx.fillStyle = '#ffffff';
         bmd.ctx.fill();
-        board = this.game.add.sprite(xOffset, this.yOffset, bmd);
-        
+        //board = this.game.add.sprite(xOffset, this.yOffset, bmd);
+        this.backgroundWall = this.game.add.tileSprite(this.xOffset,this.yOffset,this.width, this.height, 'brick_wall_dark');
         for(var i = 0; i < this.rows; i++) {
             this.grid.push([]);
             this.blobGrid.push([]);
