@@ -561,8 +561,10 @@ class PlayerBoard {
     }
 
     // TODO: Modified to advanced score system
+    // Reference: https://puyonexus.com/wiki/Scoring
     calculateScore() {
-        ++Score;
+      // Score = (10 * PC) * (CP + CB + GB)
+      ++Score;
     }
     
     //Recursive helper function to help check for chains
