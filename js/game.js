@@ -1,6 +1,9 @@
 /* global Phaser */
 var PuyoPuyo = PuyoPuyo || {};
 var Score = 0;
+var chainPower = [0, 8, 16, 32, 64, 128, 256, 512, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999];
+var colorBonus = [0, 3, 6, 12, 24]; // red, blue, green, purple, yellow
+var groupBonus = [0, 2, 3, 4, 5, 6, 7, 10];
 
 class testBlob {
     constructor(row, col, variation, game, rowHeight, colWidth) {
@@ -551,7 +554,7 @@ class PlayerBoard {
             for(var j = 0; j < this.cols; j++) {
                 if(this.checkedGrid[i][j] >= 4) {
                     this.deleteChain(j,i,this.grid[i][j]);
-                    this.calculateScore();
+                    this.calculateScore(this.checkedGrid[i][j], this.grid[i][j]);
                 }
             }
         }
@@ -562,9 +565,13 @@ class PlayerBoard {
 
     // TODO: Modified to advanced score system
     // Reference: https://puyonexus.com/wiki/Scoring
-    calculateScore() {
-      // Score = (10 * PC) * (CP + CB + GB)
-      ++Score;
+    calculateScore(groupNum, color) {
+        var PC = groupNum;
+        var CP = chainPower[groupNum - 1];
+        var CB = colorBonus[color - 1]; // TODO: change it corresponding to color number in game
+        var GB = groupBonus[groupNum - 1];
+
+        Score += (10 * PC) * (CP + CB + GB);
     }
     
     //Recursive helper function to help check for chains
