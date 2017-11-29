@@ -25,6 +25,19 @@ PuyoPuyo.TutorialState = {
         this.text.font = 'Berkshire Swash';
         this.text.fontSize = 50;
         
+        this.video = this.game.add.video('tutorial1');
+
+        //  See the docs for the full parameters
+        //  But it goes x, y, anchor x, anchor y, scale x, scale y
+        this.videoSprite = this.video.addToWorld(460, 200, 0.5, 0.5, .2, .2);
+
+        var style = { font: '14pt Arial', fill: 'black', align: 'left', wordWrap: true, wordWrapWidth: 250 };
+
+        var text = this.game.add.text(75, 110, "Welcome to Puyo Puyo! This is a competitive style tetris game where two players compete to make the other player reach the top first and lose...", style);
+
+        //  true = loop
+        this.video.play(true);
+        
         this.exitButton = this.game.add.sprite(this.game.world.centerX, this.game.height*41/50, 'exit');
         this.exitButton.anchor.setTo(.5);
         this.exitButton.width = 70;
