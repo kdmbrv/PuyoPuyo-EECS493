@@ -5,6 +5,7 @@ var puyo;
 var cursors;
 var enter;
 var frameCounter = 0;
+var currentPuyoPos = 0;
 
 PuyoPuyo.MainMenuState = {
     
@@ -84,6 +85,31 @@ PuyoPuyo.MainMenuState = {
         this.menu.width = this.game.width * (272/320);
         
         // Add menu options
+        this.tutorial_text = this.game.add.text(150, 120, "Tutorial");
+        this.tutorial_text.anchor.setTo(0);
+        this.tutorial_text.font = 'Chewy';
+        this.tutorial_text.fontSize = 45;
+        this.tutorial_text.fill = '#fffb38';
+        
+        this.pvc_text = this.game.add.text(150, 170, "Player vs. Computer");
+        this.pvc_text.anchor.setTo(0);
+        this.pvc_text.font = 'Chewy';
+        this.pvc_text.fontSize = 45;
+        this.pvc_text.fill = '#55ff37';
+        
+        this.pvp_text = this.game.add.text(150, 220, "Player vs. Player");
+        this.pvp_text.anchor.setTo(0);
+        this.pvp_text.font = 'Chewy';
+        this.pvp_text.fontSize = 45;
+        this.pvp_text.fill = '#364aff';
+        
+        this.settings_text = this.game.add.text(150, 270, "Settings");
+        this.settings_text.anchor.setTo(0);
+        this.settings_text.font = 'Chewy';
+        this.settings_text.fontSize = 45;
+        this.settings_text.fill = '#790ea3';
+        
+        // Old options: currently invisible, soon to be deleted
         this.tutorial_option = this.game.add.sprite(0, 0, 'tutorial_graphic');
         this.tutorial_option.x = this.game.width * (70/320);
         this.tutorial_option.y = this.game.height * (65/224);
@@ -91,8 +117,7 @@ PuyoPuyo.MainMenuState = {
         this.tutorial_option.anchor.y = 0;
         this.tutorial_option.height = this.menu.height * (1/6);
         this.tutorial_option.width = 200;
-        this.tutorial_option.inputEnabled = true;
-        this.tutorial_option.events.onInputDown.add(this.startTutorial, this);
+        this.tutorial_option.visible = false;
         
         this.pvc_option = this.game.add.sprite(0, 0, 'pvc_graphic');
         this.pvc_option.x = this.game.width * (75/320);
@@ -101,6 +126,7 @@ PuyoPuyo.MainMenuState = {
         this.pvc_option.anchor.y = 0;
         this.pvc_option.height = this.menu.height * (3/12);
         this.pvc_option.width = this.menu.width * (11/16);
+        this.pvc_option.visible = false;
         
         this.pvp_option = this.game.add.sprite(0, 0, 'pvp_graphic');
         this.pvp_option.x = this.game.width * (70/320);
@@ -109,8 +135,7 @@ PuyoPuyo.MainMenuState = {
         this.pvp_option.anchor.y = 0;
         this.pvp_option.height = this.menu.height * (1/6);
         this.pvp_option.width = 350;
-        this.pvp_option.inputEnabled = true;
-        this.pvp_option.events.onInputDown.add(this.startGame, this);
+        this.pvp_option.visible = false;
         
         this.settings_option = this.game.add.sprite(0, 0, 'settings_graphic');
         this.settings_option.x = this.game.width * (67/320);
@@ -119,6 +144,7 @@ PuyoPuyo.MainMenuState = {
         this.settings_option.anchor.y = 0;
         this.settings_option.height = this.menu.height * (1/6);
         this.settings_option.width = 200;
+        this.settings_option.visible = false;
         
         this.sprite = this.add.sprite(0, 0, 'mm_blob');
         this.sprite.x = this.game.width * (60/320);
@@ -133,15 +159,17 @@ PuyoPuyo.MainMenuState = {
         //this.puyo.create();
         
         this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.cursors.down.onDown.add(this.selectDown);
+        this.cursors.up.onDown.add(this.selectUp);
         this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        this.currentPuyoPos = 0;
+        this.enter.onDown.add(this.select, this);
         
         // Array of menu options for sprite to jump to 
         this.menu_options = [
-            this.tutorial_option.y + this.tutorial_option.height * 0.5,
-            this.pvc_option.y + this.pvc_option.height * 0.5,
-            this.pvp_option.y + this.pvp_option.height * 0.5,
-            this.settings_option.y + this.settings_option.height * 0.5
+            this.tutorial_text.y + this.tutorial_text.height * 0.5,
+            this.pvc_text.y + this.pvc_text.height * 0.5,
+            this.pvp_text.y + this.pvp_text.height * 0.5,
+            this.settings_text.y + this.settings_text.height * 0.5
         ];
     },
     
@@ -179,28 +207,34 @@ PuyoPuyo.MainMenuState = {
         }
     },
     
-    update: function() {
-        frameCounter++;
-        if (frameCounter == 7) {
-            if (this.cursors.down.isDown && this.currentPuyoPos != 3) {
-                this.currentPuyoPos++;
-            } else if (this.cursors.up.isDown && this.currentPuyoPos != 0) {
-                this.currentPuyoPos--;
-            } else if (this.enter.isDown) {
-                if (this.currentPuyoPos == 0) {
+    selectDown() {
+        console.log('moving down');
+      if (currentPuyoPos != 3) {
+          currentPuyoPos++;
+      }
+    },
+    
+    selectUp() {
+        console.log('moving up');
+        if (currentPuyoPos != 0) {
+            currentPuyoPos--;
+        }
+    },
+    
+    select() {
+        if (currentPuyoPos == 0) {
                     this.state.start('TutorialState');
-                } else if (this.currentPuyoPos == 1) {
+                } else if (currentPuyoPos == 1) {
                     this.state.start('CPUState');
-                } else if (this.currentPuyoPos == 2) {
+                } else if (currentPuyoPos == 2) {
                     this.state.start('InGameState');
-                } else if (this.currentPuyoPos == 3) {
+                } else if (currentPuyoPos == 3) {
                     this.state.start('SettingsState');
                 }
-            }
-            frameCounter = 0;
-        }
-        
-        this.sprite.y = this.menu_options[this.currentPuyoPos];
+    },
+    
+    update: function() {
+        this.sprite.y = this.menu_options[currentPuyoPos];
         
         // Move sprite up and down smoothly for show
         var delta = this.game.time.elapsed;

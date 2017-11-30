@@ -798,7 +798,7 @@ WebFontConfig = {
     active: function() { console.log("loaded fonts"); },
     //  The Google Fonts we want to load (specify as many as you like in the array)
     google: {
-      families: ['Berkshire+Swash']
+      families: ['Berkshire+Swash', 'Chewy']
     }
 };
 
