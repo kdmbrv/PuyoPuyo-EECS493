@@ -21,6 +21,7 @@ PuyoPuyo.TutorialState = {
         this.rightArrow.anchor.x = .5;
         this.rightArrow.anchor.x = .5;
         this.rightArrow.inputEnabled = true;
+        this.rightArrow.input.useHandCursor = true;
         this.rightArrow.events.onInputDown.add(this.rightArrowClick, this);
         
         this.leftArrow = this.game.add.sprite(this.game.width*3/20,this.game.height*39/50,'arrow');
@@ -31,6 +32,7 @@ PuyoPuyo.TutorialState = {
         this.leftArrow.scale.x *= -1;
         this.leftArrow.visible = false;
         this.leftArrow.inputEnabled = true;
+        this.leftArrow.input.useHandCursor = true;
         this.leftArrow.events.onInputDown.add(this.leftArrowClick, this);
         
         this.exitButton = this.game.add.sprite(this.game.world.centerX, this.game.height*41/50, 'exit');
@@ -38,6 +40,7 @@ PuyoPuyo.TutorialState = {
         this.exitButton.width = 70;
         this.exitButton.height = 70;
         this.exitButton.inputEnabled = true;
+        this.exitButton.input.useHandCursor = true;
         this.exitButton.events.onInputDown.add(this.goToMainMenu, this);
         
         this.titleText = this.game.add.text(195, 70, this.titleArray[0]);
