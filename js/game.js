@@ -798,7 +798,7 @@ WebFontConfig = {
     active: function() { console.log("loaded fonts"); },
     //  The Google Fonts we want to load (specify as many as you like in the array)
     google: {
-      families: ['Berkshire+Swash', 'Chewy']
+      families: ['Berkshire+Swash', 'Press+Start+2P', 'Chewy']
     }
 };
 
@@ -807,4 +807,5 @@ PuyoPuyo.game.state.add('PreloadState', PuyoPuyo.PreloadState);
 PuyoPuyo.game.state.add('InGameState', PuyoPuyo.InGameState);
 PuyoPuyo.game.state.add('MainMenuState', PuyoPuyo.MainMenuState);
 PuyoPuyo.game.state.add('TutorialState', PuyoPuyo.TutorialState);
+PuyoPuyo.game.state.add('SettingsState', PuyoPuyo.SettingsState);
 PuyoPuyo.game.state.start('PreloadState');

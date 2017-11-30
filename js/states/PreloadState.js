@@ -19,6 +19,7 @@ PuyoPuyo.PreloadState = {
         this.load.image('book', 'img/book.png');
         this.load.image('arrow', 'img/arrow.png');
         this.load.image('exit', 'img/exit.png');
+        this.load.image('save', 'img/save.png');
         this.load.spritesheet('puyo', 'img/puyo.png', 16, 16);
         this.load.spritesheet('mm_blob', 'img/blob.png', 18, 16);
         this.load.image('menu', 'img/menu_background.png');
