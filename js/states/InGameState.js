@@ -10,8 +10,8 @@ PuyoPuyo.InGameState = {
         //text = this.game.add.text(0, 0, "inspect with console to play", style);
         //Eventually will pass in x and y placement coords as well as size
         //Can now pass in the controls so making a second board should be pretty easy
-        this.player1Board = new PlayerBoard(this.game, this, 20, Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.DOWN, Phaser.Keyboard.N, Phaser.Keyboard.M);
-        this.player2Board = new PlayerBoard(this.game, this, 426, Phaser.Keyboard.A, Phaser.Keyboard.D, Phaser.Keyboard.S, Phaser.Keyboard.C, Phaser.Keyboard.V);
+        this.player1Board = new PlayerBoard(this.game, this, 20, this.game.global['player1LeftKey'], this.game.global['player1RightKey'], this.game.global['player1DownKey'], this.game.global['player1RotateLKey'], this.game.global['player1RotateRKey']);
+        this.player2Board = new PlayerBoard(this.game, this, 426, this.game.global['player2LeftKey'], this.game.global['player2RightKey'], this.game.global['player2DownKey'], this.game.global['player2RotateLKey'], this.game.global['player2RotateRKey']);
         this.player1Board.print();
         this.player1Board.create();
         this.player2Board.create();

@@ -803,6 +803,25 @@ WebFontConfig = {
 };
 
 PuyoPuyo.game = new Phaser.Game(650, 450, Phaser.AUTO, '', '', false, false);
+
+//Set Initial Controls
+PuyoPuyo.game.global = {
+    'player1LeftKey' : Phaser.Keyboard.A,
+    'player1RightKey' : Phaser.Keyboard.D,
+    'player1DownKey' : Phaser.Keyboard.S,
+    'player1RotateLKey' : Phaser.Keyboard.C,
+    'player1RotateRKey' : Phaser.Keyboard.V,
+    'player2LeftKey' : Phaser.Keyboard.LEFT,
+    'player2RightKey' : Phaser.Keyboard.RIGHT,
+    'player2DownKey' : Phaser.Keyboard.DOWN,
+    'player2RotateLKey' : Phaser.Keyboard.N,
+    'player2RotateRKey' : Phaser.Keyboard.M,
+    
+    'player1KeyIndexArray' : {0 : 22, 1 : 24, 2 : 23, 3 : 34, 4 : 35},
+    
+    'player2KeyIndexArray' : {0 : 41, 1 : 42, 2 : 43, 3 : 37, 4 : 38}
+},
+
 PuyoPuyo.game.state.add('PreloadState', PuyoPuyo.PreloadState);
 PuyoPuyo.game.state.add('InGameState', PuyoPuyo.InGameState);
 PuyoPuyo.game.state.add('MainMenuState', PuyoPuyo.MainMenuState);
