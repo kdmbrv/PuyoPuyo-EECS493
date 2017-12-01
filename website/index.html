@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Puyo Puyo 493</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <script src="script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>
+    WebFont.load({
+      google: {
+        families: ['Chewy']
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="logo_header">
+    <img src="img/logo.png" height="150px;" />
+  </div>
+  <div class="content">
+    <div>
+      <h1 class="chewy" style="color: #f44242">Introduction</h1>
+      Puyo Puyo is a tile-matching competitive puzzle game that features two players matching various colored blobs to achieve a higher score while simultneously blocking the opponent from making matches. Pairs of colored blobs are constantly dropped into each players screen and the player can move and rotate them to drop them in a position that maximizes their combined chains. Matching four or more colored blobs will remove these blobs from the players screens, adding to their score, and creating unmatchable clear blobs in the opponents screen. The game is over when one player's stack of blobs reaches the top of their screen.
+      <!-- Gameplay gif -->
+    </div>
+    <div>
+      <h1 class="chewy" style="color: #fffb38">Controls</h1>
+      Puyo Puyo is a local two-player game where both players use the same keyboard and complete against each other. Each player has a set of controls to move the blob pair left, right, or down, as well as a pair of keys to rotate the blob pair clockwise and counterclockwise.
+      <!-- Player 1 controls --> <!-- Player 2 controls -->
+      These controls can be customized under the settings panel.
+      <!-- Settings screenshot -->
+    </div>
+    <div>
+      <h1 class="chewy" style="color: #55ff37">Winning</h1>
+      Each player recieves a score coordinating to how large the chain of matching blobs is made.
+      <ul>
+        <li>Chains of 4 earns 100 points</li>
+        <li>Chains of 5 earns 200 points</li>
+        <li>Chains of 6 earns 500 points</li>
+        <li>Chains of 7 or more earns 1000 points</li>
+      </ul>
+      Eliminating these chains helps clear up space in the players screen, keeping the top of the blob stack lower from the top of the screen. Creating a successful chain creates at least one clear blob. Clear blobs are totaled up over the opponents screen for 5 turns and then dropped all at once. These clear blobs are dropped across random columns of the game screen. Once a clear blob is dropped, a colored blob cannot be matched through it.
+      When one of the players' stack of blobs reaches the top of the screen, the game ends. The scores are then displayed and the player with the higher score wins.
+      <!-- Game over screen -->
+    </div>
+    <div>
+      <h1 class="chewy" style="color: #364aff">Screens</h1>
+      <!-- Bootstrap carosel of images, both those featured above and more -->
+    </div>
+    <div>
+      <h1 class="chewy" style="color: #790ea3">Download</h1>
+      Our implementation of Puyo Puyo uses the Javascript <a href="https://phaser.io/">Phaser</a> framework. This requires a local web server to run, and to do this we used the online IDE <a href="https://c9.io/">Cloud9</a>. We then hosted our code in a GitHub repository which we all contributed to and pulled changes from. A .zip of our game code can be downloaded <a href="game.zip">here</a>.
+    </div>
+  </div>
+</body>
+</html>
