@@ -78,76 +78,47 @@ PuyoPuyo.MainMenuState = {
         // Add menu
         this.menu = this.game.add.sprite(0, 0, 'menu');
         this.menu.x = this.game.width / 2 ;
-        this.menu.y = this.game.height / 2 ;
+        this.menu.y = this.game.height / 2  + 10;
         this.menu.anchor.x = 0.5;
         this.menu.anchor.y = 0.5;
-        this.menu.height = this.game.height * (140/224);
-        this.menu.width = this.game.width * (272/320);
+        this.menu.height = this.game.height * (150/224);
+        this.menu.width = this.game.width * (200/320);
         
         // Add menu options
-        this.tutorial_text = this.game.add.text(150, 120, "Tutorial");
+        this.play_text = this.game.add.text(250, 120, "Play");
+        this.play_text.anchor.setTo(0);
+        this.play_text.font = 'Chewy';
+        this.play_text.fontSize = 45;
+        this.play_text.fill = '#364aff';
+        this.play_text.stroke = '#000000';
+        this.play_text.strokeThickness = 5;
+        
+        this.tutorial_text = this.game.add.text(250, 170, "Tutorial");
         this.tutorial_text.anchor.setTo(0);
         this.tutorial_text.font = 'Chewy';
         this.tutorial_text.fontSize = 45;
         this.tutorial_text.fill = '#fffb38';
+        this.tutorial_text.stroke = '#000000';
+        this.tutorial_text.strokeThickness = 5;
         
-        this.pvc_text = this.game.add.text(150, 170, "Player vs. Computer");
-        this.pvc_text.anchor.setTo(0);
-        this.pvc_text.font = 'Chewy';
-        this.pvc_text.fontSize = 45;
-        this.pvc_text.fill = '#55ff37';
-        
-        this.pvp_text = this.game.add.text(150, 220, "Player vs. Player");
-        this.pvp_text.anchor.setTo(0);
-        this.pvp_text.font = 'Chewy';
-        this.pvp_text.fontSize = 45;
-        this.pvp_text.fill = '#364aff';
-        
-        this.settings_text = this.game.add.text(150, 270, "Settings");
+        this.settings_text = this.game.add.text(250, 230, "Settings");
         this.settings_text.anchor.setTo(0);
         this.settings_text.font = 'Chewy';
         this.settings_text.fontSize = 45;
         this.settings_text.fill = '#790ea3';
+        this.settings_text.stroke = '#000000';
+        this.settings_text.strokeThickness = 5;
         
-        // Old options: currently invisible, soon to be deleted
-        this.tutorial_option = this.game.add.sprite(0, 0, 'tutorial_graphic');
-        this.tutorial_option.x = this.game.width * (70/320);
-        this.tutorial_option.y = this.game.height * (65/224);
-        this.tutorial_option.anchor.x = 0;
-        this.tutorial_option.anchor.y = 0;
-        this.tutorial_option.height = this.menu.height * (1/6);
-        this.tutorial_option.width = 200;
-        this.tutorial_option.visible = false;
-        
-        this.pvc_option = this.game.add.sprite(0, 0, 'pvc_graphic');
-        this.pvc_option.x = this.game.width * (75/320);
-        this.pvc_option.y = this.tutorial_option.y + this.menu.height * (1/8);
-        this.pvc_option.anchor.x = 0;
-        this.pvc_option.anchor.y = 0;
-        this.pvc_option.height = this.menu.height * (3/12);
-        this.pvc_option.width = this.menu.width * (11/16);
-        this.pvc_option.visible = false;
-        
-        this.pvp_option = this.game.add.sprite(0, 0, 'pvp_graphic');
-        this.pvp_option.x = this.game.width * (70/320);
-        this.pvp_option.y = this.pvc_option.y + this.menu.height * (1/5);
-        this.pvp_option.anchor.x = 0;
-        this.pvp_option.anchor.y = 0;
-        this.pvp_option.height = this.menu.height * (1/6);
-        this.pvp_option.width = 350;
-        this.pvp_option.visible = false;
-        
-        this.settings_option = this.game.add.sprite(0, 0, 'settings_graphic');
-        this.settings_option.x = this.game.width * (67/320);
-        this.settings_option.y = this.pvp_option.y + this.menu.height * (1/6);
-        this.settings_option.anchor.x = 0;
-        this.settings_option.anchor.y = 0;
-        this.settings_option.height = this.menu.height * (1/6);
-        this.settings_option.width = 200;
-        this.settings_option.visible = false;
+        this.exit_text = this.game.add.text(250, 285, "Exit");
+        this.exit_text.anchor.setTo(0);
+        this.exit_text.font = 'Chewy';
+        this.exit_text.fontSize = 45;
+        this.exit_text.fill = '#55ff37';
+        this.exit_text.stroke = '#000000';
+        this.exit_text.strokeThickness = 5;
         
         this.sprite = this.add.sprite(0, 0, 'mm_blob');
-        this.sprite.x = this.game.width * (60/320);
+        this.sprite.x = this.game.width * (100/320);
         this.sprite.y = this.game.height * (79/224);
         this.sprite.anchor.x = 0.5;
         this.sprite.anchor.y = 0.5;
@@ -166,10 +137,10 @@ PuyoPuyo.MainMenuState = {
         
         // Array of menu options for sprite to jump to 
         this.menu_options = [
+            this.play_text.y + this.play_text.height * 0.5,
             this.tutorial_text.y + this.tutorial_text.height * 0.5,
-            this.pvc_text.y + this.pvc_text.height * 0.5,
-            this.pvp_text.y + this.pvp_text.height * 0.5,
-            this.settings_text.y + this.settings_text.height * 0.5
+            this.settings_text.y + this.settings_text.height * 0.5,
+            this.exit_text.y + this.exit_text.height * 0.5
         ];
     },
     
@@ -208,14 +179,12 @@ PuyoPuyo.MainMenuState = {
     },
     
     selectDown() {
-        console.log('moving down');
       if (currentPuyoPos != 3) {
           currentPuyoPos++;
       }
     },
     
     selectUp() {
-        console.log('moving up');
         if (currentPuyoPos != 0) {
             currentPuyoPos--;
         }
@@ -223,13 +192,13 @@ PuyoPuyo.MainMenuState = {
     
     select() {
         if (currentPuyoPos == 0) {
-                    this.state.start('TutorialState');
-                } else if (currentPuyoPos == 1) {
-                    this.state.start('CPUState');
-                } else if (currentPuyoPos == 2) {
                     this.state.start('InGameState');
-                } else if (currentPuyoPos == 3) {
+                } else if (currentPuyoPos == 1) {
+                    this.state.start('TutorialState');
+                } else if (currentPuyoPos == 2) {
                     this.state.start('SettingsState');
+                } else if (currentPuyoPos == 3) {
+                    close();
                 }
     },
     

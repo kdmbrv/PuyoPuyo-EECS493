@@ -16,6 +16,62 @@ PuyoPuyo.SettingsState = {
         15:false,16:false,17:false,18:false,19:false,20:false,21:false,22:false,23:false,24:false,25:false,26:false,27:false,28:false,29:false,30:false,31:false,32:false,33:false,34:false,
         35:false,36:false,37:false,38:false,39:false,40:false,41:false,42:false,43:false,44:false};
         
+        this.indexToKeyboard = {
+            0 : Phaser.Keyboard.ONE,
+            1 : Phaser.Keyboard.TWO,
+            2 : Phaser.Keyboard.THREE,
+            3 : Phaser.Keyboard.FOUR,
+            4 : Phaser.Keyboard.FIVE,
+            5 : Phaser.Keyboard.SIX,
+            6 : Phaser.Keyboard.SEVEN,
+            7 : Phaser.Keyboard.EIGHT,
+            8 : Phaser.Keyboard.NINE,
+            9 : Phaser.Keyboard.ZERO,
+            10 : Phaser.Keyboard.Q,
+            11 : Phaser.Keyboard.W,
+            12 : Phaser.Keyboard.E,
+            13 : Phaser.Keyboard.R,
+            14 : Phaser.Keyboard.T,
+            15 : Phaser.Keyboard.Y,
+            16 : Phaser.Keyboard.U,
+            17 : Phaser.Keyboard.I,
+            18 : Phaser.Keyboard.O,
+            19 : Phaser.Keyboard.P,
+            20 : Phaser.Keyboard.OPEN_BRACKET,
+            21 : Phaser.Keyboard.CLOSED_BRACKET,
+            22 : Phaser.Keyboard.A,
+            23 : Phaser.Keyboard.S,
+            24 : Phaser.Keyboard.D,
+            25 : Phaser.Keyboard.F,
+            26 : Phaser.Keyboard.G,
+            27 : Phaser.Keyboard.H,
+            28 : Phaser.Keyboard.J,
+            29 : Phaser.Keyboard.K,
+            30 : Phaser.Keyboard.L,
+            31 : Phaser.Keyboard.COLON,
+            32 : Phaser.Keyboard.Z,
+            33 : Phaser.Keyboard.X,
+            34 : Phaser.Keyboard.C,
+            35 : Phaser.Keyboard.V,
+            36 : Phaser.Keyboard.B,
+            37 : Phaser.Keyboard.N,
+            38 : Phaser.Keyboard.M,
+            39 : Phaser.Keyboard.COMMA,
+            40 : Phaser.Keyboard.PERIOD,
+            41 : Phaser.Keyboard.LEFT,
+            42 : Phaser.Keyboard.RIGHT,
+            43 : Phaser.Keyboard.DOWN,
+            44 : Phaser.Keyboard.UP 
+        };
+        
+        for(var key in this.game.global['player1KeyIndexArray']) {
+            this.indexToUsed[this.game.global['player1KeyIndexArray'][key]] = true;
+        }
+        for(var key in this.game.global['player2KeyIndexArray']) {
+            this.indexToUsed[this.game.global['player2KeyIndexArray'][key]] = true;
+        }
+        console.log(this.indexToUsed);
+        
         this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'brick_wall');
         this.titleText = this.game.add.text(this.game.world.centerX, 55, "Settings");
         this.titleText.fontSize = 50;
@@ -132,6 +188,7 @@ PuyoPuyo.SettingsState = {
         this.saveButton.events.onInputDown.add(this.goToMainMenu, this);
         
         //p1 Side
+        //BTW terrible names i know, the name corresponds to "player + control + Left/Right arrow"
         this.p1LeftRight = this.game.add.sprite(280,145,'settingsArrow');
         this.p1LeftRight.anchor.setTo(.5);
         this.p1LeftRight.width = 20;
@@ -143,52 +200,71 @@ PuyoPuyo.SettingsState = {
         this.p1RightRight.anchor.setTo(.5);
         this.p1RightRight.width = 20;
         this.p1RightRight.height = 20;
+        this.p1RightRight.inputEnabled = true;
+        this.p1RightRight.events.onInputDown.add(function() { this.arrowClicked(true,1,false)}, this);
         
         this.p1DownRight = this.game.add.sprite(280,215,'settingsArrow');
         this.p1DownRight.anchor.setTo(.5);
         this.p1DownRight.width = 20;
         this.p1DownRight.height = 20;
+        this.p1DownRight.inputEnabled = true;
+        this.p1DownRight.events.onInputDown.add(function() { this.arrowClicked(true,2,false)}, this);
         
         this.p1RotateLRight = this.game.add.sprite(280,250,'settingsArrow');
         this.p1RotateLRight.anchor.setTo(.5);
         this.p1RotateLRight.width = 20;
         this.p1RotateLRight.height = 20;
+        this.p1RotateLRight.inputEnabled = true;
+        this.p1RotateLRight.events.onInputDown.add(function() { this.arrowClicked(true,3,false)}, this);
         
         this.p1RotateRRight = this.game.add.sprite(280,285,'settingsArrow');
         this.p1RotateRRight.anchor.setTo(.5);
         this.p1RotateRRight.width = 20;
         this.p1RotateRRight.height = 20;
+        this.p1RotateRRight.inputEnabled = true;
+        this.p1RotateRRight.events.onInputDown.add(function() { this.arrowClicked(true,4,false)}, this);
         
         this.p1LeftLeft = this.game.add.sprite(190,145,'settingsArrow');
         this.p1LeftLeft.anchor.setTo(.5);
         this.p1LeftLeft.width = 20;
         this.p1LeftLeft.height = 20;
         this.p1LeftLeft.scale.x *= -1;
+        this.p1LeftLeft.inputEnabled = true;
+        this.p1LeftLeft.events.onInputDown.add(function() { this.arrowClicked(true,0,true)}, this);
         
         this.p1RightLeft = this.game.add.sprite(190,180,'settingsArrow');
         this.p1RightLeft.anchor.setTo(.5);
         this.p1RightLeft.width = 20;
         this.p1RightLeft.height = 20;
         this.p1RightLeft.scale.x *= -1;
+        this.p1RightLeft.inputEnabled = true;
+        this.p1RightLeft.events.onInputDown.add(function() { this.arrowClicked(true,1,true)}, this);
         
         this.p1DownLeft = this.game.add.sprite(190,215,'settingsArrow');
         this.p1DownLeft.anchor.setTo(.5);
         this.p1DownLeft.width = 20;
         this.p1DownLeft.height = 20;
         this.p1DownLeft.scale.x *= -1;
+        this.p1DownLeft.inputEnabled = true;
+        this.p1DownLeft.events.onInputDown.add(function() { this.arrowClicked(true,2,true)}, this);
         
         this.p1RotateLLeft = this.game.add.sprite(190,250,'settingsArrow');
         this.p1RotateLLeft.anchor.setTo(.5);
         this.p1RotateLLeft.width = 20;
         this.p1RotateLLeft.height = 20;
         this.p1RotateLLeft.scale.x *= -1;
+        this.p1RotateLLeft.inputEnabled = true;
+        this.p1RotateLLeft.events.onInputDown.add(function() { this.arrowClicked(true,3,true)}, this);
         
         this.p1RotateRLeft = this.game.add.sprite(190,285,'settingsArrow');
         this.p1RotateRLeft.anchor.setTo(.5);
         this.p1RotateRLeft.width = 20;
         this.p1RotateRLeft.height = 20;
         this.p1RotateRLeft.scale.x *= -1;
+        this.p1RotateRLeft.inputEnabled = true;
+        this.p1RotateRLeft.events.onInputDown.add(function() { this.arrowClicked(true,4,true)}, this);
         
+        //The text within the arrows
         this.p1LeftKeyText = this.game.add.text(235,150,this.indexToKeys[this.game.global['player1KeyIndexArray'][0]]);
         this.p1LeftKeyText.font = 'Press Start 2P';
         this.p1LeftKeyText.fontSize = 13;
@@ -235,60 +311,81 @@ PuyoPuyo.SettingsState = {
         this.p1RotateRKeyText.fill = '#ffffff';
         
         //p2 Side
+        //Again the terrible arrow names correspond to "player + control + left/right arrow"
         this.p2LeftRight = this.game.add.sprite(605,145,'settingsArrow');
         this.p2LeftRight.anchor.setTo(.5);
         this.p2LeftRight.width = 20;
         this.p2LeftRight.height = 20;
+        this.p2LeftRight.inputEnabled = true;
+        this.p2LeftRight.events.onInputDown.add(function() { this.arrowClicked(false,0,false)}, this);
         
         this.p2RightRight = this.game.add.sprite(605,180,'settingsArrow');
         this.p2RightRight.anchor.setTo(.5);
         this.p2RightRight.width = 20;
         this.p2RightRight.height = 20;
+        this.p2RightRight.inputEnabled = true;
+        this.p2RightRight.events.onInputDown.add(function() { this.arrowClicked(false,1,false)}, this);
         
         this.p2DownRight = this.game.add.sprite(605,215,'settingsArrow');
         this.p2DownRight.anchor.setTo(.5);
         this.p2DownRight.width = 20;
         this.p2DownRight.height = 20;
+        this.p2DownRight.inputEnabled = true;
+        this.p2DownRight.events.onInputDown.add(function() { this.arrowClicked(false,2,false)}, this);
         
         this.p2RotateLRight = this.game.add.sprite(605,250,'settingsArrow');
         this.p2RotateLRight.anchor.setTo(.5);
         this.p2RotateLRight.width = 20;
         this.p2RotateLRight.height = 20;
+        this.p2RotateLRight.inputEnabled = true;
+        this.p2RotateLRight.events.onInputDown.add(function() { this.arrowClicked(false,3,false)}, this);
         
         this.p2RotateRRight = this.game.add.sprite(605,285,'settingsArrow');
         this.p2RotateRRight.anchor.setTo(.5);
         this.p2RotateRRight.width = 20;
         this.p2RotateRRight.height = 20;
+        this.p2RotateRRight.inputEnabled = true;
+        this.p2RotateRRight.events.onInputDown.add(function() { this.arrowClicked(false,4,false)}, this);
         
         this.p2LeftLeft = this.game.add.sprite(515,145,'settingsArrow');
         this.p2LeftLeft.anchor.setTo(.5);
         this.p2LeftLeft.width = 20;
         this.p2LeftLeft.height = 20;
         this.p2LeftLeft.scale.x *= -1;
+        this.p2LeftLeft.inputEnabled = true;
+        this.p2LeftLeft.events.onInputDown.add(function() { this.arrowClicked(false,0,true)}, this);
         
         this.p2RightLeft = this.game.add.sprite(515,180,'settingsArrow');
         this.p2RightLeft.anchor.setTo(.5);
         this.p2RightLeft.width = 20;
         this.p2RightLeft.height = 20;
         this.p2RightLeft.scale.x *= -1;
+        this.p2RightLeft.inputEnabled = true;
+        this.p2RightLeft.events.onInputDown.add(function() { this.arrowClicked(false,1,true)}, this);
         
         this.p2DownLeft = this.game.add.sprite(515,215,'settingsArrow');
         this.p2DownLeft.anchor.setTo(.5);
         this.p2DownLeft.width = 20;
         this.p2DownLeft.height = 20;
         this.p2DownLeft.scale.x *= -1;
+        this.p2DownLeft.inputEnabled = true;
+        this.p2DownLeft.events.onInputDown.add(function() { this.arrowClicked(false,2,true)}, this);
         
         this.p2RotateLLeft = this.game.add.sprite(515,250,'settingsArrow');
         this.p2RotateLLeft.anchor.setTo(.5);
         this.p2RotateLLeft.width = 20;
         this.p2RotateLLeft.height = 20;
         this.p2RotateLLeft.scale.x *= -1;
+        this.p2RotateLLeft.inputEnabled = true;
+        this.p2RotateLLeft.events.onInputDown.add(function() { this.arrowClicked(false,3,true)}, this);
         
         this.p2RotateRLeft = this.game.add.sprite(515,285,'settingsArrow');
         this.p2RotateRLeft.anchor.setTo(.5);
         this.p2RotateRLeft.width = 20;
         this.p2RotateRLeft.height = 20;
         this.p2RotateRLeft.scale.x *= -1;
+        this.p2RotateRLeft.inputEnabled = true;
+        this.p2RotateRLeft.events.onInputDown.add(function() { this.arrowClicked(false,4,true)}, this);
         
         this.p2LeftKeyText = this.game.add.text(560,150,this.indexToKeys[this.game.global['player2KeyIndexArray'][0]]);
         this.p2LeftKeyText.font = 'Press Start 2P';
@@ -343,7 +440,17 @@ PuyoPuyo.SettingsState = {
     },
     
     goToMainMenu() {
-        this.state.start("MainMenuState");
+        this.game.global['player1LeftKey'] = this.indexToKeyboard[this.game.global['player1KeyIndexArray'][0]]
+        this.game.global['player1RightKey'] = this.indexToKeyboard[this.game.global['player1KeyIndexArray'][1]]
+        this.game.global['player1DownKey'] = this.indexToKeyboard[this.game.global['player1KeyIndexArray'][2]]
+        this.game.global['player1RotateLKey'] = this.indexToKeyboard[this.game.global['player1KeyIndexArray'][3]]
+        this.game.global['player1RotateRKey'] = this.indexToKeyboard[this.game.global['player1KeyIndexArray'][4]]
+        this.game.global['player2LeftKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][0]]
+        this.game.global['player2RightKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][1]]
+        this.game.global['player2DownKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][2]]
+        this.game.global['player2RotateLKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][3]]
+        this.game.global['player2RotateRKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][4]]
+        this.state.start("MainMenuState"); 
     },
     
     arrowClicked(player1, controlIndex, leftArrow) {
@@ -352,24 +459,71 @@ PuyoPuyo.SettingsState = {
         //make the corresponding key appear in the text
         //have to throw each key text into an array and change label based on player and control index
         if(player1) {
+            console.log("player1");
             if(leftArrow) {
+                this.indexToUsed[this.game.global['player1KeyIndexArray'][controlIndex]] = false;
                 this.game.global['player1KeyIndexArray'][controlIndex]--;
+                if(this.game.global['player1KeyIndexArray'][controlIndex] < 0) {
+                    this.game.global['player1KeyIndexArray'][controlIndex] = 44;
+                } 
+                while(this.indexToUsed[this.game.global['player1KeyIndexArray'][controlIndex]]) {
+                    this.game.global['player1KeyIndexArray'][controlIndex]--;
+                    if(this.game.global['player1KeyIndexArray'][controlIndex] < 0) {
+                        this.game.global['player1KeyIndexArray'][controlIndex] = 44;
+                    } 
+                }
+                this.indexToUsed[this.game.global['player1KeyIndexArray'][controlIndex]] = true;
                 this.player1KeyTextArray[controlIndex].setText(this.indexToKeys[this.game.global['player1KeyIndexArray'][controlIndex]]);
             }
             else {
+                this.indexToUsed[this.game.global['player1KeyIndexArray'][controlIndex]] = false;
                 this.game.global['player1KeyIndexArray'][controlIndex]++;
+                if(this.game.global['player1KeyIndexArray'][controlIndex] > 44) {
+                    this.game.global['player1KeyIndexArray'][controlIndex] = 0;
+                } 
+                while(this.indexToUsed[this.game.global['player1KeyIndexArray'][controlIndex]]) {
+                    this.game.global['player1KeyIndexArray'][controlIndex]++;
+                    if(this.game.global['player1KeyIndexArray'][controlIndex] > 44) {
+                        this.game.global['player1KeyIndexArray'][controlIndex] = 0;
+                    } 
+                }
+                this.indexToUsed[this.game.global['player1KeyIndexArray'][controlIndex]] = true;
                 this.player1KeyTextArray[controlIndex].setText(this.indexToKeys[this.game.global['player1KeyIndexArray'][controlIndex]]);
             }
         }
         else {
             if(leftArrow) {
+                this.indexToUsed[this.game.global['player2KeyIndexArray'][controlIndex]] = false;
                 this.game.global['player2KeyIndexArray'][controlIndex]--;
+                if(this.game.global['player2KeyIndexArray'][controlIndex] < 0) {
+                    this.game.global['player2KeyIndexArray'][controlIndex] = 44;
+                } 
+                while(this.indexToUsed[this.game.global['player2KeyIndexArray'][controlIndex]]) {
+                    this.game.global['player2KeyIndexArray'][controlIndex]--;
+                    if(this.game.global['player2KeyIndexArray'][controlIndex] < 0) {
+                        this.game.global['player2KeyIndexArray'][controlIndex] = 44;
+                    } 
+                }
+                this.indexToUsed[this.game.global['player2KeyIndexArray'][controlIndex]] = true;
                 this.player2KeyTextArray[controlIndex].setText(this.indexToKeys[this.game.global['player2KeyIndexArray'][controlIndex]]);
             }
             else {
+                this.indexToUsed[this.game.global['player2KeyIndexArray'][controlIndex]] = false;
                 this.game.global['player2KeyIndexArray'][controlIndex]++;
+                if(this.game.global['player2KeyIndexArray'][controlIndex] > 44) {
+                    this.game.global['player2KeyIndexArray'][controlIndex] = 0;
+                } 
+                while(this.indexToUsed[this.game.global['player2KeyIndexArray'][controlIndex]]) {
+                    this.game.global['player2KeyIndexArray'][controlIndex]++;
+                    if(this.game.global['player2KeyIndexArray'][controlIndex] > 44) {
+                        this.game.global['player2KeyIndexArray'][controlIndex] = 0;
+                    } 
+                }
+                this.indexToUsed[this.game.global['player2KeyIndexArray'][controlIndex]] = true;
                 this.player2KeyTextArray[controlIndex].setText(this.indexToKeys[this.game.global['player2KeyIndexArray'][controlIndex]]);
+                
             }
         }
+        console.log(this.indexToUsed);
     }
 };
