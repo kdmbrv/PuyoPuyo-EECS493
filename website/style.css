@@ -4,7 +4,6 @@ body {
 
 .logo_header {
   text-align: center;
-  border-bottom: 1px solid black;
   background: #cecece; /* For browsers that do not support gradients */
   background: -webkit-linear-gradient(#595959, #cecece); /* For Safari 5.1 to 6.0 */
   background: -o-linear-gradient(#595959, #cecece); /* For Opera 11.1 to 12.0 */
@@ -21,7 +20,7 @@ body {
 .content {
   width: 55% !important;
   margin: auto;
-  margin-bottom: 100px;
+  margin-bottom: 200px;
 }
 
 .content-text {
@@ -55,4 +54,17 @@ body {
 
 .control-img {
   height: 40px;
+}
+
+.inline-img {
+  height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.inline-img-div {
+  margin: 10px;
+}
+
+.shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

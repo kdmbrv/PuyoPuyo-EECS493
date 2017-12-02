@@ -42,4 +42,10 @@ $(document).ready(function () {
       });
     })
   });
+
+  $('img').mouseenter(function() {
+    $(this).popover('show');
+  }).mouseleave(function() {
+    $(this).popover('hide');
+  });
 })
