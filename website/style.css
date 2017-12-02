@@ -1,17 +1,58 @@
 body {
-  background-color: #969696;
+  background-color: #bababa !important;
 }
 
 .logo_header {
   text-align: center;
+  border-bottom: 1px solid black;
+  background: #cecece; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(#595959, #cecece); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#595959, #cecece); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#595959, #cecece); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#595959, #cecece); /* Standard syntax */
+  width: 100%;
 }
 
 .chewy {
   font-family: 'Chewy';
-  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
 .content {
-  width: 50%;
+  width: 55% !important;
   margin: auto;
+  margin-bottom: 100px;
+}
+
+.content-text {
+  width: 80%;
+  margin: auto;
+}
+
+.section {
+  margin: 15px;
+}
+
+.navbox {
+  position: fixed;
+  left: 2%;
+  padding: 10px;
+}
+
+.navbox a {
+  text-decoration: none !important;
+}
+
+.footer {
+  text-align: center;
+  margin: 5px;
+  border-top: 1px solid black;
+}
+
+.control-row {
+  margin: 5px;
+}
+
+.control-img {
+  height: 40px;
 }
