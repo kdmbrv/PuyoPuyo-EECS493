@@ -38,7 +38,7 @@ PuyoPuyo.TutorialState = {
         this.exitButton = this.game.add.sprite(this.game.world.centerX, this.game.height*41/50, 'exit');
         this.exitButton.anchor.setTo(.5);
         this.exitButton.width = 70;
-        this.exitButton.height = 70;
+        this.exitButton.height = 60;
         this.exitButton.inputEnabled = true;
         this.exitButton.input.useHandCursor = true;
         this.exitButton.events.onInputDown.add(this.goToMainMenu, this);
