@@ -1,5 +1,8 @@
 /* global Phaser */
 var PuyoPuyo = PuyoPuyo || {};
+var chainPower = [0, 8, 16, 32, 64, 128, 256, 512, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999, 999];
+var colorBonus = [0, 3, 6, 12, 24]; // red, blue, green, purple, yellow
+var groupBonus = [0, 2, 3, 4, 5, 6, 7, 10];
 
 class testBlob {
     constructor(row, col, variation, game, rowHeight, colWidth) {
@@ -616,7 +619,7 @@ class PlayerBoard {
                     //Placing it during the deletion loop could return a lower number if the chain
                     //length was greater than 4
                     if(count > 3) {
-                        this.updateScore(count);
+                        this.updateScore(count, this.grid[i][j]);
                     }
                 }
             }
@@ -633,8 +636,13 @@ class PlayerBoard {
         }
     }
     
-    updateScore(chainLength) {
-        this.score += 100;
+    updateScore(groupNum, color) {
+        var PC = groupNum;
+        var CP = chainPower[groupNum - 1];
+        var CB = colorBonus[color - 1];
+        var GB = groupBonus[groupNum - 1];
+
+        this.score += (10 * PC) * (CP + CB + GB);
         this.state.updateScore();
     }
     
