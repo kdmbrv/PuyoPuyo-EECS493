@@ -92,6 +92,9 @@ PuyoPuyo.TutorialState = {
     },
     
     leftArrowClick() {
+        if (this.currentPage == 0) {
+            return;
+        }
         if(this.currentPage == this.numPages) {
             this.rightArrow.visible = true;
         }
@@ -115,6 +118,9 @@ PuyoPuyo.TutorialState = {
     },
     
     rightArrowClick() {
+        if (this.currentPage == this.numPages) {
+            return;
+        }
         if(this.currentPage === 0) {
             this.leftArrow.visible = true;
         }
