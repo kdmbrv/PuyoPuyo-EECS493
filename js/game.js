@@ -646,6 +646,19 @@ class PlayerBoard {
         this.state.updateScore();
     }
     
+    // Drop nuisance
+    dropNuisanceNum(groupNum) {
+        var SC = chainPower[groupNum];
+        var TP = 70;
+        var NL = this.nuisancePoint;
+
+        this.nuisancePoint = SC/TP + NL;
+        var NC = Math.floor(this.nuisancePoint);
+        this.nuisancePoint = this.nuisancePoint - NC;
+
+        return NC;
+    }
+    
     //Recursive helper function to help check for chains
     findChainsHelper(x, y, variation) {
         if(x < 0 || x >= this.cols) {
