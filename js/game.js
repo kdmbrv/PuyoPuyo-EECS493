@@ -133,7 +133,7 @@ class PlayerBoard {
         //timer Constants
         this.horizontalLockTimerConstant = Phaser.Timer.SECOND/10;
 	    this.verticalLockTimerConstant = Phaser.Timer.SECOND/10;
-	    this.rotationLockTimerConstant = Phaser.Timer.SECOND/10;
+	    this.rotationLockTimerConstant = Phaser.Timer.SECOND/5;
 	    this.autoDownwardTimerConstant = Phaser.Timer.SECOND;
 	    this.spawnTimerConstant = Phaser.Timer.SECOND;
         
@@ -199,6 +199,7 @@ class PlayerBoard {
         this.spawnTimer = this.game.time.events.add(this.spawnTimerConstant, this.spawnNewPuyo, this);
         this.horizontalLock = true;
         this.verticalLock = true;
+        this.rotateLock = true;
         this.print();
     }
     
@@ -213,6 +214,7 @@ class PlayerBoard {
     spawnNewPuyo() {
         this.horizontalLock = false;
         this.verticalLock = false;
+        this.rotateLock = false;
         if(this.GameOver()) {
             this.gameOver = true;
             return;
@@ -316,6 +318,9 @@ class PlayerBoard {
         }
         if(this.pairIsVertical) {
             if(this.puyo1y > this.puyo2y) {
+                if(this.puyo1x == this.cols-1) {
+                    return false;
+                }
                 if(this.grid[this.puyo1y][this.puyo1x+1] === 0 
                 && this.grid[this.puyo2y][this.puyo2x+1] === 0) {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -330,6 +335,9 @@ class PlayerBoard {
                 return false;
             }
             else {
+                if(this.puyo1x === 0) {
+                    return false;
+                }
                 if(this.grid[this.puyo1y][this.puyo1x-1] === 0 
                 && this.grid[this.puyo2y][this.puyo2x-1] === 0) {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -346,6 +354,9 @@ class PlayerBoard {
         }
         else {
             if(this.puyo1x > this.puyo2x) {
+                if(this.puyo1y === 0) {
+                    return false;
+                }
                 if(this.grid[this.puyo1y-1][this.puyo1x] === 0 
                 && this.grid[this.puyo2y-1][this.puyo2x] === 0) {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -360,6 +371,9 @@ class PlayerBoard {
                 return false;
             }
             else {
+                if(this.puyo1y == this.rows-1) {
+                    return false;
+                }
                 if(this.grid[this.puyo1y+1][this.puyo1x] === 0 
                 && this.grid[this.puyo2y+1][this.puyo2x] === 0) {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -385,6 +399,9 @@ class PlayerBoard {
         }
         if(this.pairIsVertical) {
             if(this.puyo1y > this.puyo2y) {
+                if(this.puyo1x === 0) {
+                    return false;
+                }
                 if(this.grid[this.puyo1y][this.puyo1x-1] === 0 
                 && this.grid[this.puyo2y][this.puyo2x-1] === 0) {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -399,6 +416,9 @@ class PlayerBoard {
                 return false;
             }
             else {
+                if(this.puyo1x == this.cols-1) {
+                    return false;
+                }
                 if(this.grid[this.puyo1y][this.puyo1x+1] === 0 
                 && this.grid[this.puyo2y][this.puyo2x+1] === 0) {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -415,6 +435,9 @@ class PlayerBoard {
         }
         else {
             if(this.puyo1x > this.puyo2x) {
+                if(this.puyo1y == this.rows-1) {
+                    return false;
+                }
                 if(this.grid[this.puyo1y+1][this.puyo1x] === 0 
                 && this.grid[this.puyo2y+1][this.puyo2x] === 0) {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -429,6 +452,9 @@ class PlayerBoard {
                 return false;
             }
             else {
+                if(this.puyo1y === 0) {
+                    return false;
+                }
                 if(this.grid[this.puyo1y-1][this.puyo1x] === 0 
                 && this.grid[this.puyo2y-1][this.puyo2x] === 0) {
                     this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -521,6 +547,11 @@ class PlayerBoard {
                     this.findChains();
                     return false;
                 }
+                else if(this.puyo1y == this.rows-1) {
+                    this.prepareSpawn();
+                    this.findChains();
+                    return false;
+                }
             }
             else {
                 if(this.puyo2y < this.rows-1
@@ -529,6 +560,11 @@ class PlayerBoard {
                 }
                 else if(this.puyo2y < this.rows-1
                 && this.grid[this.puyo2y+1][this.puyo2x] != 0) {
+                    this.prepareSpawn();
+                    this.findChains();
+                    return false;
+                }
+                else if(this.puyo2y == this.rows-1) {
                     this.prepareSpawn();
                     this.findChains();
                     return false;
@@ -555,6 +591,11 @@ class PlayerBoard {
                 this.findChains();
                 return false;
             }
+            else if(this.puyo1y == this.rows-1) {
+                this.prepareSpawn();
+                this.findChains();
+                return false;
+            }
         }
     }
     
@@ -570,7 +611,13 @@ class PlayerBoard {
         for(var i = 0; i < this.rows; i++) {
             for(var j = 0; j < this.cols; j++) {
                 if(this.grid[i][j] != 0) {
-                    this.findChainsHelper(j, i, this.grid[i][j]);
+                    let count = this.findChainsHelper(j, i, this.grid[i][j]);
+                    //Placing the updateScore here will return the correct chain length... I believe :)
+                    //Placing it during the deletion loop could return a lower number if the chain
+                    //length was greater than 4
+                    if(count > 3) {
+                        this.updateScore(count);
+                    }
                 }
             }
         }
@@ -578,7 +625,6 @@ class PlayerBoard {
             for(var j = 0; j < this.cols; j++) {
                 if(this.checkedGrid[i][j] >= 4) {
                     this.deleteChain(j,i,this.grid[i][j]);
-                    this.updateScore(this.checkedGrid[i][j]);
                 }
             }
         }
@@ -722,6 +768,8 @@ class PlayerBoard {
             this.print();
         }
         else if (!this.gameOver && this.canMoveDown()) {
+            this.score += 10;
+            this.state.updateScore();
             this.grid[this.puyo1y][this.puyo1x] = 0;
             this.grid[this.puyo2y][this.puyo2x] = 0;
             this.puyo1y++;
