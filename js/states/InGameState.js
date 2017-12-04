@@ -45,6 +45,7 @@ PuyoPuyo.InGameState = {
         this.player1Text.font = 'Press Start 2P';
         this.player1Text.fontSize = 12;
         this.player1Text.fill = '#ffffff';
+        this.updateNextBlobs();
         
         // Score display
         this.score_text = this.game.add.text(280, 300, "SCORE");
@@ -70,13 +71,13 @@ PuyoPuyo.InGameState = {
         this.player2Score.fontSize = 20;
         this.player2Score.stroke = '#000000';
         this.player2Score.strokeThickness = 3;
+        this.updateScore();
     },
     
     update: function() {
         this.player1Board.update(); 
         this.player2Board.update();
-        this.updateNextBlobs();
-        this.updateScore();
+        //this.updateScore();
     },
     
     updateNextBlobs() {
@@ -94,11 +95,11 @@ PuyoPuyo.InGameState = {
     updateScore() {
         // Player 1 score
         var P1 = "0000000" + this.player1Board.score;
-        this.player1Score.setText(P1.substr(0, 8));
+        this.player1Score.setText(P1.substr(P1.length-8));
         
         // Player 2 score
         var P2 = "0000000" + this.player2Board.score;
-        this.player2Score.setText(P2.substr(0, 8));
+        this.player2Score.setText(P2.substr(P2.length-8));
     },
     
     goToMainMenu() {

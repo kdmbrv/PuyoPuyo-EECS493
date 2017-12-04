@@ -206,6 +206,7 @@ class PlayerBoard {
     newNextColor() {
         this.nextBlob1Color = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.nextBlob2Color = Math.floor(Math.random() * this.puyoVariations) + 1;
+        this.state.updateNextBlobs();
     }
     
     //Spawn a new pair of blobs
@@ -577,12 +578,18 @@ class PlayerBoard {
             for(var j = 0; j < this.cols; j++) {
                 if(this.checkedGrid[i][j] >= 4) {
                     this.deleteChain(j,i,this.grid[i][j]);
+                    this.updateScore(this.checkedGrid[i][j]);
                 }
             }
         }
         if(this.dropAllBlocks()) {
             this.findChains();
         }
+    }
+    
+    updateScore(chainLength) {
+        this.score += 100;
+        this.state.updateScore();
     }
     
     //Recursive helper function to help check for chains
