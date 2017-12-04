@@ -260,22 +260,33 @@ class PlayerBoard {
             }
         }
         else {
+            console.log("horizontal")
             //if on the bottom or one doesn not equal 0
             if(this.puyo1y == this.rows-1) {
+                console.log("bottom");
                 this.prepareSpawn();
                 this.findChains();
                 return;
             }
             else if (this.grid[this.puyo1y+1][this.puyo1x] != 0
             || this.grid[this.puyo2y+1][this.puyo2x] != 0){
+                console.log("1");
                 if(this.grid[this.puyo1y+1][this.puyo1x] === 0) {
+                    console.log("2");
                     this.dropBlock(this.puyo1x, this.puyo1y);
                     this.prepareSpawn();
                     this.findChains();
                     return;
                 }
                 else if(this.grid[this.puyo2y+1][this.puyo2x] === 0) {
+                    console.log("3");
                     this.dropBlock(this.puyo2x, this.puyo2y);
+                    this.prepareSpawn();
+                    this.findChains();
+                    return;
+                }
+                //BUG FIX: Originally did not account for if both blobs have something underneath them
+                else {
                     this.prepareSpawn();
                     this.findChains();
                     return;
