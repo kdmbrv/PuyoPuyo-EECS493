@@ -75,9 +75,13 @@ PuyoPuyo.InGameState = {
     },
     
     update: function() {
-        this.player1Board.update(); 
-        this.player2Board.update();
-        //this.updateScore();
+        if (!this.player1Board.gameOver && !this.player2Board.gameOver) {
+            this.player1Board.update(); 
+            this.player2Board.update();
+        }
+        else {
+            this.endGame();
+        }
     },
     
     updateNextBlobs() {
@@ -100,6 +104,16 @@ PuyoPuyo.InGameState = {
         // Player 2 score
         var P2 = "0000000" + this.player2Board.score;
         this.player2Score.setText(P2.substr(P2.length-8));
+    },
+    
+    endGame() {
+        // Set game over for both players
+        this.player1Board.gameOver = true;
+        this.player2Board.gameOver = true;
+        
+        // Dim game screen
+        
+        // Show game over screen
     },
     
     goToMainMenu() {
