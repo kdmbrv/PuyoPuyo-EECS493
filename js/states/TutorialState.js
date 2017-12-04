@@ -41,6 +41,13 @@ PuyoPuyo.TutorialState = {
         this.leftArrow.input.useHandCursor = true;
         this.leftArrow.events.onInputDown.add(this.leftArrowClick, this);
         
+        // Arrow key navigation
+        this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.cursors.right.onDown.add(this.rightArrowClick, this);
+        this.cursors.left.onDown.add(this.leftArrowClick, this);
+        this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.enter.onDown.add(this.goToMainMenu, this);
+        
         this.exitButton = this.game.add.sprite(this.game.world.centerX, this.game.height*41/50, 'exit');
         this.exitButton.anchor.setTo(.5);
         this.exitButton.width = 70;
