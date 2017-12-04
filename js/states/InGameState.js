@@ -5,7 +5,10 @@ var PuyoPuyo = PuyoPuyo || {};
 PuyoPuyo.InGameState = {
     create: function() {
         console.log("INGAME");
-        this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'brick_wall');
+        this.inGameBackgroundPic = this.game.add.sprite(0, 0, 'inGameBackgroundPic');
+        this.inGameBackgroundPic.height = this.game.height;
+        this.inGameBackgroundPic.width = this.game.width;
+        // this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'brick_wall');
         //var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" };
         //text = this.game.add.text(0, 0, "inspect with console to play", style);
         //Eventually will pass in x and y placement coords as well as size

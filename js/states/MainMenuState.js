@@ -15,9 +15,14 @@ PuyoPuyo.MainMenuState = {
     
     create() {
         this.moveSpeed2 = 0.03;
-        this.moveSpeed3 = 0.06;
-        this.moveSpeed4 = 0.12;
-        this.moveSpeed5 = 0.24;
+        this.moveSpeed3 = 0.05;
+        this.moveSpeed4 = 0.08;
+        this.moveSpeed5 = 0.10;
+        
+        this.mm_bg1 = this.game.add.sprite(0, 0, 'mm_bg1');
+        this.mm_bg1.y = this.game.height * (1 - 97/224);
+        this.mm_bg1.height = this.game.height * (97/224);
+        this.mm_bg1.width = this.game.width;
         
         this.mm_bg1 = this.game.add.sprite(0, 0, 'mm_bg1');
         this.mm_bg1.y = this.game.height * (1 - 97/224);

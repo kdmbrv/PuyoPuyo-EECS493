@@ -3,19 +3,20 @@ var PuyoPuyo = PuyoPuyo || {};
 PuyoPuyo.PreloadState = {
     preload: function() {
         console.log("starting");
-        this.load.image('mm_bg1', 'img/mm_bg1.png');
-        this.load.image('mm_bg2', 'img/mm_bg2.png');
-        this.load.image('mm_bg3', 'img/mm_bg3.png');
-        this.load.image('mm_bg4', 'img/mm_bg4.png');
-        this.load.image('mm_bg5', 'img/mm_bg5.png');
+        this.load.image('mm_bg1', 'img/mountain.png');
+        this.load.image('mm_bg2', 'img/cloud.png');
+        this.load.image('mm_bg3', 'img/cloud2.png');
+        this.load.image('mm_bg4', 'img/cloud2.png');
+        this.load.image('mm_bg5', 'img/cloud2.png');
         this.load.image('inGame', 'img/inGame.png');
         this.load.image('redCircle', 'img/redCircle.png');
         this.load.image('blueCircle', 'img/blueCircle.png');
         this.load.image('greenCircle', 'img/greenCircle.png');
         this.load.image('yellowCircle', 'img/yellowCircle.png');
         this.load.image('purpleCircle', 'img/purpleCircle.png');
-        this.load.image('brick_wall', 'img/brickWall.png');
-        this.load.image('brick_wall_dark', 'img/brickWallDark.png');
+        this.load.image('inGameBackgroundPic', 'img/inGameBackGroundPic.png');
+        // this.load.image('brick_wall', 'img/brickWall.png');
+        // this.load.image('brick_wall_dark', 'img/brickWallDark.png');
         this.load.image('book', 'img/book.png');
         this.load.image('arrow', 'img/arrow.png');
         this.load.image('settingsArrow', 'img/settingsArrow.png');
