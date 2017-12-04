@@ -155,6 +155,13 @@ class PlayerBoard {
                 this.blobGrid.push(new testBlob(null,null,null,null,null));
             }
         }
+        
+        // Set next blob colors
+        this.nextBlob1Color = Math.floor(Math.random() * this.puyoVariations) + 1;
+        this.nextBlob2Color = Math.floor(Math.random() * this.puyoVariations) + 1;
+        
+        // Score variable
+        this.score = 0;
     }
     
     //Spawn first pair
@@ -195,6 +202,12 @@ class PlayerBoard {
         this.print();
     }
     
+    // New random color variable for next 
+    newNextColor() {
+        this.nextBlob1Color = Math.floor(Math.random() * this.puyoVariations) + 1;
+        this.nextBlob2Color = Math.floor(Math.random() * this.puyoVariations) + 1;
+    }
+    
     //Spawn a new pair of blobs
     spawnNewPuyo() {
         this.horizontalLock = false;
@@ -204,8 +217,11 @@ class PlayerBoard {
             return;
         }
         this.pairIsVertical = true;
-        this.puyo1 = Math.floor(Math.random() * this.puyoVariations) + 1;
-        this.puyo2 = Math.floor(Math.random() * this.puyoVariations) + 1;
+        //this.puyo1 = Math.floor(Math.random() * this.puyoVariations) + 1;
+        //this.puyo2 = Math.floor(Math.random() * this.puyoVariations) + 1;
+        this.puyo1 = this.nextBlob1Color;
+        this.puyo2 = this.nextBlob2Color;
+        this.newNextColor();
         this.puyo1x = 2;
         this.puyo1y = 0
         this.puyo2x = 2;
