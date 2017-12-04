@@ -6,6 +6,14 @@ $(document).ready(function () {
     $(this).addClass('active');
   });
 
+  $(function() {
+    var x = 0;
+    setInterval(function() {
+      x+=1;
+      $('.logo_header').css('background-position', x + 'px 0');
+    }, 15);
+  })
+
   var $sections = $('.section');
   $(window).scroll(function () {
     var currentScroll = $(this).scrollTop();

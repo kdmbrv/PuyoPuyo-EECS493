@@ -11,7 +11,7 @@ body {
   background: linear-gradient(#595959, #cecece); /* Standard syntax */
   width: 100%;
   background-image: url("img/cloud.png");
-  background-repeat: repeat-y;
+  background-repeat: repeat-x;
 }
 
 .chewy {
