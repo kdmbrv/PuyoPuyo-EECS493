@@ -616,7 +616,97 @@ class PlayerBoard {
         }
     }
     
-    //Checks game board for chains
+    updateScore(groupNum, color) {
+        var PC = groupNum;
+        var CP = chainPower[groupNum - 1];
+        var CB = colorBonus[color - 1];
+        var GB = groupBonus[groupNum - 1];
+
+        this.score += (10 * PC) * (CP + CB + GB);
+        this.state.updateScore();
+    }
+    
+    // Drop nuisance
+    dropNuisanceNum(groupNum) {
+        var SC = chainPower[groupNum];
+        var TP = 70;
+        var NL = this.nuisancePoint; 
+        this.nuisancePoint = SC/TP + NL;
+        var NC = Math.floor(this.nuisancePoint);
+        this.nuisancePoint = this.nuisancePoint - NC;
+
+        return NC;
+        //Doing this until we figure out what nuisancePoint is
+        //return Math.floor(Math.random() * 5) + 1  
+    }
+    
+    dropNuisance() {
+        //This function allows for only spawning clear blobs in the first 2 rows
+        //If can't spawn enough in those 2 rows then you just ignore the rest
+        console.log("dropping " + this.nuisanceCount + " clear blobs");
+        
+        //Max number of blocks to drop
+        let numToDrop = this.nuisanceCount;
+        
+        //Num cols that have been skipped in the spawning process so far
+        //If this number reaches the number of cols, then no other col is 
+        //eligible for spawning clear blobs
+        //Thus, break out of the loop and drop that clear blobs you have spawned
+        let colsSkipped = 0;
+        
+        //Loop to find where to spawn the clear blobs
+        //Could actually just get rid of the skipped varialbe and use a fro loop from 0 to 5...
+        //but its almost 2:30 and I shleep
+        while(numToDrop != 0) {
+            //No more eligible cols to spawn clear blobs
+            if(colsSkipped == this.cols) {
+                break;
+            }
+            
+            //Can place clear blob in first row
+            if(this.grid[0][this.nextNuisanceCol] === 0) {
+                this.grid[0][this.nextNuisanceCol] = 6;
+                this.nuisanceBlob = new testBlob(0,this.nextNuisanceCol, 6, this.game, this.rowHeight, this.colWidth);
+                this.blobGrid[0][this.nextNuisanceCol] = this.nuisanceBlob;
+                this.nuisanceBlob.create(this.xOffset + this.nextNuisanceCol*this.colWidth, this.yOffset);
+                colsSkipped = 0;
+                numToDrop--;
+            }
+            
+            //Can place blob in second row
+            else if(this.grid[0][this.nextNuisanceCol] == 6 && this.grid[1][this.nextNuisanceCol] === 0) {
+                this.grid[1][this.nextNuisanceCol] = 6;
+                this.nuisanceBlob = new testBlob(1,this.nextNuisanceCol, 6, this.game, this.rowHeight, this.colWidth);
+                this.blobGrid[1][this.nextNuisanceCol] = this.nuisanceBlob;
+                this.nuisanceBlob.create(this.xOffset + this.nextNuisanceCol*this.colWidth, this.yOffset + this.rowHeight);
+                colsSkipped = 0;
+                numToDrop--;
+            }
+            
+            //Can't place a blob in this column
+            else {
+                colsSkipped++;
+            }
+            
+            //increment the next column to drop a clear blob in
+            this.nextNuisanceCol++;
+            this.nextNuisanceCol = this.nextNuisanceCol % this.cols;
+        }
+        
+        for(var i = 0; i < this.cols; i++) {
+            if(this.grid[1][i] == 6) {
+                this.dropBlock(i,1);
+            }
+        }
+        for(var i = 0; i < this.cols; i++) {
+            if(this.grid[0][i] == 6) {
+                this.dropBlock(i,0);
+            }
+        }
+        this.nuisanceCount = 0;
+    }
+    
+        //Checks game board for chains
     findChains() {
         this.checkedGrid = [];
         for(var i = 0; i < this.rows; i++) {
@@ -627,7 +717,8 @@ class PlayerBoard {
         }
         for(var i = 0; i < this.rows; i++) {
             for(var j = 0; j < this.cols; j++) {
-                if(this.grid[i][j] != 0) {
+                //Should avoid finding chains for clear blobs
+                if(this.grid[i][j] != 0 && this.grid[i][j] != 6) {
                     let count = this.findChainsHelper(j, i, this.grid[i][j]);
                     //Placing the updateScore here will return the correct chain length... I believe :)
                     //Placing it during the deletion loop could return a lower number if the chain
@@ -654,85 +745,6 @@ class PlayerBoard {
         if(this.dropAllBlocks()) {
             this.findChains();
         }
-    }
-    
-    updateScore(groupNum, color) {
-        var PC = groupNum;
-        var CP = chainPower[groupNum - 1];
-        var CB = colorBonus[color - 1];
-        var GB = groupBonus[groupNum - 1];
-
-        this.score += (10 * PC) * (CP + CB + GB);
-        this.state.updateScore();
-    }
-    
-    // Drop nuisance
-    dropNuisanceNum(groupNum) {
-        var SC = chainPower[groupNum];
-        var TP = 70;
-        var NL = this.nuisancePoint; 
-        this.nuisancePoint = SC/TP + NL;
-        var NC = Math.floor(this.nuisancePoint);
-        this.nuisancePoint = this.nuisancePoint - NC;
-
-        return NC;
-        //Doing this until we figure out what nuisancePoint is
-        //return Math.floor(Math.random() * 5) + 1  
-    }
-    
-    dropNuisance() {
-        console.log("dropping " + this.nuisanceCount + " clear blobs");
-        let numToDrop = this.nuisanceCount;
-        let colsSkipped = 0;
-        while(numToDrop != 0) {
-            if(colsSkipped == this.cols) {
-                break;
-            }
-            if(this.grid[0][this.nextNuisanceCol] === 0) {
-                this.grid[0][this.nextNuisanceCol] = 6;
-                this.nuisanceBlob = new testBlob(0,this.nextNuisanceCol, 6, this.game, this.rowHeight, this.colWidth);
-                this.blobGrid[0][this.nextNuisanceCol] = this.nuisanceBlob;
-                this.nuisanceBlob.create(this.xOffset + this.nextNuisanceCol*this.colWidth, this.yOffset);
-                colsSkipped = 0;
-                numToDrop--;
-            }
-            else if(this.grid[0][this.nextNuisanceCol] == 6 && this.grid[1][this.nextNuisanceCol] === 0) {
-                this.grid[1][this.nextNuisanceCol] = 6;
-                this.nuisanceBlob = new testBlob(1,this.nextNuisanceCol, 6, this.game, this.rowHeight, this.colWidth);
-                this.blobGrid[1][this.nextNuisanceCol] = this.nuisanceBlob;
-                this.nuisanceBlob.create(this.xOffset + this.nextNuisanceCol*this.colWidth, this.yOffset + this.rowHeight);
-                colsSkipped = 0;
-                numToDrop--;
-            }
-            else {
-                colsSkipped++;
-            }
-            this.nextNuisanceCol++;
-            this.nextNuisanceCol = this.nextNuisanceCol % this.cols;
-        }
-        
-        for(var i = 0; i < this.cols; i++) {
-            if(this.grid[1][i] == 6) {
-                this.dropBlock(i,1);
-            }
-        }
-        for(var i = 0; i < this.cols; i++) {
-            if(this.grid[0][i] == 6) {
-                this.dropBlock(i,0);
-            }
-        }
-        //ASSUMING DROP AT MOST 2 LAYERS
-        //Have a counter of the last col a nuisance was dropped in
-        //while the count is not 0... if a nuisance can be spawned at the top, spawn it there and decrement num to spawn
-        //increment/modulo next col number 
-        //check if can be dropped
-        //If a nuisance is at the top of that col, see if can be spawned in next spot down, if so great
-        //If nuisance at both spots, go to next col
-        //Have a counter if a nuisance is not spawned in that col,
-        //if that counter reaches 6(num cols), then can no longer spawn valid clear blobs, so drop what you have
-        //spawn at top
-        //drop them
-        this.nuisanceCount = 0;
     }
     
     //Recursive helper function to help check for chains
@@ -772,6 +784,32 @@ class PlayerBoard {
         this.checkedGrid[y][x] = 0;
         this.grid[y][x] = 0;
         this.blobGrid[y][x].destroy();
+        
+        //Checks if there is a clear blob nearby and if there is, destroy it
+        //Currently destroys clear blobs on any side of the curr blob
+        //Not sure if this is exactly how it is in the other games
+        //If not just delete the corresponding logic statements
+        if(y+1 < this.rows && this.grid[y+1][x] == 6) {
+            this.checkedGrid[y+1][x] = 0;
+            this.grid[y+1][x] = 0;
+            this.blobGrid[y+1][x].destroy();
+        }
+        if(y-1 > -1 && this.grid[y-1][x] == 6) {
+            this.checkedGrid[y-1][x] = 0;
+            this.grid[y-1][x] = 0;
+            this.blobGrid[y-1][x].destroy();
+        }
+        if(x-1 > -1 && this.grid[y][x-1] == 6) {
+            this.checkedGrid[y][x-1] = 0;
+            this.grid[y][x-1] = 0;
+            this.blobGrid[y][x-1].destroy();
+        }
+        if(x+1 < this.cols && this.grid[x+1] == 6) {
+            this.checkedGrid[y][x+1] = 0;
+            this.grid[y][x+1] = 0;
+            this.blobGrid[y][x+1].destroy();
+        }
+        
         this.deleteChain(x+1,y,variation);
         this.deleteChain(x-1,y,variation);
         this.deleteChain(x,y+1,variation);
