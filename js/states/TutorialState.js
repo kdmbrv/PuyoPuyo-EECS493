@@ -4,16 +4,17 @@ PuyoPuyo.TutorialState = {
     create: function() {
         console.log("Tutorial");
         
-        this.titleArray = ["Puyo Puyo", "The Basics", "Chaining", "Clear Blobs", "Winning"];
+        this.titleArray = ["Puyo Puyo", "The Basics", "Controls", "Chaining", "Clear Blobs", "Winning"];
         this.textArray = [
             "In Puyo Puyo, pairs of blobs constantly fall down the game screen with which you create color chains and matches to score points and block out your opponent.", 
             "Blobs come in a variety of colors, but always fall in pairs. Blob pairs will fall until one player fills to the top of their screen. These pairs can be moved side to side or rotated into arrangements to create chains of matching colors.",
+            "There are two boards, with player 1 on the left and player 2 on the right. Player 1 uses A, S, and D keys to move their blobs left, right, or down while player 2 uses the arrow key. P1 uses C and V to rotate left and right while player 2 uses N and M.",
             "Blobs of matching colors that are directly neighboring create chains. Once a chain reaches a length of 4 or more, it is removed from the game screen and the player is awarded points. This will also create clear bubbles for the opponent.",
             "When a player creates a chain, the opponent will recieve 1 or more clear blobs. These blobs block any colored blobs from being chained through them. These are useful to force the opponent's stack to grow, pushing them closer to losing.", 
             "The game ends when one player's stack reaches the top of the game screen. The points earned from completed chains are then compared and the player with more points wins the game!"
         ];
         
-        this.numPages = 4;
+        this.numPages = 5;
         this.currentPage = 0;
         
         this.background = this.game.add.sprite(0,0,'book');
@@ -81,8 +82,12 @@ PuyoPuyo.TutorialState = {
         this.videoSprite5 = this.video5.addToWorld(460, 200, 0.5, 0.5, .2, .2);
         this.videoSprite5.visible = false;
         
-        this.videoArray = [this.video1, this.video2, this.video3, this.video4, this.video5];
-        this.videoSpriteArray = [this.videoSprite1, this.videoSprite2, this.videoSprite3, this.videoSprite4, this.videoSprite5]
+        this.video6 = this.game.add.video('tutorial1');
+        this.videoSprite6 = this.video5.addToWorld(460, 200, 0.5, 0.5, .2, .2);
+        this.videoSprite6.visible = false;
+        
+        this.videoArray = [this.video1, this.video2, this.video3, this.video4, this.video5, this.video6];
+        this.videoSpriteArray = [this.videoSprite1, this.videoSprite2, this.videoSprite3, this.videoSprite4, this.videoSprite5, this.videoSprite6];
 
         this.textStyle = { font: '14pt Arial', fill: 'black', align: 'left', wordWrap: true, wordWrapWidth: 250 };
         this.text = this.game.add.text(75, 100, this.textArray[0], this.textStyle);
