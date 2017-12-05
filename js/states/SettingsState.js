@@ -495,6 +495,9 @@ PuyoPuyo.SettingsState = {
         
         this.player1KeyTextArray = [this.p1LeftKeyText, this.p1RightKeyText, this.p1DownKeyText, this.p1RotateLKeyText, this.p1RotateRKeyText];
         this.player2KeyTextArray = [this.p2LeftKeyText, this.p2RightKeyText, this.p2DownKeyText, this.p2RotateLKeyText, this.p2RotateRKeyText];
+    
+        this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.enter.onDown.add(this.goToMainMenu, this);
     },
     
     decreaseDiff() {
