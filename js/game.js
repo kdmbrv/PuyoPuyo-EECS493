@@ -153,7 +153,7 @@ class PlayerBoard {
         
         bmd.ctx.beginPath();
         bmd.ctx.rect(0, 0, this.width, this.height);
-        bmd.ctx.fillStyle = '#AA6321';
+        bmd.ctx.fillStyle = '#CD853F';
         bmd.ctx.fill();
         board = this.game.add.sprite(xOffset, this.yOffset, bmd);
         // this.backgroundWall = this.game.add.tileSprite(this.xOffset,this.yOffset,this.width, this.height, '#ffffff');
