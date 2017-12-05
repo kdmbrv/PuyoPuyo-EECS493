@@ -144,7 +144,7 @@ class PlayerBoard {
         this.horizontalLockTimerConstant = Phaser.Timer.SECOND/10;
 	    this.verticalLockTimerConstant = Phaser.Timer.SECOND/10;
 	    this.rotationLockTimerConstant = Phaser.Timer.SECOND/5;
-	    this.autoDownwardTimerConstant = Phaser.Timer.SECOND;
+	    this.autoDownwardTimerConstant = Phaser.Timer.SECOND/this.game.global['gameDifficulty'];
 	    this.spawnTimerConstant = Phaser.Timer.SECOND;
         
         //Draw Boards
@@ -1046,6 +1046,8 @@ PuyoPuyo.game = new Phaser.Game(650, 450, Phaser.AUTO, '', '', false, false);
 
 //Set Initial Controls
 PuyoPuyo.game.global = {
+    'gameDifficultyIndex' : 1,
+    'gameDifficulty' : 1,
     'player1LeftKey' : Phaser.Keyboard.A,
     'player1RightKey' : Phaser.Keyboard.D,
     'player1DownKey' : Phaser.Keyboard.S,
