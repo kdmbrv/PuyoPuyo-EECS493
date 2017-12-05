@@ -213,6 +213,18 @@ class PlayerBoard {
         this.state.updateNextBlobs();
     }
     
+    pauseGame() {
+        this.game.time.events.pause(this.timer);
+        this.game.time.events.pause(this.movementTimer);
+        this.game.time.events.pause(this.spawnTimer);
+    }
+    
+    resumeGame() {
+        this.game.time.events.resume(this.timer);
+        this.game.time.events.resume(this.movementTimer);
+        this.game.time.events.resume(this.spawnTimer);
+    }
+    
     //Spawn a new pair of blobs
     spawnNewPuyo() {
         this.horizontalLock = false;

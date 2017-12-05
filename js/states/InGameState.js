@@ -3,6 +3,7 @@ var PuyoPuyo = PuyoPuyo || {};
 
 
 PuyoPuyo.InGameState = {
+    
     create: function() {
         console.log("INGAME");
         this.inGameBackgroundPic = this.game.add.sprite(0, 0, 'inGameBackgroundPic');
@@ -74,6 +75,93 @@ PuyoPuyo.InGameState = {
         this.player2Score.stroke = '#000000';
         this.player2Score.strokeThickness = 3;
         this.updateScore();
+        
+        this.pauseButton = this.game.add.sprite(this.game.world.centerX,this.game.world.centerY,'pauseButton');
+        this.pauseButton.anchor.setTo(.5);
+        this.pauseButton.width = 110;
+        this.pauseButton.height = 75;
+        this.pauseButton.inputEnabled = true;
+        this.pauseButton.input.useHandCursor = true;
+        this.pauseButton.events.onInputDown.add(this.pause, this);
+        
+        this.pauseButtonText = this.game.add.text(this.game.world.centerX, this.game.world.centerY+5, "PAUSE");
+        this.pauseButtonText.anchor.setTo(.5);
+        this.pauseButtonText.font = 'Chewy';
+        this.pauseButtonText.fontSize = 35;
+        this.pauseButtonText.fill = '#55ff37';
+        this.pauseButtonText.stroke = '#000000';
+        this.pauseButtonText.strokeThickness = 5;
+        
+        this.pauseMenuBackground = this.game.add.image(this.game.world.centerX, this.game.world.centerY, "menu");
+        this.pauseMenuBackground.anchor.setTo(.5);
+        this.pauseMenuBackground.width = 175;
+        this.pauseMenuBackground.height = 275;
+        this.pauseMenuBackground.visible = false;
+        
+        this.pauseMenuTitle = this.game.add.text(this.game.world.centerX+2, this.game.world.centerY-70, "PAUSED");
+        this.pauseMenuTitle.anchor.setTo(.5);
+        this.pauseMenuTitle.font = 'Press Start 2P';
+        this.pauseMenuTitle.fill = '#f44242';
+        this.pauseMenuTitle.fontSize = 22;
+        this.pauseMenuTitle.stroke = '#000000';
+        this.pauseMenuTitle.strokeThickness = 3;
+        this.pauseMenuTitle.visible = false;
+        
+        this.resumeButton = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY-30, 'whiteButton');
+        this.resumeButton.anchor.setTo(.5);
+        this.resumeButton.visible = false;
+        this.resumeButton.width = 125;
+        this.resumeButton.height = 50;
+        this.resumeButton.inputEnabled = true;
+        this.resumeButton.input.useHandCursor = true;
+        this.resumeButton.events.onInputDown.add(this.resume, this);
+        //#485416
+        
+        this.resumeButtonText = this.game.add.text(this.game.world.centerX, this.game.world.centerY-26, 'RESUME');
+        this.resumeButtonText.anchor.setTo(.5);
+        this.resumeButtonText.font = 'Chewy';
+        this.resumeButtonText.fill = '#364aff';
+        this.resumeButtonText.fontSize = 25;
+        this.resumeButtonText.stroke = '#000000';
+        this.resumeButtonText.strokeThickness = 3;
+        this.resumeButtonText.visible = false;
+        
+        this.resetButton = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY+20, 'whiteButton');
+        this.resetButton.anchor.setTo(.5);
+        this.resetButton.visible = false;
+        this.resetButton.width = 125;
+        this.resetButton.height = 50;
+        this.resetButton.inputEnabled = true;
+        this.resetButton.input.useHandCursor = true;
+        this.resetButton.events.onInputDown.add(this.resetWhenPaused, this);
+        
+        
+        this.resetButtonText = this.game.add.text(this.game.world.centerX, this.game.world.centerY+24, 'RESET');
+        this.resetButtonText.anchor.setTo(.5);
+        this.resetButtonText.font = 'Chewy';
+        this.resetButtonText.fill = '#364aff';
+        this.resetButtonText.fontSize = 25;
+        this.resetButtonText.stroke = '#000000';
+        this.resetButtonText.strokeThickness = 3;
+        this.resetButtonText.visible = false;
+        
+        this.quitButton = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY+70, 'whiteButton');
+        this.quitButton.anchor.setTo(.5);
+        this.quitButton.visible = false;
+        this.quitButton.width = 125;
+        this.quitButton.height = 50;
+        this.quitButton.inputEnabled = true;
+        this.quitButton.input.useHandCursor = true;
+        this.quitButton.events.onInputDown.add(this.quit, this);
+        
+        this.quitButtonText = this.game.add.text(this.game.world.centerX, this.game.world.centerY+74, 'QUIT');
+        this.quitButtonText.anchor.setTo(.5);
+        this.quitButtonText.font = 'Chewy';
+        this.quitButtonText.fill = '#364aff';
+        this.quitButtonText.fontSize = 25;
+        this.quitButtonText.stroke = '#000000';
+        this.quitButtonText.strokeThickness = 3;
+        this.quitButtonText.visible = false;
     },
     
     update: function() {
@@ -221,6 +309,69 @@ PuyoPuyo.InGameState = {
     
     reset() {
         this.PuyoPuyo.InGameState.game.state.start('InGameState');
+    },
+    
+    //TODO
+    showPauseMenu() {
+        this.game.world.bringToTop(this.pauseMenuBackground);
+        this.game.world.bringToTop(this.pauseMenuTitle);
+        this.game.world.bringToTop(this.resumeButton);
+        this.game.world.bringToTop(this.resetButton);
+        this.game.world.bringToTop(this.quitButton);
+        this.game.world.bringToTop(this.resumeButtonText);
+        this.game.world.bringToTop(this.resetButtonText);
+        this.game.world.bringToTop(this.quitButtonText);
+        
+        this.pauseButton.visible = false;
+        this.pauseButtonText.visible = false;
+        this.pauseMenuBackground.visible = true;
+        this.pauseMenuTitle.visible = true;
+        this.resumeButton.visible = true;
+        this.resetButton.visible = true;
+        this.quitButton.visible = true;
+        this.resumeButtonText.visible = true;
+        this.resetButtonText.visible = true;
+        this.quitButtonText.visible= true;
+    },
+    
+    //TODO
+    hidePauseMenu() {
+        this.pauseButton.visible = true;
+        this.pauseButtonText.visible = true;
+        this.pauseMenuBackground.visible = false;
+        this.pauseMenuTitle.visible = false;
+        this.resumeButton.visible = false;
+        this.resetButton.visible = false;
+        this.quitButton.visible = false;
+        this.resumeButtonText.visible = false;
+        this.resetButtonText.visible = false;
+        this.quitButtonText.visible = false;
+    },
+    
+    //TODO
+    pause() {
+        this.showPauseMenu();
+        this.player1Board.pauseGame();
+        this.player2Board.pauseGame();
+    },
+    
+    //TODO
+    resume() {
+        this.player1Board.resumeGame();
+        this.player2Board.resumeGame();
+        this.hidePauseMenu();
+    },
+    
+    resetWhenPaused() {
+        this.player1Board.resumeGame();
+        this.player2Board.resumeGame();
+        this.state.restart();
+    },
+    
+    quit() {
+        this.player1Board.resumeGame();
+        this.player2Board.resumeGame();
+        this.state.start("MainMenuState");
     },
     
     goToMainMenu() {
