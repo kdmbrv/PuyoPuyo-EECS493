@@ -247,6 +247,9 @@ class PlayerBoard {
     
     //Automatic downward movement of blob every second(default)
     movePuyo() {
+        if (this.gameOver) {
+            return;
+        }
         if(this.pairIsVertical) {
             if(this.puyo1y < this.puyo2y) {
                 if(this.puyo2y == this.rows-1 || this.grid[this.puyo2y+1][this.puyo2x] != 0) {

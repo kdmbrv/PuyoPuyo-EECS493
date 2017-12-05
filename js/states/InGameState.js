@@ -19,6 +19,8 @@ PuyoPuyo.InGameState = {
         this.player1Board.create();
         this.player2Board.create();
         
+        this.gamePlaying = true;
+        
         // Next blobs
         this.next_text = this.game.add.text(280, 20, "NEXT");
         this.next_text.anchor.setTo(0);
@@ -56,7 +58,7 @@ PuyoPuyo.InGameState = {
         this.score_text.stroke = '#000000';
         this.score_text.strokeThickness = 5;
         
-        this.player1Score = this.game.add.text(260, 360, "0");
+        this.player1Score = this.game.add.text(230, 390, "0");
         this.player1Score.anchor.setTo(0);
         this.player1Score.font = 'Press Start 2P';
         this.player1Score.fill = '#364aff';
@@ -64,7 +66,7 @@ PuyoPuyo.InGameState = {
         this.player1Score.stroke = '#000000';
         this.player1Score.strokeThickness = 3;
         
-        this.player2Score = this.game.add.text(230, 390, "0");
+        this.player2Score = this.game.add.text(260, 360, "0");
         this.player2Score.anchor.setTo(0);
         this.player2Score.font = 'Press Start 2P';
         this.player2Score.fill = '#f44242';
@@ -75,9 +77,17 @@ PuyoPuyo.InGameState = {
     },
     
     update: function() {
-        this.player1Board.update(); 
-        this.player2Board.update();
-        //this.updateScore();
+        if (!this.gamePlaying) {
+            return;
+        }
+        if (!this.player1Board.gameOver && !this.player2Board.gameOver) {
+            this.player1Board.update(); 
+            this.player2Board.update();
+        }
+        else {
+            this.gamePlaying = false;
+            this.endGame();
+        }
     },
     
     updateNextBlobs() {
@@ -102,7 +112,118 @@ PuyoPuyo.InGameState = {
         this.player2Score.setText(P2.substr(P2.length-8));
     },
     
+    endGame() {
+        // Award non-losing points and update score one last time
+        if (this.player1Board.gameOver) {
+            this.player2Board.score += 20000;
+        }
+        else if (this.player2Board.gameOver) {
+            this.player1Board.score += 20000;
+        }
+        this.updateScore();
+        
+        // Set game over for both players
+        this.player1Board.gameOver = true;
+        this.player2Board.gameOver = true;
+        
+        // Dim game screen
+        this.dimmer = this.game.add.sprite(0, 0, 'black');
+        this.dimmer.anchor.setTo(0);
+        this.dimmer.height = this.game.height;
+        this.dimmer.width = this.game.width;
+        this.dimmer.alpha = 0.5;
+        
+        // Show game over screen
+        this.gameover_background = this.game.add.sprite(0, 0, 'menu');
+        this.gameover_background.x = this.game.world.centerX;
+        this.gameover_background.y = this.game.world.centerY;
+        this.gameover_background.anchor.setTo(0.5);
+        this.gameover_background.height = this.game.height / 3;
+        this.gameover_background.width = this.game.width / 3;
+        
+        this.reset_option = this.game.add.text(0, 0, 'RESET');
+        this.reset_option.x = this.gameover_background.x;
+        this.reset_option.y = this.gameover_background.y - 20;
+        this.reset_option.anchor.setTo(0.5);
+        this.reset_option.font = 'Press Start 2P';
+        this.reset_option.fill = '#55ff37';
+        this.reset_option.fontSize = 20;
+        this.reset_option.stroke = "#000000";
+        this.reset_option.strokeThickness = 3;
+        this.reset_option.inputEnabled = true;
+        this.reset_option.input.useHandCursor = true;
+        this.reset_option.events.onInputDown.add(this.reset);
+        
+        this.back_option = this.game.add.text(0, 0, 'BACK');
+        this.back_option.x = this.gameover_background.x;
+        this.back_option.y = this.gameover_background.y + 30;
+        this.back_option.anchor.setTo(0.5);
+        this.back_option.font = 'Press Start 2P';
+        this.back_option.fill = '#790ea3';
+        this.back_option.fontSize = 20;
+        this.back_option.stroke = "#000000";
+        this.back_option.strokeThickness = 3;
+        this.back_option.inputEnabled = true;
+        this.back_option.input.useHandCursor = true;
+        this.back_option.inputEnabled = true;
+        this.back_option.events.onInputDown.add(this.goToMainMenu);
+        
+        
+        this.gameover_text = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 120, 'GAME OVER');
+        this.gameover_text.anchor.setTo(0.5);
+        this.gameover_text.font = 'Chewy';
+        // Color characters
+        this.gameover_text.addColor('#f44242', 0);
+        this.gameover_text.addColor('#fffb38', 1);
+        this.gameover_text.addColor('#55ff37', 2);
+        this.gameover_text.addColor('#0776ff', 3);
+        this.gameover_text.addColor('#790ea3', 5);
+        this.gameover_text.addColor('#f44242', 6);
+        this.gameover_text.addColor('#fffb38', 7);
+        this.gameover_text.addColor('#55ff37', 8);
+        this.gameover_text.fontSize = 60;
+        this.gameover_text.stroke = '#000000';
+        this.gameover_text.strokeThickness = 5;
+        
+        this.player1EndText = this.game.add.text(0, 0, "");
+        this.player1EndText.x = 120;
+        this.player1EndText.y = this.game.world.centerY;
+        this.player1EndText.anchor.setTo(0.5);
+        this.player1EndText.font = 'Press Start 2P';
+        this.player1EndText.fontSize = 40;
+        this.player1EndText.fill = '#364aff';
+        this.player1EndText.stroke = '#000000';
+        this.player1EndText.strokeThickness = 3;
+        
+        this.player2EndText = this.game.add.text(0, 0, "");
+        this.player2EndText.x = 520;
+        this.player2EndText.y = this.game.world.centerY;
+        this.player2EndText.anchor.setTo(0.5);
+        this.player2EndText.font = 'Press Start 2P';
+        this.player2EndText.fontSize = 40;
+        this.player2EndText.fill = '#f44242';
+        this.player2EndText.stroke = '#000000';
+        this.player2EndText.strokeThickness = 3;
+        
+        if (this.player1Board.score > this.player2Board.score) {
+            this.player1EndText.setText("WIN");
+            this.player2EndText.setText("LOSE");
+        }
+        else if (this.player2Board.score > this.player1Board.score) {
+            this.player1EndText.setText("LOSE");
+            this.player2EndText.setText("WIN");
+        }
+        else {
+            this.player1EndText.setText("TIE");
+            this.player2EndText.setText("TIE");
+        }
+    },
+    
+    reset() {
+        this.PuyoPuyo.InGameState.game.state.start('InGameState');
+    },
+    
     goToMainMenu() {
-        this.state.start("MainMenuState");
+        this.PuyoPuyo.InGameState.game.state.start('MainMenuState');
     }
 };
