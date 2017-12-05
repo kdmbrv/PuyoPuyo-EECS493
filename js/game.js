@@ -128,6 +128,7 @@ class PlayerBoard {
         this.nuisancePoint = 1;
         this.player1 = player1;
         this.nextNuisanceCol = 0;
+        this.paused = false;
         
         //constants
         this.rows = 12;
@@ -235,6 +236,7 @@ class PlayerBoard {
     }
     
     pauseGame() {
+        this.paused = true;
         this.game.time.events.pause(this.verticalTimer);
         this.game.time.events.pause(this.horizontalTimer);
         this.game.time.events.pause(this.rotationTimer);
@@ -243,6 +245,7 @@ class PlayerBoard {
     }
     
     resumeGame() {
+        this.paused = false;
         this.game.time.events.resume(this.verticalTimer);
         this.game.time.events.resume(this.horizontalTimer);
         this.game.time.events.resume(this.rotationTimer);
@@ -287,7 +290,7 @@ class PlayerBoard {
     
     //Automatic downward movement of blob every second(default)
     movePuyo() {
-        if (this.gameOver) {
+        if (this.gameOver || this.paused) {
             return;
         }
         if(this.pairIsVertical) {
@@ -884,6 +887,9 @@ class PlayerBoard {
     
     //Called many times per second to check for keyboard inputs
     update() {
+        if(this.paused) {
+            return;
+        }
         if (!this.gameOver && this.canMoveLeft()) {
             this.grid[this.puyo1y][this.puyo1x] = 0;
             this.grid[this.puyo2y][this.puyo2x] = 0;
