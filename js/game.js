@@ -101,9 +101,10 @@ class testBlob {
     }
 };
 
-//TODO for graphics:
-//find chains
-
+//TODO: split timer into seperate timers
+//rotationTimer
+//horizontalTimer
+//vertical timer
 class PlayerBoard {
     //Eventually want to pass in the size and coords for where the board will be placed
     //I believe so that the logic for the InGameState just has to worry about passing in
@@ -127,7 +128,6 @@ class PlayerBoard {
         this.nuisancePoint = 1;
         this.player1 = player1;
         this.nextNuisanceCol = 0;
-        
         
         //constants
         this.rows = 12;
@@ -212,12 +212,15 @@ class PlayerBoard {
     //Halts timers and locks movement in preparation for next spawn
     prepareSpawn() {
         this.game.time.events.remove(this.movementTimer);
-        this.game.time.events.remove(this.timer);
-        this.spawnTimer = this.game.time.events.add(this.spawnTimerConstant, this.spawnNewPuyo, this);
+        this.game.time.events.remove(this.horizontalTimer);
+        this.game.time.events.remove(this.verticalTimer);
+        this.game.time.events.remove(this.rotationTimer);
         this.horizontalLock = true;
         this.verticalLock = true;
         this.rotateLock = true;
+        this.findChains();
         this.dropNuisance();
+        this.spawnTimer = this.game.time.events.add(this.spawnTimerConstant, this.spawnNewPuyo, this);
         this.print();
     }
     
@@ -232,13 +235,17 @@ class PlayerBoard {
     }
     
     pauseGame() {
-        this.game.time.events.pause(this.timer);
+        this.game.time.events.pause(this.verticalTimer);
+        this.game.time.events.pause(this.horizontalTimer);
+        this.game.time.events.pause(this.rotationTimer);
         this.game.time.events.pause(this.movementTimer);
         this.game.time.events.pause(this.spawnTimer);
     }
     
     resumeGame() {
-        this.game.time.events.resume(this.timer);
+        this.game.time.events.resume(this.verticalTimer);
+        this.game.time.events.resume(this.horizontalTimer);
+        this.game.time.events.resume(this.rotationTimer);
         this.game.time.events.resume(this.movementTimer);
         this.game.time.events.resume(this.spawnTimer);
     }
@@ -288,7 +295,6 @@ class PlayerBoard {
                 if(this.puyo2y == this.rows-1 || this.grid[this.puyo2y+1][this.puyo2x] != 0) {
                     //lock movement and spawn
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
             }
@@ -296,7 +302,6 @@ class PlayerBoard {
                 if(this.puyo1y == this.rows-1 || this.grid[this.puyo1y+1][this.puyo1x] != 0) {
                     //lock movement and spawn
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
             }
@@ -307,7 +312,6 @@ class PlayerBoard {
             if(this.puyo1y == this.rows-1) {
                 console.log("bottom");
                 this.prepareSpawn();
-                this.findChains();
                 return;
             }
             else if (this.grid[this.puyo1y+1][this.puyo1x] != 0
@@ -317,20 +321,17 @@ class PlayerBoard {
                     console.log("2");
                     this.dropBlock(this.puyo1x, this.puyo1y);
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
                 else if(this.grid[this.puyo2y+1][this.puyo2x] === 0) {
                     console.log("3");
                     this.dropBlock(this.puyo2x, this.puyo2y);
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
                 //BUG FIX: Originally did not account for if both blobs have something underneath them
                 else {
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
             }
@@ -351,8 +352,6 @@ class PlayerBoard {
     //Checks to see if the blob pair can rotate left
     canRotateLeft() {
         if(!this.rotateLKey.isDown || this.rotateLock) {
-            if(this.rotateLock) {
-            }
             return false;
         }
         if(this.pairIsVertical) {
@@ -432,8 +431,6 @@ class PlayerBoard {
     //Checks if the blob pair can rotate right
     canRotateRight() {
         if(!this.rotateRKey.isDown || this.rotateLock) {
-            if(this.rotateLock) {
-            }
             return false;
         }
         if(this.pairIsVertical) {
@@ -583,12 +580,10 @@ class PlayerBoard {
                 else if(this.puyo1y < this.rows-1
                 && this.grid[this.puyo1y+1][this.puyo1x] != 0) {
                     this.prepareSpawn();
-                    this.findChains();
                     return false;
                 }
                 else if(this.puyo1y == this.rows-1) {
                     this.prepareSpawn();
-                    this.findChains();
                     return false;
                 }
             }
@@ -600,12 +595,10 @@ class PlayerBoard {
                 else if(this.puyo2y < this.rows-1
                 && this.grid[this.puyo2y+1][this.puyo2x] != 0) {
                     this.prepareSpawn();
-                    this.findChains();
                     return false;
                 }
                 else if(this.puyo2y == this.rows-1) {
                     this.prepareSpawn();
-                    this.findChains();
                     return false;
                 }
             }
@@ -627,12 +620,10 @@ class PlayerBoard {
                     this.dropBlock(this.puyo2x, this.puyo2y);
                 }
                 this.prepareSpawn();
-                this.findChains();
                 return false;
             }
             else if(this.puyo1y == this.rows-1) {
                 this.prepareSpawn();
-                this.findChains();
                 return false;
             }
         }
@@ -905,7 +896,7 @@ class PlayerBoard {
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.horizontalLock = true;
-            this.timer = this.game.time.events.add(this.horizontalLockTimerConstant, 
+            this.horizontalTimer = this.game.time.events.add(this.horizontalLockTimerConstant, 
                                                     this.unlockHorizontalMovement, this);
             this.print();
         }
@@ -921,7 +912,7 @@ class PlayerBoard {
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.horizontalLock = true;
-            this.timer = this.game.time.events.add(this.horizontalLockTimerConstant, 
+            this.horizontalTimer = this.game.time.events.add(this.horizontalLockTimerConstant, 
                                                     this.unlockHorizontalMovement, this);
             this.print();
         }
@@ -939,20 +930,20 @@ class PlayerBoard {
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.verticalLock = true;
-            this.timer = this.game.time.events.add(this.verticalLockTimerConstant, 
+            this.verticalTimer = this.game.time.events.add(this.verticalLockTimerConstant, 
                                                     this.unlockVerticalMovement, this);
             this.game.time.events.remove(this.movementTimer);
             this.print();
         }
         else if(!this.gameOver && this.canRotateLeft()) {
             this.rotateLock = true;
-            this.timer = this.game.time.events.add(this.rotationLockTimerConstant, 
+            this.rotationTimer = this.game.time.events.add(this.rotationLockTimerConstant, 
                                                         this.unlockRotation, this);
             this.print();
         }
         else if(!this.gameOver && this.canRotateRight()) {
             this.rotateLock = true;
-            this.timer = this.game.time.events.add(this.rotationLockTimerConstant, 
+            this.rotationTimer = this.game.time.events.add(this.rotationLockTimerConstant, 
                                                         this.unlockRotation, this);
             this.print();
         }
