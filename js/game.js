@@ -27,6 +27,9 @@ class testBlob {
         else if(variation == 5) {
             this.src = "yellowCircle";
         }
+        else if(variation == 6) {
+            this.src = "whiteCircle";
+        }
     }
     
     create(x, y) {
@@ -105,7 +108,7 @@ class PlayerBoard {
     //Eventually want to pass in the size and coords for where the board will be placed
     //I believe so that the logic for the InGameState just has to worry about passing in
     //the right numbers... may be wrong though
-    constructor(game, state, xOffset, leftKey, rightKey, downKey, rotateLKey, rotateRKey) {
+    constructor(game, state, xOffset, leftKey, rightKey, downKey, rotateLKey, rotateRKey, player1) {
         this.game = game
         this.state = state;
         this.grid = [];
@@ -120,6 +123,10 @@ class PlayerBoard {
         this.horizontalLock = false;
         this.rotateLock = false;
         this.verticalLock = false;
+        this.nuisanceCount = 0;
+        this.nuisancePoint = 1;
+        this.player1 = player1;
+        this.nextNuisanceCol = 0;
         
         
         //constants
@@ -172,6 +179,12 @@ class PlayerBoard {
         this.spawnNewPuyo();
     }
     
+    incrementNuisanceCount(num) {
+        console.log(num);
+        this.nuisanceCount += num;
+        console.log(this.nuisanceCount);
+    }
+    
     //Prints the game board in the console
     print() {
         var formatString = '';
@@ -203,6 +216,7 @@ class PlayerBoard {
         this.horizontalLock = true;
         this.verticalLock = true;
         this.rotateLock = true;
+        this.dropNuisance();
         this.print();
     }
     
@@ -620,6 +634,12 @@ class PlayerBoard {
                     //length was greater than 4
                     if(count > 3) {
                         this.updateScore(count, this.grid[i][j]);
+                        if(this.player1) {
+                            this.state.player2Board.incrementNuisanceCount(this.dropNuisanceNum(count));
+                        }
+                        else {
+                            this.state.player1Board.incrementNuisanceCount(this.dropNuisanceNum(count));
+                        }
                     }
                 }
             }
@@ -650,13 +670,69 @@ class PlayerBoard {
     dropNuisanceNum(groupNum) {
         var SC = chainPower[groupNum];
         var TP = 70;
-        var NL = this.nuisancePoint;
-
+        var NL = this.nuisancePoint; 
         this.nuisancePoint = SC/TP + NL;
         var NC = Math.floor(this.nuisancePoint);
         this.nuisancePoint = this.nuisancePoint - NC;
 
         return NC;
+        //Doing this until we figure out what nuisancePoint is
+        //return Math.floor(Math.random() * 5) + 1  
+    }
+    
+    dropNuisance() {
+        console.log("dropping " + this.nuisanceCount + " clear blobs");
+        let numToDrop = this.nuisanceCount;
+        let colsSkipped = 0;
+        while(numToDrop != 0) {
+            if(colsSkipped == this.cols) {
+                break;
+            }
+            if(this.grid[0][this.nextNuisanceCol] === 0) {
+                this.grid[0][this.nextNuisanceCol] = 6;
+                this.nuisanceBlob = new testBlob(0,this.nextNuisanceCol, 6, this.game, this.rowHeight, this.colWidth);
+                this.blobGrid[0][this.nextNuisanceCol] = this.nuisanceBlob;
+                this.nuisanceBlob.create(this.xOffset + this.nextNuisanceCol*this.colWidth, this.yOffset);
+                colsSkipped = 0;
+                numToDrop--;
+            }
+            else if(this.grid[0][this.nextNuisanceCol] == 6 && this.grid[1][this.nextNuisanceCol] === 0) {
+                this.grid[1][this.nextNuisanceCol] = 6;
+                this.nuisanceBlob = new testBlob(1,this.nextNuisanceCol, 6, this.game, this.rowHeight, this.colWidth);
+                this.blobGrid[1][this.nextNuisanceCol] = this.nuisanceBlob;
+                this.nuisanceBlob.create(this.xOffset + this.nextNuisanceCol*this.colWidth, this.yOffset + this.rowHeight);
+                colsSkipped = 0;
+                numToDrop--;
+            }
+            else {
+                colsSkipped++;
+            }
+            this.nextNuisanceCol++;
+            this.nextNuisanceCol = this.nextNuisanceCol % this.cols;
+        }
+        
+        for(var i = 0; i < this.cols; i++) {
+            if(this.grid[1][i] == 6) {
+                this.dropBlock(i,1);
+            }
+        }
+        for(var i = 0; i < this.cols; i++) {
+            if(this.grid[0][i] == 6) {
+                this.dropBlock(i,0);
+            }
+        }
+        //ASSUMING DROP AT MOST 2 LAYERS
+        //Have a counter of the last col a nuisance was dropped in
+        //while the count is not 0... if a nuisance can be spawned at the top, spawn it there and decrement num to spawn
+        //increment/modulo next col number 
+        //check if can be dropped
+        //If a nuisance is at the top of that col, see if can be spawned in next spot down, if so great
+        //If nuisance at both spots, go to next col
+        //Have a counter if a nuisance is not spawned in that col,
+        //if that counter reaches 6(num cols), then can no longer spawn valid clear blobs, so drop what you have
+        //spawn at top
+        //drop them
+        this.nuisanceCount = 0;
     }
     
     //Recursive helper function to help check for chains
@@ -722,6 +798,7 @@ class PlayerBoard {
     
     //Drops a block with given x and y coords
     dropBlock(x,y) {
+        console.log(x + " " + y);
         let newY = y+1;
         while(newY < this.rows-1 && this.grid[newY][x] === 0) {
             newY++;
