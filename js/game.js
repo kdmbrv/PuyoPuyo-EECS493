@@ -222,13 +222,31 @@ class PlayerBoard {
     
     // New random color variable for next 
     newNextColor() {
+        if (this.gameOver) {
+            return;
+        }
         this.nextBlob1Color = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.nextBlob2Color = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.state.updateNextBlobs();
     }
     
+    pauseGame() {
+        this.game.time.events.pause(this.timer);
+        this.game.time.events.pause(this.movementTimer);
+        this.game.time.events.pause(this.spawnTimer);
+    }
+    
+    resumeGame() {
+        this.game.time.events.resume(this.timer);
+        this.game.time.events.resume(this.movementTimer);
+        this.game.time.events.resume(this.spawnTimer);
+    }
+    
     //Spawn a new pair of blobs
     spawnNewPuyo() {
+        if (this.gameOver) {
+            return;
+        }
         this.horizontalLock = false;
         this.verticalLock = false;
         this.rotateLock = false;
@@ -261,6 +279,9 @@ class PlayerBoard {
     
     //Automatic downward movement of blob every second(default)
     movePuyo() {
+        if (this.gameOver) {
+            return;
+        }
         if(this.pairIsVertical) {
             if(this.puyo1y < this.puyo2y) {
                 if(this.puyo2y == this.rows-1 || this.grid[this.puyo2y+1][this.puyo2x] != 0) {
