@@ -120,17 +120,16 @@
     <div id="winning" class="section">
       <h1 class="chewy" style="color: #55ff37">Winning</h1>
       <div class="content-text">
-        Each player recieves a score coordinating to how large the chain of matching blobs is made.
-        <ul>
-          <li>Chains of 4 earns 100 points</li>
-          <li>Chains of 5 earns 200 points</li>
-          <li>Chains of 6 earns 500 points</li>
-          <li>Chains of 7 or more earns 1000 points</li>
-        </ul>
-        Eliminating these chains helps clear up space in the players screen, keeping the top of the blob stack lower from the top of the screen. Creating a successful chain creates at least one clear blob. Clear blobs are totaled up over the opponents screen for 5 turns and then dropped all at once. These clear blobs are dropped across random columns of the game screen. Once a clear blob is dropped, a colored blob cannot be matched through it.
-        When one of the players' stack of blobs reaches the top of the screen, the game ends. The scores are then displayed and the player with the higher score wins.
+        Each player recieves a score coordinating to how large the chain of matching blobs is made. The score is calculated using the following formula:
+        <div class="text-center" style="margin: 10px;">
+          Score = (10 * PC) * (CP + CB + GB)
+        </div>
+        Where PC represents the number of blobs in a chain, CP represents a chain power multiplier, CB represents a bonus for what color is used in the chain, and GB represents a bonus for how many blobs are in the group. <br />
+        Eliminating these chains helps clear up space in the players screen, keeping the top of the blob stack lower from the top of the screen. Creating a successful chain creates at least one clear blob, depending on the amount of points scored in the chain. These clear blobs are dropped across random columns of the opponent's game screen. Once a clear blob is dropped, a colored blob cannot be matched through it. <br />
+        For a more detailed description of how scores and clear blobs are calculated, refer to the formula walkthrough .txt file, which can be downloaded <a href="downloads/scoreGuidance.txt">here</a>. <br />
+        When one of the players' stack of blobs reaches the top of the screen, the game ends. The player who's board did not reach the top is awarded an extra score bonus of 20,000 points. The scores are then displayed and the player with the higher score wins.
         <div class="text-center inline-img-div">
-          <!-- Game over screen <img src="" class="rounded inline-img" alt="Game over screen" title="Game Over Screen" data-placement="right" data-content="This is the screen that is displayed when the game is over." /> -->
+          <img src="img/game-over.png" class="rounded inline-img" alt="Game over screen" title="Game Over" data-placement="right" data-content="This is the screen that is displayed when the game is over. The scores are compared and the WIN or LOSE messages are displayed over the appropriate player. The user then has the option to RESET the board and play another game or go BACK to the main menu." />
         </div>
       </div>
     </div>
@@ -168,7 +167,7 @@
     <div id="download" class="section">
       <h1 class="chewy" style="color: #790ea3">Download</h1>
       <div class="content-text">
-        Our implementation of Puyo Puyo uses the Javascript <a href="https://phaser.io/">Phaser</a> framework. This requires a local web server to run, and to do this we used the online IDE <a href="https://c9.io/">Cloud9</a>. We then hosted our code in a GitHub repository which we all contributed to and pulled changes from. A .zip of our game code can be downloaded <a href="game.zip">here</a>.
+        Our implementation of Puyo Puyo uses the Javascript <a href="https://phaser.io/">Phaser</a> framework. This requires a local web server to run, and to do this we used the online IDE <a href="https://c9.io/">Cloud9</a>. We then hosted our code in a GitHub repository which we all contributed to and pulled changes from. A .zip of our game code can be downloaded <a href="downloads/game.zip">here</a>.
       </div>
     </div>
   </div>
