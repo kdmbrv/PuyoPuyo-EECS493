@@ -35,6 +35,7 @@ PuyoPuyo.PreloadState = {
         this.load.image('pvp_graphic', 'img/player_vs_player.png');
         this.load.image('settings_graphic', 'img/settings.png');
         this.load.image('black', 'img/black.png');
+        this.load.image('wood', 'img/wood.png');
         this.game.load.video('tutorial1', 'img/tutorial1.mp4');
         this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     },
