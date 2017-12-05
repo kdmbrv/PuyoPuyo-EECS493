@@ -20,7 +20,7 @@ PuyoPuyo.PreloadState = {
         this.load.image('inGameBackgroundPic', 'img/inGameBackGroundPic.png');
         // this.load.image('brick_wall', 'img/brickWall.png');
         // this.load.image('brick_wall_dark', 'img/brickWallDark.png');
-        this.load.image('book', 'img/book.png');
+        this.load.image('book', 'img/inGameBackGroundPic.png');
         this.load.image('arrow', 'img/arrow.png');
         this.load.image('settingsArrow', 'img/settingsArrow.png');
         this.load.image('exit', 'img/exit.png');
