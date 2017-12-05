@@ -208,6 +208,9 @@ class PlayerBoard {
     
     // New random color variable for next 
     newNextColor() {
+        if (this.gameOver) {
+            return;
+        }
         this.nextBlob1Color = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.nextBlob2Color = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.state.updateNextBlobs();
@@ -215,6 +218,9 @@ class PlayerBoard {
     
     //Spawn a new pair of blobs
     spawnNewPuyo() {
+        if (this.gameOver) {
+            return;
+        }
         this.horizontalLock = false;
         this.verticalLock = false;
         this.rotateLock = false;

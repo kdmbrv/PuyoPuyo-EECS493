@@ -91,6 +91,10 @@ PuyoPuyo.InGameState = {
     },
     
     updateNextBlobs() {
+        if (!this.gamePlaying) {
+            return;
+        }
+        
         this.player2NextBlobA = new testBlob(260, 90, this.player1Board.nextBlob1Color, this.game, 0, 0);
         this.player2NextBlobA.create(260, 90);
         this.player2NextBlobB = new testBlob(260, 120, this.player1Board.nextBlob2Color, this.game, 0, 0);
@@ -131,7 +135,8 @@ PuyoPuyo.InGameState = {
         this.dimmer.anchor.setTo(0);
         this.dimmer.height = this.game.height;
         this.dimmer.width = this.game.width;
-        this.dimmer.alpha = 0.5;
+        this.dimmer.alpha = 0.7;
+        this.dimmer.z = 97;
         
         // Show game over screen
         this.gameover_background = this.game.add.sprite(0, 0, 'menu');
@@ -140,6 +145,7 @@ PuyoPuyo.InGameState = {
         this.gameover_background.anchor.setTo(0.5);
         this.gameover_background.height = this.game.height / 3;
         this.gameover_background.width = this.game.width / 3;
+        this.gameover_background.z = 98;
         
         this.reset_option = this.game.add.text(0, 0, 'RESET');
         this.reset_option.x = this.gameover_background.x;
@@ -153,6 +159,7 @@ PuyoPuyo.InGameState = {
         this.reset_option.inputEnabled = true;
         this.reset_option.input.useHandCursor = true;
         this.reset_option.events.onInputDown.add(this.reset);
+        this.reset_option = 99;
         
         this.back_option = this.game.add.text(0, 0, 'BACK');
         this.back_option.x = this.gameover_background.x;
@@ -167,9 +174,10 @@ PuyoPuyo.InGameState = {
         this.back_option.input.useHandCursor = true;
         this.back_option.inputEnabled = true;
         this.back_option.events.onInputDown.add(this.goToMainMenu);
+        this.back_option = 99;
         
         
-        this.gameover_text = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 120, 'GAME OVER');
+        this.gameover_text = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 140, 'GAME OVER');
         this.gameover_text.anchor.setTo(0.5);
         this.gameover_text.font = 'Chewy';
         // Color characters
@@ -181,9 +189,10 @@ PuyoPuyo.InGameState = {
         this.gameover_text.addColor('#f44242', 6);
         this.gameover_text.addColor('#fffb38', 7);
         this.gameover_text.addColor('#55ff37', 8);
-        this.gameover_text.fontSize = 60;
+        this.gameover_text.fontSize = 70;
         this.gameover_text.stroke = '#000000';
         this.gameover_text.strokeThickness = 5;
+        this.gameover_text.z = 99;
         
         this.player1EndText = this.game.add.text(0, 0, "");
         this.player1EndText.x = 120;
@@ -192,8 +201,9 @@ PuyoPuyo.InGameState = {
         this.player1EndText.font = 'Press Start 2P';
         this.player1EndText.fontSize = 40;
         this.player1EndText.fill = '#364aff';
-        this.player1EndText.stroke = '#000000';
+        this.player1EndText.stroke = '#ffffff';
         this.player1EndText.strokeThickness = 3;
+        this.player1EndText.z = 99;
         
         this.player2EndText = this.game.add.text(0, 0, "");
         this.player2EndText.x = 520;
@@ -202,8 +212,9 @@ PuyoPuyo.InGameState = {
         this.player2EndText.font = 'Press Start 2P';
         this.player2EndText.fontSize = 40;
         this.player2EndText.fill = '#f44242';
-        this.player2EndText.stroke = '#000000';
+        this.player2EndText.stroke = '#ffffff';
         this.player2EndText.strokeThickness = 3;
+        this.player2EndText.z = 99;
         
         if (this.player1Board.score > this.player2Board.score) {
             this.player1EndText.setText("WIN");
