@@ -72,7 +72,7 @@ PuyoPuyo.SettingsState = {
         }
         console.log(this.indexToUsed);
         
-        this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'brick_wall');
+        this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'settingBackGroundPic');
         this.titleText = this.game.add.text(this.game.world.centerX, 55, "Settings");
         this.titleText.fontSize = 50;
         this.titleText.anchor.setTo(.5);
@@ -81,8 +81,8 @@ PuyoPuyo.SettingsState = {
         this.titleText.strokeThickness = 6;
         this.titleText.fill = '#ffffff';
         
-        this.p1Space = this.game.add.tileSprite(21,95,290, 225, 'brick_wall_dark');
-        this.p1Space = this.game.add.tileSprite(345,95,290, 225, 'brick_wall_dark');
+        // this.p1Space = this.game.add.tileSprite(21,95,290, 225, ''brick_wall_dark');
+        // this.p1Space = this.game.add.tileSprite(345,95,290, 225, ''brick_wall_dark');
         
         this.p1Title = this.game.add.text(this.game.width*13/50, this.game.width*9/50, "Player 1 Controls");
         this.p1Title.fontSize = 15;
