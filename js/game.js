@@ -27,6 +27,9 @@ class testBlob {
         else if(variation == 5) {
             this.src = "yellowCircle";
         }
+        else if(variation == 6) {
+            this.src = "whiteCircle";
+        }
     }
     
     create(x, y) {
@@ -98,14 +101,15 @@ class testBlob {
     }
 };
 
-//TODO for graphics:
-//find chains
-
+//TODO: split timer into seperate timers
+//rotationTimer
+//horizontalTimer
+//vertical timer
 class PlayerBoard {
     //Eventually want to pass in the size and coords for where the board will be placed
     //I believe so that the logic for the InGameState just has to worry about passing in
     //the right numbers... may be wrong though
-    constructor(game, state, xOffset, leftKey, rightKey, downKey, rotateLKey, rotateRKey) {
+    constructor(game, state, xOffset, leftKey, rightKey, downKey, rotateLKey, rotateRKey, player1) {
         this.game = game
         this.state = state;
         this.grid = [];
@@ -120,7 +124,11 @@ class PlayerBoard {
         this.horizontalLock = false;
         this.rotateLock = false;
         this.verticalLock = false;
-        
+        this.nuisanceCount = 0;
+        this.nuisancePoint = 1;
+        this.player1 = player1;
+        this.nextNuisanceCol = 0;
+        this.paused = false;
         
         //constants
         this.rows = 12;
@@ -137,7 +145,7 @@ class PlayerBoard {
         this.horizontalLockTimerConstant = Phaser.Timer.SECOND/10;
 	    this.verticalLockTimerConstant = Phaser.Timer.SECOND/10;
 	    this.rotationLockTimerConstant = Phaser.Timer.SECOND/5;
-	    this.autoDownwardTimerConstant = Phaser.Timer.SECOND;
+	    this.autoDownwardTimerConstant = Phaser.Timer.SECOND/this.game.global['gameDifficulty'];
 	    this.spawnTimerConstant = Phaser.Timer.SECOND;
         
         //Draw Boards
@@ -146,10 +154,11 @@ class PlayerBoard {
         
         bmd.ctx.beginPath();
         bmd.ctx.rect(0, 0, this.width, this.height);
-        bmd.ctx.fillStyle = '#ffffff';
+        bmd.ctx.fillStyle = '#CD853F';
         bmd.ctx.fill();
-        //board = this.game.add.sprite(xOffset, this.yOffset, bmd);
-        this.backgroundWall = this.game.add.tileSprite(this.xOffset,this.yOffset,this.width, this.height, 'brick_wall_dark');
+        board = this.game.add.sprite(xOffset, this.yOffset, bmd);
+        // this.backgroundWall = this.game.add.tileSprite(this.xOffset,this.yOffset,this.width, this.height, '#ffffff');
+        this.backgroundWall = this.game.add.tileSprite(this.xOffset,this.yOffset, this.width, this.height, 'wood');
         for(var i = 0; i < this.rows; i++) {
             this.grid.push([]);
             this.blobGrid.push([]);
@@ -170,6 +179,12 @@ class PlayerBoard {
     //Spawn first pair
     create() {
         this.spawnNewPuyo();
+    }
+    
+    incrementNuisanceCount(num) {
+        console.log(num);
+        this.nuisanceCount += num;
+        console.log(this.nuisanceCount);
     }
     
     //Prints the game board in the console
@@ -198,23 +213,51 @@ class PlayerBoard {
     //Halts timers and locks movement in preparation for next spawn
     prepareSpawn() {
         this.game.time.events.remove(this.movementTimer);
-        this.game.time.events.remove(this.timer);
-        this.spawnTimer = this.game.time.events.add(this.spawnTimerConstant, this.spawnNewPuyo, this);
+        this.game.time.events.remove(this.horizontalTimer);
+        this.game.time.events.remove(this.verticalTimer);
+        this.game.time.events.remove(this.rotationTimer);
         this.horizontalLock = true;
         this.verticalLock = true;
         this.rotateLock = true;
+        this.findChains();
+        this.dropNuisance();
+        this.spawnTimer = this.game.time.events.add(this.spawnTimerConstant, this.spawnNewPuyo, this);
         this.print();
     }
     
     // New random color variable for next 
     newNextColor() {
+        if (this.gameOver) {
+            return;
+        }
         this.nextBlob1Color = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.nextBlob2Color = Math.floor(Math.random() * this.puyoVariations) + 1;
         this.state.updateNextBlobs();
     }
     
+    pauseGame() {
+        this.paused = true;
+        this.game.time.events.pause(this.verticalTimer);
+        this.game.time.events.pause(this.horizontalTimer);
+        this.game.time.events.pause(this.rotationTimer);
+        this.game.time.events.pause(this.movementTimer);
+        this.game.time.events.pause(this.spawnTimer);
+    }
+    
+    resumeGame() {
+        this.paused = false;
+        this.game.time.events.resume(this.verticalTimer);
+        this.game.time.events.resume(this.horizontalTimer);
+        this.game.time.events.resume(this.rotationTimer);
+        this.game.time.events.resume(this.movementTimer);
+        this.game.time.events.resume(this.spawnTimer);
+    }
+    
     //Spawn a new pair of blobs
     spawnNewPuyo() {
+        if (this.gameOver) {
+            return;
+        }
         this.horizontalLock = false;
         this.verticalLock = false;
         this.rotateLock = false;
@@ -247,7 +290,7 @@ class PlayerBoard {
     
     //Automatic downward movement of blob every second(default)
     movePuyo() {
-        if (this.gameOver) {
+        if (this.gameOver || this.paused) {
             return;
         }
         if(this.pairIsVertical) {
@@ -255,7 +298,6 @@ class PlayerBoard {
                 if(this.puyo2y == this.rows-1 || this.grid[this.puyo2y+1][this.puyo2x] != 0) {
                     //lock movement and spawn
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
             }
@@ -263,7 +305,6 @@ class PlayerBoard {
                 if(this.puyo1y == this.rows-1 || this.grid[this.puyo1y+1][this.puyo1x] != 0) {
                     //lock movement and spawn
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
             }
@@ -274,7 +315,6 @@ class PlayerBoard {
             if(this.puyo1y == this.rows-1) {
                 console.log("bottom");
                 this.prepareSpawn();
-                this.findChains();
                 return;
             }
             else if (this.grid[this.puyo1y+1][this.puyo1x] != 0
@@ -284,20 +324,17 @@ class PlayerBoard {
                     console.log("2");
                     this.dropBlock(this.puyo1x, this.puyo1y);
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
                 else if(this.grid[this.puyo2y+1][this.puyo2x] === 0) {
                     console.log("3");
                     this.dropBlock(this.puyo2x, this.puyo2y);
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
                 //BUG FIX: Originally did not account for if both blobs have something underneath them
                 else {
                     this.prepareSpawn();
-                    this.findChains();
                     return;
                 }
             }
@@ -318,8 +355,6 @@ class PlayerBoard {
     //Checks to see if the blob pair can rotate left
     canRotateLeft() {
         if(!this.rotateLKey.isDown || this.rotateLock) {
-            if(this.rotateLock) {
-            }
             return false;
         }
         if(this.pairIsVertical) {
@@ -399,8 +434,6 @@ class PlayerBoard {
     //Checks if the blob pair can rotate right
     canRotateRight() {
         if(!this.rotateRKey.isDown || this.rotateLock) {
-            if(this.rotateLock) {
-            }
             return false;
         }
         if(this.pairIsVertical) {
@@ -550,12 +583,10 @@ class PlayerBoard {
                 else if(this.puyo1y < this.rows-1
                 && this.grid[this.puyo1y+1][this.puyo1x] != 0) {
                     this.prepareSpawn();
-                    this.findChains();
                     return false;
                 }
                 else if(this.puyo1y == this.rows-1) {
                     this.prepareSpawn();
-                    this.findChains();
                     return false;
                 }
             }
@@ -567,12 +598,10 @@ class PlayerBoard {
                 else if(this.puyo2y < this.rows-1
                 && this.grid[this.puyo2y+1][this.puyo2x] != 0) {
                     this.prepareSpawn();
-                    this.findChains();
                     return false;
                 }
                 else if(this.puyo2y == this.rows-1) {
                     this.prepareSpawn();
-                    this.findChains();
                     return false;
                 }
             }
@@ -594,18 +623,106 @@ class PlayerBoard {
                     this.dropBlock(this.puyo2x, this.puyo2y);
                 }
                 this.prepareSpawn();
-                this.findChains();
                 return false;
             }
             else if(this.puyo1y == this.rows-1) {
                 this.prepareSpawn();
-                this.findChains();
                 return false;
             }
         }
     }
     
-    //Checks game board for chains
+    updateScore(groupNum, color) {
+        var PC = groupNum;
+        var CP = chainPower[groupNum - 1];
+        var CB = colorBonus[color - 1];
+        var GB = groupBonus[groupNum - 1];
+
+        this.score += (10 * PC) * (CP + CB + GB);
+        this.state.updateScore();
+    }
+    
+    // Drop nuisance
+    dropNuisanceNum(groupNum) {
+        var SC = chainPower[groupNum];
+        var TP = 70;
+        var NL = this.nuisancePoint; 
+        this.nuisancePoint = SC/TP + NL;
+        var NC = Math.floor(this.nuisancePoint);
+        this.nuisancePoint = this.nuisancePoint - NC;
+
+        return NC;
+        //Doing this until we figure out what nuisancePoint is
+        //return Math.floor(Math.random() * 5) + 1  
+    }
+    
+    dropNuisance() {
+        //This function allows for only spawning clear blobs in the first 2 rows
+        //If can't spawn enough in those 2 rows then you just ignore the rest
+        console.log("dropping " + this.nuisanceCount + " clear blobs");
+        
+        //Max number of blocks to drop
+        let numToDrop = this.nuisanceCount;
+        
+        //Num cols that have been skipped in the spawning process so far
+        //If this number reaches the number of cols, then no other col is 
+        //eligible for spawning clear blobs
+        //Thus, break out of the loop and drop that clear blobs you have spawned
+        let colsSkipped = 0;
+        
+        //Loop to find where to spawn the clear blobs
+        //Could actually just get rid of the skipped varialbe and use a fro loop from 0 to 5...
+        //but its almost 2:30 and I shleep
+        while(numToDrop != 0) {
+            //No more eligible cols to spawn clear blobs
+            if(colsSkipped == this.cols) {
+                break;
+            }
+            
+            //Can place clear blob in first row
+            if(this.grid[0][this.nextNuisanceCol] === 0) {
+                this.grid[0][this.nextNuisanceCol] = 6;
+                this.nuisanceBlob = new testBlob(0,this.nextNuisanceCol, 6, this.game, this.rowHeight, this.colWidth);
+                this.blobGrid[0][this.nextNuisanceCol] = this.nuisanceBlob;
+                this.nuisanceBlob.create(this.xOffset + this.nextNuisanceCol*this.colWidth, this.yOffset);
+                colsSkipped = 0;
+                numToDrop--;
+            }
+            
+            //Can place blob in second row
+            else if(this.grid[0][this.nextNuisanceCol] == 6 && this.grid[1][this.nextNuisanceCol] === 0) {
+                this.grid[1][this.nextNuisanceCol] = 6;
+                this.nuisanceBlob = new testBlob(1,this.nextNuisanceCol, 6, this.game, this.rowHeight, this.colWidth);
+                this.blobGrid[1][this.nextNuisanceCol] = this.nuisanceBlob;
+                this.nuisanceBlob.create(this.xOffset + this.nextNuisanceCol*this.colWidth, this.yOffset + this.rowHeight);
+                colsSkipped = 0;
+                numToDrop--;
+            }
+            
+            //Can't place a blob in this column
+            else {
+                colsSkipped++;
+            }
+            
+            //increment the next column to drop a clear blob in
+            this.nextNuisanceCol++;
+            this.nextNuisanceCol = this.nextNuisanceCol % this.cols;
+        }
+        
+        for(var i = 0; i < this.cols; i++) {
+            if(this.grid[1][i] == 6) {
+                this.dropBlock(i,1);
+            }
+        }
+        for(var i = 0; i < this.cols; i++) {
+            if(this.grid[0][i] == 6) {
+                this.dropBlock(i,0);
+            }
+        }
+        this.nuisanceCount = 0;
+    }
+    
+        //Checks game board for chains
     findChains() {
         this.checkedGrid = [];
         for(var i = 0; i < this.rows; i++) {
@@ -616,13 +733,20 @@ class PlayerBoard {
         }
         for(var i = 0; i < this.rows; i++) {
             for(var j = 0; j < this.cols; j++) {
-                if(this.grid[i][j] != 0) {
+                //Should avoid finding chains for clear blobs
+                if(this.grid[i][j] != 0 && this.grid[i][j] != 6) {
                     let count = this.findChainsHelper(j, i, this.grid[i][j]);
                     //Placing the updateScore here will return the correct chain length... I believe :)
                     //Placing it during the deletion loop could return a lower number if the chain
                     //length was greater than 4
                     if(count > 3) {
                         this.updateScore(count, this.grid[i][j]);
+                        if(this.player1) {
+                            this.state.player2Board.incrementNuisanceCount(this.dropNuisanceNum(count));
+                        }
+                        else {
+                            this.state.player1Board.incrementNuisanceCount(this.dropNuisanceNum(count));
+                        }
                     }
                 }
             }
@@ -637,16 +761,6 @@ class PlayerBoard {
         if(this.dropAllBlocks()) {
             this.findChains();
         }
-    }
-    
-    updateScore(groupNum, color) {
-        var PC = groupNum;
-        var CP = chainPower[groupNum - 1];
-        var CB = colorBonus[color - 1];
-        var GB = groupBonus[groupNum - 1];
-
-        this.score += (10 * PC) * (CP + CB + GB);
-        this.state.updateScore();
     }
     
     //Recursive helper function to help check for chains
@@ -686,6 +800,32 @@ class PlayerBoard {
         this.checkedGrid[y][x] = 0;
         this.grid[y][x] = 0;
         this.blobGrid[y][x].destroy();
+        
+        //Checks if there is a clear blob nearby and if there is, destroy it
+        //Currently destroys clear blobs on any side of the curr blob
+        //Not sure if this is exactly how it is in the other games
+        //If not just delete the corresponding logic statements
+        if(y+1 < this.rows && this.grid[y+1][x] == 6) {
+            this.checkedGrid[y+1][x] = 0;
+            this.grid[y+1][x] = 0;
+            this.blobGrid[y+1][x].destroy();
+        }
+        if(y-1 > -1 && this.grid[y-1][x] == 6) {
+            this.checkedGrid[y-1][x] = 0;
+            this.grid[y-1][x] = 0;
+            this.blobGrid[y-1][x].destroy();
+        }
+        if(x-1 > -1 && this.grid[y][x-1] == 6) {
+            this.checkedGrid[y][x-1] = 0;
+            this.grid[y][x-1] = 0;
+            this.blobGrid[y][x-1].destroy();
+        }
+        if(x+1 < this.cols && this.grid[x+1] == 6) {
+            this.checkedGrid[y][x+1] = 0;
+            this.grid[y][x+1] = 0;
+            this.blobGrid[y][x+1].destroy();
+        }
+        
         this.deleteChain(x+1,y,variation);
         this.deleteChain(x-1,y,variation);
         this.deleteChain(x,y+1,variation);
@@ -712,6 +852,7 @@ class PlayerBoard {
     
     //Drops a block with given x and y coords
     dropBlock(x,y) {
+        console.log(x + " " + y);
         let newY = y+1;
         while(newY < this.rows-1 && this.grid[newY][x] === 0) {
             newY++;
@@ -746,6 +887,9 @@ class PlayerBoard {
     
     //Called many times per second to check for keyboard inputs
     update() {
+        if(this.paused) {
+            return;
+        }
         if (!this.gameOver && this.canMoveLeft()) {
             this.grid[this.puyo1y][this.puyo1x] = 0;
             this.grid[this.puyo2y][this.puyo2x] = 0;
@@ -758,7 +902,7 @@ class PlayerBoard {
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.horizontalLock = true;
-            this.timer = this.game.time.events.add(this.horizontalLockTimerConstant, 
+            this.horizontalTimer = this.game.time.events.add(this.horizontalLockTimerConstant, 
                                                     this.unlockHorizontalMovement, this);
             this.print();
         }
@@ -774,7 +918,7 @@ class PlayerBoard {
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.horizontalLock = true;
-            this.timer = this.game.time.events.add(this.horizontalLockTimerConstant, 
+            this.horizontalTimer = this.game.time.events.add(this.horizontalLockTimerConstant, 
                                                     this.unlockHorizontalMovement, this);
             this.print();
         }
@@ -792,20 +936,20 @@ class PlayerBoard {
             this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
             this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
             this.verticalLock = true;
-            this.timer = this.game.time.events.add(this.verticalLockTimerConstant, 
+            this.verticalTimer = this.game.time.events.add(this.verticalLockTimerConstant, 
                                                     this.unlockVerticalMovement, this);
             this.game.time.events.remove(this.movementTimer);
             this.print();
         }
         else if(!this.gameOver && this.canRotateLeft()) {
             this.rotateLock = true;
-            this.timer = this.game.time.events.add(this.rotationLockTimerConstant, 
+            this.rotationTimer = this.game.time.events.add(this.rotationLockTimerConstant, 
                                                         this.unlockRotation, this);
             this.print();
         }
         else if(!this.gameOver && this.canRotateRight()) {
             this.rotateLock = true;
-            this.timer = this.game.time.events.add(this.rotationLockTimerConstant, 
+            this.rotationTimer = this.game.time.events.add(this.rotationLockTimerConstant, 
                                                         this.unlockRotation, this);
             this.print();
         }
@@ -899,6 +1043,8 @@ PuyoPuyo.game = new Phaser.Game(650, 450, Phaser.AUTO, '', '', false, false);
 
 //Set Initial Controls
 PuyoPuyo.game.global = {
+    'gameDifficultyIndex' : 1,
+    'gameDifficulty' : 1,
     'player1LeftKey' : Phaser.Keyboard.A,
     'player1RightKey' : Phaser.Keyboard.D,
     'player1DownKey' : Phaser.Keyboard.S,

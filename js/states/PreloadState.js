@@ -14,10 +14,14 @@ PuyoPuyo.PreloadState = {
         this.load.image('greenCircle', 'img/greenCircle.png');
         this.load.image('yellowCircle', 'img/yellowCircle.png');
         this.load.image('purpleCircle', 'img/purpleCircle.png');
+        this.load.image('whiteCircle', 'img/whiteCircle.png');
+        this.load.image('pauseButton', 'img/PauseButton.png');
+        this.load.image('whiteButton', 'img/whiteButton.png');
         this.load.image('inGameBackgroundPic', 'img/inGameBackGroundPic.png');
+        this.load.image('settingBackGroundPic', 'img/settingBackGround.png');
         // this.load.image('brick_wall', 'img/brickWall.png');
         // this.load.image('brick_wall_dark', 'img/brickWallDark.png');
-        this.load.image('book', 'img/book.png');
+        this.load.image('book', 'img/inGameBackGroundPic.png');
         this.load.image('arrow', 'img/arrow.png');
         this.load.image('settingsArrow', 'img/settingsArrow.png');
         this.load.image('exit', 'img/exit.png');
@@ -31,6 +35,7 @@ PuyoPuyo.PreloadState = {
         this.load.image('pvp_graphic', 'img/player_vs_player.png');
         this.load.image('settings_graphic', 'img/settings.png');
         this.load.image('black', 'img/black.png');
+        this.load.image('wood', 'img/wood.png');
         this.game.load.video('tutorial1', 'img/tutorial1.mp4');
         this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     },

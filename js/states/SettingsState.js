@@ -4,6 +4,8 @@ PuyoPuyo.SettingsState = {
     create: function() {
         console.log("SETTINGS");
         
+        this.currDifficulty = this.game.global['gameDifficultyIndex'];
+        
         this.keysToIndex = {'1':0,'2':1,'3':2,'4':3,'5':4,'6':5,'7':6,'8':7,'9':8,'0':9,'Q':10,'W':11,'E':12,'R':13,'T':14,
         'Y':15,'U':16,'I':17,'O':18,'P':19,'[':20,']':21,'A':22,'S':23,'D':24,'F':25,'G':26,'H':27,'J':28,'K':29,'L':30,';':31,'Z':32,'X':33,'C':34,
         'V':35,'B':36,'N':37,'M':38,',':39,'.':40,'<-':41,'->':42,'DOWN':43,'UP':44};
@@ -72,7 +74,7 @@ PuyoPuyo.SettingsState = {
         }
         console.log(this.indexToUsed);
         
-        this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'brick_wall');
+        this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'settingBackGroundPic');
         this.titleText = this.game.add.text(this.game.world.centerX, 55, "Settings");
         this.titleText.fontSize = 50;
         this.titleText.anchor.setTo(.5);
@@ -81,8 +83,8 @@ PuyoPuyo.SettingsState = {
         this.titleText.strokeThickness = 6;
         this.titleText.fill = '#ffffff';
         
-        this.p1Space = this.game.add.tileSprite(21,95,290, 225, 'brick_wall_dark');
-        this.p1Space = this.game.add.tileSprite(345,95,290, 225, 'brick_wall_dark');
+        // this.p1Space = this.game.add.tileSprite(21,95,290, 225, ''brick_wall_dark');
+        // this.p1Space = this.game.add.tileSprite(345,95,290, 225, ''brick_wall_dark');
         
         this.p1Title = this.game.add.text(this.game.width*13/50, this.game.width*9/50, "Player 1 Controls");
         this.p1Title.fontSize = 15;
@@ -453,11 +455,67 @@ PuyoPuyo.SettingsState = {
         this.p2RotateRKeyText.strokeThickness = 6;
         this.p2RotateRKeyText.fill = '#ffffff';
         
+        this.difficultyLeftArrow = this.game.add.sprite(this.game.world.centerX+25,350,'settingsArrow');
+        this.difficultyLeftArrow.anchor.setTo(.5);
+        this.difficultyLeftArrow.width = 20;
+        this.difficultyLeftArrow.height = 20;
+        this.difficultyLeftArrow.scale.x *= -1;
+        this.difficultyLeftArrow.inputEnabled = true;
+        this.difficultyLeftArrow.input.useHandCursor = true;
+        this.difficultyLeftArrow.events.onInputDown.add(this.decreaseDiff, this);
+        
+        this.difficultyRightArrow = this.game.add.sprite(this.game.world.centerX+175,350,'settingsArrow');
+        this.difficultyRightArrow.anchor.setTo(.5);
+        this.difficultyRightArrow.width = 20;
+        this.difficultyRightArrow.height = 20;
+        this.difficultyRightArrow.inputEnabled = true;
+        this.difficultyRightArrow.input.useHandCursor = true;
+        this.difficultyRightArrow.events.onInputDown.add(this.increaseDiff, this);
+        
+        this.gameDiffTextArray = ['EASY', 'NORMAL', 'HARD'];
+        this.gameDiffConstantsArray = [.66666667, 1, 2];
+        
+        this.difficultyText = this.game.add.text(this.game.world.centerX+100,353,this.gameDiffTextArray[this.currDifficulty]);
+        this.difficultyText.font = 'Press Start 2P';
+        this.difficultyText.fontSize = 13;
+        this.difficultyText.anchor.setTo(.5);
+        this.difficultyText.font = 'Press Start 2P';
+        this.difficultyText.stroke = '#000000';
+        this.difficultyText.strokeThickness = 6;
+        this.difficultyText.fill = '#ffffff';
+        
+        this.difficultyLabel = this.game.add.text(this.game.world.centerX-75,353, "DIFFICULTY:");
+        this.difficultyLabel.font = 'Press Start 2P';
+        this.difficultyLabel.fontSize = 13;
+        this.difficultyLabel.anchor.setTo(.5);
+        this.difficultyLabel.font = 'Press Start 2P';
+        this.difficultyLabel.stroke = '#000000';
+        this.difficultyLabel.strokeThickness = 6;
+        this.difficultyLabel.fill = '#ffffff';
+        
         this.player1KeyTextArray = [this.p1LeftKeyText, this.p1RightKeyText, this.p1DownKeyText, this.p1RotateLKeyText, this.p1RotateRKeyText];
         this.player2KeyTextArray = [this.p2LeftKeyText, this.p2RightKeyText, this.p2DownKeyText, this.p2RotateLKeyText, this.p2RotateRKeyText];
+    
+        this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.enter.onDown.add(this.goToMainMenu, this);
     },
     
-    update: function() {
+    decreaseDiff() {
+        if(this.currDifficulty > 0) {
+            this.currDifficulty--;
+            this.game.global['gameDifficultyIndex']--;
+        }
+        this.difficultyText.setText(this.gameDiffTextArray[this.currDifficulty]);
+        this.game.global['gameDifficulty'] = this.gameDiffConstantsArray[this.currDifficulty];
+    },
+    
+    increaseDiff() {
+        if(this.currDifficulty < 2) {
+            this.currDifficulty++;
+            this.game.global['gameDifficultyIndex']++;
+        }
+        this.difficultyText.setText(this.gameDiffTextArray[this.currDifficulty]);
+        this.game.global['gameDifficulty'] = this.gameDiffConstantsArray[this.currDifficulty];
     },
     
     goToMainMenu() {
