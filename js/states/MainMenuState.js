@@ -78,7 +78,7 @@ PuyoPuyo.MainMenuState = {
         this.logo.anchor.x = 0.5;
         this.logo.anchor.y = 0.5;
         this.logo.height = this.game.height * (50/224);
-        this.logo.width = this.game.width * (272/320);
+        this.logo.width = this.game.width * (170/320);
         
         // Add menu
         this.menu = this.game.add.sprite(0, 0, 'menu');
