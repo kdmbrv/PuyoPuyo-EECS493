@@ -34,7 +34,7 @@ PuyoPuyo.InGameState = {
         this.player2Next = this.game.add.sprite(250, 70, 'wood');
         this.player2Next.width = 50;
         this.player2Next.height = 90;
-        this.player2Text = this.game.add.text(275, 85, "<P2");
+        this.player2Text = this.game.add.text(275, 85, "<P1");
         this.player2Text.anchor.setTo(0.5);
         this.player2Text.font = 'Press Start 2P';
         this.player2Text.fontSize = 12;
@@ -45,7 +45,7 @@ PuyoPuyo.InGameState = {
         this.player1Next = this.game.add.sprite(350, 70, 'wood');
         this.player1Next.width = 50;
         this.player1Next.height = 90;
-        this.player1Text = this.game.add.text(376, 85, "P1>");
+        this.player1Text = this.game.add.text(376, 85, "P2>");
         this.player1Text.anchor.setTo(0.5);
         this.player1Text.font = 'Press Start 2P';
         this.player1Text.fontSize = 12;
