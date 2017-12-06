@@ -94,6 +94,11 @@ class testBlob {
         }
     }
     drop(numSpacesDropped) {
+        console.log("dropping");
+        var blobMovement = this.game.add.tween(this.blob);
+        let destination = this.blob.y + numSpacesDropped*this.rowHeight
+        blobMovement.to({y:destination}, 200);
+        blobMovement.start();
         this.blob.y += numSpacesDropped*this.rowHeight;
     }
     destroy() {
