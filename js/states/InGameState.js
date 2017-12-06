@@ -209,6 +209,7 @@ PuyoPuyo.InGameState = {
     },
     
     endGame() {
+        this.pauseButton.visible = false;
         // Award non-losing points and update score one last time
         if (this.player1Board.gameOver) {
             this.player2Board.score += 20000;
