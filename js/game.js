@@ -1101,7 +1101,7 @@ WebFontConfig = {
     }
 };
 
-PuyoPuyo.game = new Phaser.Game(650, 450, Phaser.AUTO, '', '', false, false);
+PuyoPuyo.game = new Phaser.Game('100', '100', Phaser.AUTO);
 
 //Set Initial Controls
 PuyoPuyo.game.global = {
