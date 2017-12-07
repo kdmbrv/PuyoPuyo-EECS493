@@ -1118,9 +1118,9 @@ PuyoPuyo.game.global = {
     'player2RotateLKey' : Phaser.Keyboard.N,
     'player2RotateRKey' : Phaser.Keyboard.M,
     
-    'player1KeyIndexArray' : {0 : 22, 1 : 24, 2 : 23, 3 : 34, 4 : 35},
+    'player1KeyIndexArray' : {0 : 22, 1 : 24, 2 : 23, 3 : 33, 4 : 34},
     
-    'player2KeyIndexArray' : {0 : 41, 1 : 42, 2 : 43, 3 : 37, 4 : 38}
+    'player2KeyIndexArray' : {0 : 41, 1 : 42, 2 : 43, 3 : 39, 4 : 40}
 },
 
 PuyoPuyo.game.state.add('PreloadState', PuyoPuyo.PreloadState);
