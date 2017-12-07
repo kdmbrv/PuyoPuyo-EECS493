@@ -91,7 +91,7 @@ PuyoPuyo.TutorialState = {
 
         this.textStyle = { font: '14pt Arial', fill: 'black', align: 'left', wordWrap: true, wordWrapWidth: this.game.width * 0.6 };
         this.text = this.game.add.text(this.game.width * 0.05, this.game.height * 0.25, this.textArray[0], this.textStyle);
-        this.text.fontSize = (this.game.height * 0.06).toString() + 'px';
+        this.text.fontSize = (this.game.height * 0.05).toString() + 'px';
 
         this.videoSpriteArray[0].visible = true;
         this.videoArray[0].play(true);

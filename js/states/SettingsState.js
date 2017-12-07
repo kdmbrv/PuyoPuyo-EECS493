@@ -211,7 +211,7 @@ PuyoPuyo.SettingsState = {
         this.p1DownRight = this.game.add.sprite(this.game.width*0.35, this.game.height*0.35, 'settingsArrow');
         this.p1DownRight.anchor.setTo(.5);
         this.p1DownRight.width = this.game.width*0.025;
-        this.p1DownRight.width = this.game.width*0.025;
+        this.p1DownRight.height = this.game.width*0.025;
         this.p1DownRight.inputEnabled = true;
         this.p1DownRight.input.useHandCursor = true;
         this.p1DownRight.events.onInputDown.add(function() { this.arrowClicked(true,2,false)}, this);
@@ -219,7 +219,7 @@ PuyoPuyo.SettingsState = {
         this.p1RotateLRight = this.game.add.sprite(this.game.width*0.35, this.game.height*0.4, 'settingsArrow');
         this.p1RotateLRight.anchor.setTo(.5);
         this.p1RotateLRight.width = this.game.width*0.025;
-        this.p1RotateLRight.width = this.game.width*0.025;
+        this.p1RotateLRight.height = this.game.width*0.025;
         this.p1RotateLRight.inputEnabled = true;
         this.p1RotateLRight.input.useHandCursor = true;
         this.p1RotateLRight.events.onInputDown.add(function() { this.arrowClicked(true,3,false)}, this);
@@ -227,7 +227,7 @@ PuyoPuyo.SettingsState = {
         this.p1RotateRRight = this.game.add.sprite(this.game.width*0.35, this.game.height*0.45, 'settingsArrow');
         this.p1RotateRRight.anchor.setTo(.5);
         this.p1RotateRRight.width = this.game.width*0.025;
-        this.p1RotateRRight.width = this.game.width*0.025;
+        this.p1RotateRRight.height = this.game.width*0.025;
         this.p1RotateRRight.inputEnabled = true;
         this.p1RotateRRight.input.useHandCursor = true;
         this.p1RotateRRight.events.onInputDown.add(function() { this.arrowClicked(true,4,false)}, this);
@@ -235,7 +235,7 @@ PuyoPuyo.SettingsState = {
         this.p1LeftLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.25, 'settingsArrow');
         this.p1LeftLeft.anchor.setTo(.5);
         this.p1LeftLeft.width = this.game.width*0.025;
-        this.p1LeftLeft.width = this.game.width*0.025;
+        this.p1LeftLeft.height = this.game.width*0.025;
         this.p1LeftLeft.scale.x *= -1;
         this.p1LeftLeft.inputEnabled = true;
         this.p1LeftLeft.input.useHandCursor = true;
@@ -244,7 +244,7 @@ PuyoPuyo.SettingsState = {
         this.p1RightLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.3, 'settingsArrow');
         this.p1RightLeft.anchor.setTo(.5);
         this.p1RightLeft.width = this.game.width*0.025;
-        this.p1RightLeft.width = this.game.width*0.025;
+        this.p1RightLeft.height = this.game.width*0.025;
         this.p1RightLeft.scale.x *= -1;
         this.p1RightLeft.inputEnabled = true;
         this.p1RightLeft.input.useHandCursor = true;
@@ -253,7 +253,7 @@ PuyoPuyo.SettingsState = {
         this.p1DownLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.35, 'settingsArrow');
         this.p1DownLeft.anchor.setTo(.5);
         this.p1DownLeft.width = this.game.width*0.025;
-        this.p1DownLeft.width = this.game.width*0.025;
+        this.p1DownLeft.height = this.game.width*0.025;
         this.p1DownLeft.scale.x *= -1;
         this.p1DownLeft.inputEnabled = true;
         this.p1DownLeft.input.useHandCursor = true;
@@ -262,7 +262,7 @@ PuyoPuyo.SettingsState = {
         this.p1RotateLLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.4, 'settingsArrow');
         this.p1RotateLLeft.anchor.setTo(.5);
         this.p1RotateLLeft.width = this.game.width*0.025;
-        this.p1RotateLLeft.width = this.game.width*0.025;
+        this.p1RotateLLeft.height = this.game.width*0.025;
         this.p1RotateLLeft.scale.x *= -1;
         this.p1RotateLLeft.inputEnabled = true;
         this.p1RotateLLeft.input.useHandCursor = true;
@@ -271,7 +271,7 @@ PuyoPuyo.SettingsState = {
         this.p1RotateRLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.45, 'settingsArrow');
         this.p1RotateRLeft.anchor.setTo(.5);
         this.p1RotateRLeft.width = this.game.width*0.025;
-        this.p1RotateRLeft.width = this.game.width*0.025;
+        this.p1RotateRLeft.height = this.game.width*0.025;
         this.p1RotateRLeft.scale.x *= -1;
         this.p1RotateRLeft.inputEnabled = true;
         this.p1RotateRLeft.input.useHandCursor = true;
@@ -328,7 +328,7 @@ PuyoPuyo.SettingsState = {
         this.p2LeftRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.25,'settingsArrow');
         this.p2LeftRight.anchor.setTo(.5);
         this.p2LeftRight.width = this.game.width*0.025;
-        this.p2LeftRight.width = this.game.width*0.025;
+        this.p2LeftRight.height = this.game.width*0.025;
         this.p2LeftRight.inputEnabled = true;
         this.p2LeftRight.input.useHandCursor = true;
         this.p2LeftRight.events.onInputDown.add(function() { this.arrowClicked(false,0,false)}, this);
@@ -336,7 +336,7 @@ PuyoPuyo.SettingsState = {
         this.p2RightRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.3,'settingsArrow');
         this.p2RightRight.anchor.setTo(.5);
         this.p2RightRight.width = this.game.width*0.025;
-        this.p2RightRight.width = this.game.width*0.025;
+        this.p2RightRight.height = this.game.width*0.025;
         this.p2RightRight.inputEnabled = true;
         this.p2RightRight.input.useHandCursor = true;
         this.p2RightRight.events.onInputDown.add(function() { this.arrowClicked(false,1,false)}, this);
@@ -344,7 +344,7 @@ PuyoPuyo.SettingsState = {
         this.p2DownRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.35,'settingsArrow');
         this.p2DownRight.anchor.setTo(.5);
         this.p2DownRight.width = this.game.width*0.025;
-        this.p2DownRight.width = this.game.width*0.025;
+        this.p2DownRight.height = this.game.width*0.025;
         this.p2DownRight.inputEnabled = true;
         this.p2DownRight.input.useHandCursor = true;
         this.p2DownRight.events.onInputDown.add(function() { this.arrowClicked(false,2,false)}, this);
@@ -352,7 +352,7 @@ PuyoPuyo.SettingsState = {
         this.p2RotateLRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.4,'settingsArrow');
         this.p2RotateLRight.anchor.setTo(.5);
         this.p2RotateLRight.width = this.game.width*0.025;
-        this.p2RotateLRight.width = this.game.width*0.025;
+        this.p2RotateLRight.height = this.game.width*0.025;
         this.p2RotateLRight.inputEnabled = true;
         this.p2RotateLRight.input.useHandCursor = true;
         this.p2RotateLRight.events.onInputDown.add(function() { this.arrowClicked(false,3,false)}, this);
@@ -360,7 +360,7 @@ PuyoPuyo.SettingsState = {
         this.p2RotateRRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.45,'settingsArrow');
         this.p2RotateRRight.anchor.setTo(.5);
         this.p2RotateRRight.width = this.game.width*0.025;
-        this.p2RotateRRight.width = this.game.width*0.025;
+        this.p2RotateRRight.height = this.game.width*0.025;
         this.p2RotateRRight.inputEnabled = true;
         this.p2RotateRRight.input.useHandCursor = true;
         this.p2RotateRRight.events.onInputDown.add(function() { this.arrowClicked(false,4,false)}, this);
@@ -368,7 +368,7 @@ PuyoPuyo.SettingsState = {
         this.p2LeftLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.25,'settingsArrow');
         this.p2LeftLeft.anchor.setTo(.5);
         this.p2LeftLeft.width = this.game.width*0.025;
-        this.p2LeftLeft.width = this.game.width*0.025;
+        this.p2LeftLeft.height = this.game.width*0.025;
         this.p2LeftLeft.scale.x *= -1;
         this.p2LeftLeft.inputEnabled = true;
         this.p2LeftLeft.input.useHandCursor = true;
@@ -377,7 +377,7 @@ PuyoPuyo.SettingsState = {
         this.p2RightLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.3,'settingsArrow');
         this.p2RightLeft.anchor.setTo(.5);
         this.p2RightLeft.width = this.game.width*0.025;
-        this.p2RightLeft.width = this.game.width*0.025;
+        this.p2RightLeft.height = this.game.width*0.025;
         this.p2RightLeft.scale.x *= -1;
         this.p2RightLeft.inputEnabled = true;
         this.p2RightLeft.input.useHandCursor = true;
@@ -386,7 +386,7 @@ PuyoPuyo.SettingsState = {
         this.p2DownLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.35,'settingsArrow');
         this.p2DownLeft.anchor.setTo(.5);
         this.p2DownLeft.width = this.game.width*0.025;
-        this.p2DownLeft.width = this.game.width*0.025;
+        this.p2DownLeft.height = this.game.width*0.025;
         this.p2DownLeft.scale.x *= -1;
         this.p2DownLeft.inputEnabled = true;
         this.p2DownLeft.input.useHandCursor = true;
@@ -395,7 +395,7 @@ PuyoPuyo.SettingsState = {
         this.p2RotateLLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.4,'settingsArrow');
         this.p2RotateLLeft.anchor.setTo(.5);
         this.p2RotateLLeft.width = this.game.width*0.025;
-        this.p2RotateLLeft.width = this.game.width*0.025;
+        this.p2RotateLLeft.height = this.game.width*0.025;
         this.p2RotateLLeft.scale.x *= -1;
         this.p2RotateLLeft.inputEnabled = true;
         this.p2RotateLLeft.input.useHandCursor = true;
@@ -404,7 +404,7 @@ PuyoPuyo.SettingsState = {
         this.p2RotateRLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.45,'settingsArrow');
         this.p2RotateRLeft.anchor.setTo(.5);
         this.p2RotateRLeft.width = this.game.width*0.025;
-        this.p2RotateRLeft.width = this.game.width*0.025;
+        this.p2RotateRLeft.height = this.game.width*0.025;
         this.p2RotateRLeft.scale.x *= -1;
         this.p2RotateRLeft.inputEnabled = true;
         this.p2RotateRLeft.input.useHandCursor = true;
@@ -458,7 +458,7 @@ PuyoPuyo.SettingsState = {
         this.difficultyLeftArrow = this.game.add.sprite(this.game.width*0.54,this.game.height*0.55,'settingsArrow');
         this.difficultyLeftArrow.anchor.setTo(.5);
         this.difficultyLeftArrow.width = this.game.width*0.025;
-        this.difficultyLeftArrow.width = this.game.width*0.025;
+        this.difficultyLeftArrow.height = this.game.width*0.025;
         this.difficultyLeftArrow.scale.x *= -1;
         this.difficultyLeftArrow.inputEnabled = true;
         this.difficultyLeftArrow.input.useHandCursor = true;
@@ -467,7 +467,7 @@ PuyoPuyo.SettingsState = {
         this.difficultyRightArrow = this.game.add.sprite(this.game.width*0.66,this.game.height*0.55,'settingsArrow');
         this.difficultyRightArrow.anchor.setTo(.5);
         this.difficultyRightArrow.width = this.game.width*0.025;
-        this.difficultyRightArrow.width = this.game.width*0.025;
+        this.difficultyRightArrow.height = this.game.width*0.025;
         this.difficultyRightArrow.inputEnabled = true;
         this.difficultyRightArrow.input.useHandCursor = true;
         this.difficultyRightArrow.events.onInputDown.add(this.increaseDiff, this);
