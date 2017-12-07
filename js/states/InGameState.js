@@ -39,9 +39,6 @@ PuyoPuyo.InGameState = {
         this.player2Text.font = 'Press Start 2P';
         this.player2Text.fontSize = 12;
         this.player2Text.fill = '#ffffff';
-        this.player2Text.stroke = '#000000';
-        this.player2Text.strokeThickness = 3;
-        
         this.player1Next = this.game.add.sprite(350, 70, 'wood');
         this.player1Next.width = 50;
         this.player1Next.height = 90;
@@ -50,8 +47,6 @@ PuyoPuyo.InGameState = {
         this.player1Text.font = 'Press Start 2P';
         this.player1Text.fontSize = 12;
         this.player1Text.fill = '#ffffff';
-        this.player1Text.stroke = '#000000';
-        this.player1Text.strokeThickness = 3;
         this.updateNextBlobs();
         
         // Score display

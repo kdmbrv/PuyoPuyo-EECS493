@@ -99,10 +99,45 @@ class testBlob {
         let destination = this.blob.y + numSpacesDropped*this.rowHeight
         blobMovement.to({y:destination}, 200);
         blobMovement.start();
-        this.blob.y += numSpacesDropped*this.rowHeight;
+        //this.blob.y += numSpacesDropped*this.rowHeight;
     }
     destroy() {
-        this.blob.destroy();
+        this.blob.loadTexture("blackCircle");
+        //this.eraseBlob();
+        var emitter = this.game.add.emitter(this.blob.x + 17, this.blob.y + 17, 100);
+        if(this.src == 'redCircle') {
+            console.log("1");
+            emitter.makeParticles('redParticle');
+        }
+        else if(this.src == 'blueCircle') {
+            console.log("2");
+            emitter.makeParticles('blueParticle');
+        }
+        else if(this.src == 'yellowCircle') {
+            console.log("3");
+            emitter.makeParticles('yellowParticle');
+        }
+        else if(this.src == 'purpleCircle') {
+            console.log("4");
+            emitter.makeParticles('purpleParticle');
+        }
+        else if(this.src == 'greenCircle') {
+            console.log("5");
+            emitter.makeParticles('greenParticle');
+        }
+        else {
+            console.log("6");
+            emitter.makeParticles('whiteParticle');
+        }
+        emitter.gravity = 0;
+        emitter.start(true,200,null,100);
+        this.game.time.events.add(200, this.eraseBlob,this);
+    }
+    eraseBlob() {
+        console.log(this.blob);
+        if(this.blob) {
+            this.blob.destroy();
+        }
     }
 };
 
@@ -224,10 +259,14 @@ class PlayerBoard {
         this.horizontalLock = true;
         this.verticalLock = true;
         this.rotateLock = true;
-        this.findChains();
-        this.dropNuisance();
-        this.spawnTimer = this.game.time.events.add(this.spawnTimerConstant, this.spawnNewPuyo, this);
-        this.print();
+        let self = this;
+        this.findChains(function() {
+            console.log("finished chains?");
+            self.dropNuisance();
+            self.spawnTimer = self.game.time.events.add(self.spawnTimerConstant, self.spawnNewPuyo, self);
+            self.print();
+        });
+        console.log("FINISHED");
     }
     
     // New random color variable for next 
@@ -728,7 +767,7 @@ class PlayerBoard {
     }
     
         //Checks game board for chains
-    findChains() {
+    findChains(callback, depth) {
         this.checkedGrid = [];
         for(var i = 0; i < this.rows; i++) {
             this.checkedGrid.push([]);
@@ -763,9 +802,26 @@ class PlayerBoard {
                 }
             }
         }
-        if(this.dropAllBlocks()) {
-            this.findChains();
-        }
+        //Carry out destroy animation - done (except for particles)
+        //pause all other timers - 
+        //this.pauseGame();
+        //lock all movement
+        //after the destroy animation time, drop the blobs
+        //rinse repeat
+        console.log("paused");
+        this.chainsTimer = this.game.time.events.add(200, function() {
+            console.log("running timer");
+            if(this.dropAllBlocks()) {
+                console.log("dropped some blocks");
+                this.game.time.events.add(500, function() { 
+                    this.findChains(callback) 
+                }, this);
+            }
+            else {
+                callback();
+            }
+            console.log("resuming game");  
+        }, this);
     }
     
     //Recursive helper function to help check for chains
@@ -843,6 +899,7 @@ class PlayerBoard {
     //be new chains, and the finding chains process will
     //bre repeated
     dropAllBlocks() {
+        console.log("dropping all blocks");
         var droppedBlock = false;
         for(var i = this.rows-2; i >= 0; i--) {
             for(var j = 0; j < this.cols; j++) {
