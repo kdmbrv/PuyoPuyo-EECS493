@@ -260,6 +260,43 @@ class PlayerBoard {
         this.verticalLock = true;
         this.rotateLock = true;
         let self = this;
+        
+        //Update last puyos for connections
+        if(this.puyo1y > 0 && this.grid[this.puyo1y-1][this.puyo1x] == this.puyo1) {
+            this.blob1.addConnection(true, false, false, false);
+            this.blobGrid[this.puyo1y-1][this.puyo1x].addConnection(false, true, false, false);
+        }
+        if(this.puyo1y < this.rows-1 && this.grid[this.puyo1y+1][this.puyo1x] == this.puyo1) {
+            this.blob1.addConnection(false, true, false, false);
+            this.blobGrid[this.puyo1y+1][this.puyo1x].addConnection(true, false, false, false);
+        }
+        if(this.puyo1x > 0 && this.grid[this.puyo1y][this.puyo1x-1] == this.puyo1) {
+            this.blob1.addConnection(false, false, false, true);
+            this.blobGrid[this.puyo1y][this.puyo1x-1].addConnection(false, false, true, false);
+        }
+        if(this.puyo1x < this.cols-1 && this.grid[this.puyo1y][this.puyo1x+1] == this.puyo1) {
+            this.blob1.addConnection(false, false, true, false);
+            this.blobGrid[this.puyo1y][this.puyo1x+1].addConnection(false, false, false, true);
+        }
+        
+        if(this.puyo2y > 0 && this.grid[this.puyo2y-1][this.puyo2x] == this.puyo2) {
+            this.blob2.addConnection(true, false, false, false);
+            this.blobGrid[this.puyo2y-1][this.puyo2x].addConnection(false, true, false, false);
+        }
+        if(this.puyo2y < this.rows-1 && this.grid[this.puyo2y+1][this.puyo2x] == this.puyo2) {
+            this.blob2.addConnection(false, true, false, false);
+            this.blobGrid[this.puyo2y+1][this.puyo2x].addConnection(true, false, false, false);
+        }
+        if(this.puyo2x > 0 && this.grid[this.puyo2y][this.puyo2x-1] == this.puyo2) {
+            this.blob2.addConnection(false, false, false, true);
+            this.blobGrid[this.puyo2y][this.puyo2x-1].addConnection(false, false, true, false);
+        }
+        if(this.puyo2x < this.cols-1 && this.grid[this.puyo2y][this.puyo2x+1] == this.puyo2) {
+            this.blob2.addConnection(false, false, true, false);
+            this.blobGrid[this.puyo2y][this.puyo2x+1].addConnection(false, false, false, true);
+        }
+        
+        
         this.findChains(function() {
             console.log("finished chains?");
             self.dropNuisance();
@@ -316,7 +353,7 @@ class PlayerBoard {
         this.puyo2 = this.nextBlob2Color;
         this.newNextColor();
         this.puyo1x = 2;
-        this.puyo1y = 0
+        this.puyo1y = 0;
         this.puyo2x = 2;
         this.puyo2y = 1;
         this.grid[0][2] = this.puyo1;
@@ -1074,14 +1111,19 @@ class PuyoSprites {
 class Puyo {
     constructor(row, col, variation, game, rowHeight, colWidth) {
         this.color = "";
-        switch(variation)
+        switch(variation - 1)
         {
             case 0: this.color += "Red"; break;
             case 1: this.color += "Yellow"; break;
             case 2: this.color += "Green"; break;
             case 3: this.color += "Blue"; break;
             case 4: this.color += "Purple"; break;
+            default: console.log("UNDEFINED COLOR!"); break;
         }
+        this.north = false;
+        this.south = false;
+        this.east = false;
+        this.west = false;
         this.frameNum = PuyoSprites.nameToIndex(this.color + "0000");
         this.game = game;
         this.row = row;
@@ -1099,8 +1141,22 @@ class Puyo {
         this.blob.height = this.rowHeight;
     }
     
-    changeFrame(name) {
-        this.frameNum = PuyoSprites.nameToIndex(name);
+    addConnection(north, south, east, west) {
+        console.log("Adding sprite connection");
+        
+        if(north) {
+            this.north = true;
+        }
+        if(south) {
+            this.south = true;
+        }
+        if(east) {
+            this.east = true;
+        }
+        if(west) {
+            this.west = true;
+        }
+        this.frameNum = PuyoSprites.nameToIndex(this.color + (this.south?'1':'0') + (this.north?'1':'0') + (this.west?'1':'0') + (this.east?'1':'0'));
         this.blob.frame = this.frameNum;
     }
     
