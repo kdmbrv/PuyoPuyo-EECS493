@@ -75,8 +75,8 @@ PuyoPuyo.SettingsState = {
         console.log(this.indexToUsed);
         
         this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'settingBackGroundPic');
-        this.titleText = this.game.add.text(this.game.world.centerX, 55, "Settings");
-        this.titleText.fontSize = 50;
+        this.titleText = this.game.add.text(this.game.world.centerX, this.game.height*0.1, "Settings");
+        this.titleText.fontSize = (this.game.height*0.1).toString() + 'px';
         this.titleText.anchor.setTo(.5);
         this.titleText.font = 'Press Start 2P';
         this.titleText.stroke = '#000000';
@@ -86,105 +86,105 @@ PuyoPuyo.SettingsState = {
         // this.p1Space = this.game.add.tileSprite(21,95,290, 225, ''brick_wall_dark');
         // this.p1Space = this.game.add.tileSprite(345,95,290, 225, ''brick_wall_dark');
         
-        this.p1Title = this.game.add.text(this.game.width*13/50, this.game.width*9/50, "Player 1 Controls");
-        this.p1Title.fontSize = 15;
+        this.p1Title = this.game.add.text(this.game.width*13/50, this.game.height*0.2, "Player 1 Controls");
+        this.p1Title.fontSize = (this.game.height*0.03).toString() + 'px';
         this.p1Title.anchor.setTo(.5);
         this.p1Title.font = 'Press Start 2P';
         this.p1Title.stroke = '#000000';
         this.p1Title.strokeThickness = 6;
         this.p1Title.fill = '#ffffff';
         
-        this.p2Title = this.game.add.text(this.game.width*38/50, this.game.width*9/50, "Player 2 Controls");
-        this.p2Title.fontSize = 15;
+        this.p2Title = this.game.add.text(this.game.width*38/50, this.game.height*0.2, "Player 2 Controls");
+        this.p2Title.fontSize = (this.game.height*0.03).toString() + 'px';
         this.p2Title.anchor.setTo(.5);
         this.p2Title.font = 'Press Start 2P';
         this.p2Title.stroke = '#000000';
         this.p2Title.strokeThickness = 6;
         this.p2Title.fill = '#ffffff';
         
-        this.leftText1 = this.game.add.text(100, 150, "Left:");
-        this.leftText1.fontSize = 13;
+        this.leftText1 = this.game.add.text(this.game.width*0.15, this.game.height*0.25, "Left:");
+        this.leftText1.fontSize = (this.game.height*0.02).toString() + 'px';
         this.leftText1.anchor.setTo(.5);
         this.leftText1.font = 'Press Start 2P';
         this.leftText1.stroke = '#000000';
         this.leftText1.strokeThickness = 6;
         this.leftText1.fill = '#ffffff';
         
-        this.rightText1 = this.game.add.text(100, 185, "Right:");
-        this.rightText1.fontSize = 13;
+        this.rightText1 = this.game.add.text(this.game.width*0.15, this.game.height*0.3, "Right:");
+        this.rightText1.fontSize = (this.game.height*0.02).toString() + 'px';
         this.rightText1.anchor.setTo(.5);
         this.rightText1.font = 'Press Start 2P';
         this.rightText1.stroke = '#000000';
         this.rightText1.strokeThickness = 6;
         this.rightText1.fill = '#ffffff';
         
-        this.downText1 = this.game.add.text(100, 220, "Down:");
-        this.downText1.fontSize = 13;
+        this.downText1 = this.game.add.text(this.game.width*0.15, this.game.height*0.35, "Down:");
+        this.downText1.fontSize = (this.game.height*0.02).toString() + 'px';
         this.downText1.anchor.setTo(.5);
         this.downText1.font = 'Press Start 2P';
         this.downText1.stroke = '#000000';
         this.downText1.strokeThickness = 6;
         this.downText1.fill = '#ffffff';
         
-        this.rotateLeftText1 = this.game.add.text(100, 255, "Rotate L:");
-        this.rotateLeftText1.fontSize = 13;
+        this.rotateLeftText1 = this.game.add.text(this.game.width*0.15, this.game.height*0.4, "Rotate L:");
+        this.rotateLeftText1.fontSize = (this.game.height*0.02).toString() + 'px';
         this.rotateLeftText1.anchor.setTo(.5);
         this.rotateLeftText1.font = 'Press Start 2P';
         this.rotateLeftText1.stroke = '#000000';
         this.rotateLeftText1.strokeThickness = 6;
         this.rotateLeftText1.fill = '#ffffff';
         
-        this.rotateRightText1 = this.game.add.text(100, 290, "Rotate R:");
-        this.rotateRightText1.fontSize = 13;
+        this.rotateRightText1 = this.game.add.text(this.game.width*0.15, this.game.height*0.45, "Rotate R:");
+        this.rotateRightText1.fontSize = (this.game.height*0.02).toString() + 'px';
         this.rotateRightText1.anchor.setTo(.5);
         this.rotateRightText1.font = 'Press Start 2P';
         this.rotateRightText1.stroke = '#000000';
         this.rotateRightText1.strokeThickness = 6;
         this.rotateRightText1.fill = '#ffffff';
         
-        this.leftText2 = this.game.add.text(425, 150, "Left:");
-        this.leftText2.fontSize = 13;
+        this.leftText2 = this.game.add.text(this.game.width*0.65, this.game.height*0.25, "Left:");
+        this.leftText2.fontSize = (this.game.height*0.02).toString() + 'px';
         this.leftText2.anchor.setTo(.5);
         this.leftText2.font = 'Press Start 2P';
         this.leftText2.stroke = '#000000';
         this.leftText2.strokeThickness = 6;
         this.leftText2.fill = '#ffffff';
         
-        this.rightText2 = this.game.add.text(425, 185, "Right:");
-        this.rightText2.fontSize = 13;
+        this.rightText2 = this.game.add.text(this.game.width*0.65, this.game.height*0.3, "Right:");
+        this.rightText2.fontSize = (this.game.height*0.02).toString() + 'px';
         this.rightText2.anchor.setTo(.5);
         this.rightText2.font = 'Press Start 2P';
         this.rightText2.stroke = '#000000';
         this.rightText2.strokeThickness = 6;
         this.rightText2.fill = '#ffffff';
         
-        this.downText2 = this.game.add.text(425, 220, "Down:");
-        this.downText2.fontSize = 13;
+        this.downText2 = this.game.add.text(this.game.width*0.65, this.game.height*0.35, "Down:");
+        this.downText2.fontSize = (this.game.height*0.02).toString() + 'px';
         this.downText2.anchor.setTo(.5);
         this.downText2.font = 'Press Start 2P';
         this.downText2.stroke = '#000000';
         this.downText2.strokeThickness = 6;
         this.downText2.fill = '#ffffff';
     
-        this.rotateLeftText2 = this.game.add.text(425, 255, "Rotate L:");
-        this.rotateLeftText2.fontSize = 13;
+        this.rotateLeftText2 = this.game.add.text(this.game.width*0.65, this.game.height*0.4, "Rotate L:");
+        this.rotateLeftText2.fontSize = (this.game.height*0.02).toString() + 'px';
         this.rotateLeftText2.anchor.setTo(.5);
         this.rotateLeftText2.font = 'Press Start 2P';
         this.rotateLeftText2.stroke = '#000000';
         this.rotateLeftText2.strokeThickness = 6;
         this.rotateLeftText2.fill = '#ffffff';
     
-        this.rotateRightText2 = this.game.add.text(425, 290, "Rotate R:");
-        this.rotateRightText2.fontSize = 13;
+        this.rotateRightText2 = this.game.add.text(this.game.width*0.65, this.game.height*0.45, "Rotate R:");
+        this.rotateRightText2.fontSize = (this.game.height*0.02).toString() + 'px';
         this.rotateRightText2.anchor.setTo(.5);
         this.rotateRightText2.font = 'Press Start 2P';
         this.rotateRightText2.stroke = '#000000';
         this.rotateRightText2.strokeThickness = 6;
         this.rotateRightText2.fill = '#ffffff';
         
-        this.saveButton = this.game.add.sprite(this.game.world.centerX, this.game.height*18/20, 'save');
-        this.saveButton.height = 70;
-        this.saveButton.width = 90;
+        this.saveButton = this.game.add.sprite(this.game.world.centerX, this.game.height*0.9, 'save');
+        this.saveButton.height = this.game.height*0.1;
+        this.saveButton.width = this.game.width*0.2;
         this.saveButton.anchor.setTo(.5);
         this.saveButton.inputEnabled = true;
         this.saveButton.input.useHandCursor = true;
@@ -192,131 +192,131 @@ PuyoPuyo.SettingsState = {
         
         //p1 Side
         //BTW terrible names i know, the name corresponds to "player + control + Left/Right arrow"
-        this.p1LeftRight = this.game.add.sprite(280,145,'settingsArrow');
+        this.p1LeftRight = this.game.add.sprite(this.game.width*0.35, this.game.height*0.25, 'settingsArrow');
         this.p1LeftRight.anchor.setTo(.5);
-        this.p1LeftRight.width = 20;
-        this.p1LeftRight.height = 20;
+        this.p1LeftRight.width = this.game.width*0.025;
+        this.p1LeftRight.height = this.game.width*0.025;
         this.p1LeftRight.inputEnabled = true;
         this.p1LeftRight.input.useHandCursor = true;
         this.p1LeftRight.events.onInputDown.add(function() { this.arrowClicked(true,0,false)}, this);
         
-        this.p1RightRight = this.game.add.sprite(280,180,'settingsArrow');
+        this.p1RightRight = this.game.add.sprite(this.game.width*0.35, this.game.height*0.3, 'settingsArrow');
         this.p1RightRight.anchor.setTo(.5);
-        this.p1RightRight.width = 20;
-        this.p1RightRight.height = 20;
+        this.p1RightRight.width = this.game.width*0.025;
+        this.p1RightRight.height = this.game.width*0.025;
         this.p1RightRight.inputEnabled = true;
         this.p1RightRight.input.useHandCursor = true;
         this.p1RightRight.events.onInputDown.add(function() { this.arrowClicked(true,1,false)}, this);
         
-        this.p1DownRight = this.game.add.sprite(280,215,'settingsArrow');
+        this.p1DownRight = this.game.add.sprite(this.game.width*0.35, this.game.height*0.35, 'settingsArrow');
         this.p1DownRight.anchor.setTo(.5);
-        this.p1DownRight.width = 20;
-        this.p1DownRight.height = 20;
+        this.p1DownRight.width = this.game.width*0.025;
+        this.p1DownRight.width = this.game.width*0.025;
         this.p1DownRight.inputEnabled = true;
         this.p1DownRight.input.useHandCursor = true;
         this.p1DownRight.events.onInputDown.add(function() { this.arrowClicked(true,2,false)}, this);
         
-        this.p1RotateLRight = this.game.add.sprite(280,250,'settingsArrow');
+        this.p1RotateLRight = this.game.add.sprite(this.game.width*0.35, this.game.height*0.4, 'settingsArrow');
         this.p1RotateLRight.anchor.setTo(.5);
-        this.p1RotateLRight.width = 20;
-        this.p1RotateLRight.height = 20;
+        this.p1RotateLRight.width = this.game.width*0.025;
+        this.p1RotateLRight.width = this.game.width*0.025;
         this.p1RotateLRight.inputEnabled = true;
         this.p1RotateLRight.input.useHandCursor = true;
         this.p1RotateLRight.events.onInputDown.add(function() { this.arrowClicked(true,3,false)}, this);
         
-        this.p1RotateRRight = this.game.add.sprite(280,285,'settingsArrow');
+        this.p1RotateRRight = this.game.add.sprite(this.game.width*0.35, this.game.height*0.45, 'settingsArrow');
         this.p1RotateRRight.anchor.setTo(.5);
-        this.p1RotateRRight.width = 20;
-        this.p1RotateRRight.height = 20;
+        this.p1RotateRRight.width = this.game.width*0.025;
+        this.p1RotateRRight.width = this.game.width*0.025;
         this.p1RotateRRight.inputEnabled = true;
         this.p1RotateRRight.input.useHandCursor = true;
         this.p1RotateRRight.events.onInputDown.add(function() { this.arrowClicked(true,4,false)}, this);
         
-        this.p1LeftLeft = this.game.add.sprite(190,145,'settingsArrow');
+        this.p1LeftLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.25, 'settingsArrow');
         this.p1LeftLeft.anchor.setTo(.5);
-        this.p1LeftLeft.width = 20;
-        this.p1LeftLeft.height = 20;
+        this.p1LeftLeft.width = this.game.width*0.025;
+        this.p1LeftLeft.width = this.game.width*0.025;
         this.p1LeftLeft.scale.x *= -1;
         this.p1LeftLeft.inputEnabled = true;
         this.p1LeftLeft.input.useHandCursor = true;
         this.p1LeftLeft.events.onInputDown.add(function() { this.arrowClicked(true,0,true)}, this);
         
-        this.p1RightLeft = this.game.add.sprite(190,180,'settingsArrow');
+        this.p1RightLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.3, 'settingsArrow');
         this.p1RightLeft.anchor.setTo(.5);
-        this.p1RightLeft.width = 20;
-        this.p1RightLeft.height = 20;
+        this.p1RightLeft.width = this.game.width*0.025;
+        this.p1RightLeft.width = this.game.width*0.025;
         this.p1RightLeft.scale.x *= -1;
         this.p1RightLeft.inputEnabled = true;
         this.p1RightLeft.input.useHandCursor = true;
         this.p1RightLeft.events.onInputDown.add(function() { this.arrowClicked(true,1,true)}, this);
         
-        this.p1DownLeft = this.game.add.sprite(190,215,'settingsArrow');
+        this.p1DownLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.35, 'settingsArrow');
         this.p1DownLeft.anchor.setTo(.5);
-        this.p1DownLeft.width = 20;
-        this.p1DownLeft.height = 20;
+        this.p1DownLeft.width = this.game.width*0.025;
+        this.p1DownLeft.width = this.game.width*0.025;
         this.p1DownLeft.scale.x *= -1;
         this.p1DownLeft.inputEnabled = true;
         this.p1DownLeft.input.useHandCursor = true;
         this.p1DownLeft.events.onInputDown.add(function() { this.arrowClicked(true,2,true)}, this);
         
-        this.p1RotateLLeft = this.game.add.sprite(190,250,'settingsArrow');
+        this.p1RotateLLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.4, 'settingsArrow');
         this.p1RotateLLeft.anchor.setTo(.5);
-        this.p1RotateLLeft.width = 20;
-        this.p1RotateLLeft.height = 20;
+        this.p1RotateLLeft.width = this.game.width*0.025;
+        this.p1RotateLLeft.width = this.game.width*0.025;
         this.p1RotateLLeft.scale.x *= -1;
         this.p1RotateLLeft.inputEnabled = true;
         this.p1RotateLLeft.input.useHandCursor = true;
         this.p1RotateLLeft.events.onInputDown.add(function() { this.arrowClicked(true,3,true)}, this);
         
-        this.p1RotateRLeft = this.game.add.sprite(190,285,'settingsArrow');
+        this.p1RotateRLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.45, 'settingsArrow');
         this.p1RotateRLeft.anchor.setTo(.5);
-        this.p1RotateRLeft.width = 20;
-        this.p1RotateRLeft.height = 20;
+        this.p1RotateRLeft.width = this.game.width*0.025;
+        this.p1RotateRLeft.width = this.game.width*0.025;
         this.p1RotateRLeft.scale.x *= -1;
         this.p1RotateRLeft.inputEnabled = true;
         this.p1RotateRLeft.input.useHandCursor = true;
         this.p1RotateRLeft.events.onInputDown.add(function() { this.arrowClicked(true,4,true)}, this);
         
         //The text within the arrows
-        this.p1LeftKeyText = this.game.add.text(235,150,this.indexToKeys[this.game.global['player1KeyIndexArray'][0]]);
+        this.p1LeftKeyText = this.game.add.text(this.game.width*0.3, this.game.height*0.255, this.indexToKeys[this.game.global['player1KeyIndexArray'][0]]);
         this.p1LeftKeyText.font = 'Press Start 2P';
-        this.p1LeftKeyText.fontSize = 13;
+        this.p1LeftKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p1LeftKeyText.anchor.setTo(.5);
         this.p1LeftKeyText.font = 'Press Start 2P';
         this.p1LeftKeyText.stroke = '#000000';
         this.p1LeftKeyText.strokeThickness = 6;
         this.p1LeftKeyText.fill = '#ffffff';
         
-        this.p1RightKeyText = this.game.add.text(235,185,this.indexToKeys[this.game.global['player1KeyIndexArray'][1]]);
+        this.p1RightKeyText = this.game.add.text(this.game.width*0.3, this.game.height*0.305, this.indexToKeys[this.game.global['player1KeyIndexArray'][1]]);
         this.p1RightKeyText.font = 'Press Start 2P';
-        this.p1RightKeyText.fontSize = 13;
+        this.p1RightKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p1RightKeyText.anchor.setTo(.5);
         this.p1RightKeyText.font = 'Press Start 2P';
         this.p1RightKeyText.stroke = '#000000';
         this.p1RightKeyText.strokeThickness = 6;
         this.p1RightKeyText.fill = '#ffffff';
         
-        this.p1DownKeyText = this.game.add.text(235,220,this.indexToKeys[this.game.global['player1KeyIndexArray'][2]]);
+        this.p1DownKeyText = this.game.add.text(this.game.width*0.3, this.game.height*0.355, this.indexToKeys[this.game.global['player1KeyIndexArray'][2]]);
         this.p1DownKeyText.font = 'Press Start 2P';
-        this.p1DownKeyText.fontSize = 13;
+        this.p1DownKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p1DownKeyText.anchor.setTo(.5);
         this.p1DownKeyText.font = 'Press Start 2P';
         this.p1DownKeyText.stroke = '#000000';
         this.p1DownKeyText.strokeThickness = 6;
         this.p1DownKeyText.fill = '#ffffff';
         
-        this.p1RotateLKeyText = this.game.add.text(235,255,this.indexToKeys[this.game.global['player1KeyIndexArray'][3]]);
+        this.p1RotateLKeyText = this.game.add.text(this.game.width*0.3, this.game.height*0.405, this.indexToKeys[this.game.global['player1KeyIndexArray'][3]]);
         this.p1RotateLKeyText.font = 'Press Start 2P';
-        this.p1RotateLKeyText.fontSize = 13;
+        this.p1RotateLKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p1RotateLKeyText.anchor.setTo(.5);
         this.p1RotateLKeyText.font = 'Press Start 2P';
         this.p1RotateLKeyText.stroke = '#000000';
         this.p1RotateLKeyText.strokeThickness = 6;
         this.p1RotateLKeyText.fill = '#ffffff';
         
-        this.p1RotateRKeyText = this.game.add.text(235,290,this.indexToKeys[this.game.global['player1KeyIndexArray'][4]]);
+        this.p1RotateRKeyText = this.game.add.text(this.game.width*0.3, this.game.height*0.455, this.indexToKeys[this.game.global['player1KeyIndexArray'][4]]);
         this.p1RotateRKeyText.font = 'Press Start 2P';
-        this.p1RotateRKeyText.fontSize = 13;
+        this.p1RotateRKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p1RotateRKeyText.anchor.setTo(.5);
         this.p1RotateRKeyText.font = 'Press Start 2P';
         this.p1RotateRKeyText.stroke = '#000000';
@@ -325,149 +325,149 @@ PuyoPuyo.SettingsState = {
         
         //p2 Side
         //Again the terrible arrow names correspond to "player + control + left/right arrow"
-        this.p2LeftRight = this.game.add.sprite(605,145,'settingsArrow');
+        this.p2LeftRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.25,'settingsArrow');
         this.p2LeftRight.anchor.setTo(.5);
-        this.p2LeftRight.width = 20;
-        this.p2LeftRight.height = 20;
+        this.p2LeftRight.width = this.game.width*0.025;
+        this.p2LeftRight.width = this.game.width*0.025;
         this.p2LeftRight.inputEnabled = true;
         this.p2LeftRight.input.useHandCursor = true;
         this.p2LeftRight.events.onInputDown.add(function() { this.arrowClicked(false,0,false)}, this);
         
-        this.p2RightRight = this.game.add.sprite(605,180,'settingsArrow');
+        this.p2RightRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.3,'settingsArrow');
         this.p2RightRight.anchor.setTo(.5);
-        this.p2RightRight.width = 20;
-        this.p2RightRight.height = 20;
+        this.p2RightRight.width = this.game.width*0.025;
+        this.p2RightRight.width = this.game.width*0.025;
         this.p2RightRight.inputEnabled = true;
         this.p2RightRight.input.useHandCursor = true;
         this.p2RightRight.events.onInputDown.add(function() { this.arrowClicked(false,1,false)}, this);
         
-        this.p2DownRight = this.game.add.sprite(605,215,'settingsArrow');
+        this.p2DownRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.35,'settingsArrow');
         this.p2DownRight.anchor.setTo(.5);
-        this.p2DownRight.width = 20;
-        this.p2DownRight.height = 20;
+        this.p2DownRight.width = this.game.width*0.025;
+        this.p2DownRight.width = this.game.width*0.025;
         this.p2DownRight.inputEnabled = true;
         this.p2DownRight.input.useHandCursor = true;
         this.p2DownRight.events.onInputDown.add(function() { this.arrowClicked(false,2,false)}, this);
         
-        this.p2RotateLRight = this.game.add.sprite(605,250,'settingsArrow');
+        this.p2RotateLRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.4,'settingsArrow');
         this.p2RotateLRight.anchor.setTo(.5);
-        this.p2RotateLRight.width = 20;
-        this.p2RotateLRight.height = 20;
+        this.p2RotateLRight.width = this.game.width*0.025;
+        this.p2RotateLRight.width = this.game.width*0.025;
         this.p2RotateLRight.inputEnabled = true;
         this.p2RotateLRight.input.useHandCursor = true;
         this.p2RotateLRight.events.onInputDown.add(function() { this.arrowClicked(false,3,false)}, this);
         
-        this.p2RotateRRight = this.game.add.sprite(605,285,'settingsArrow');
+        this.p2RotateRRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.45,'settingsArrow');
         this.p2RotateRRight.anchor.setTo(.5);
-        this.p2RotateRRight.width = 20;
-        this.p2RotateRRight.height = 20;
+        this.p2RotateRRight.width = this.game.width*0.025;
+        this.p2RotateRRight.width = this.game.width*0.025;
         this.p2RotateRRight.inputEnabled = true;
         this.p2RotateRRight.input.useHandCursor = true;
         this.p2RotateRRight.events.onInputDown.add(function() { this.arrowClicked(false,4,false)}, this);
         
-        this.p2LeftLeft = this.game.add.sprite(515,145,'settingsArrow');
+        this.p2LeftLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.25,'settingsArrow');
         this.p2LeftLeft.anchor.setTo(.5);
-        this.p2LeftLeft.width = 20;
-        this.p2LeftLeft.height = 20;
+        this.p2LeftLeft.width = this.game.width*0.025;
+        this.p2LeftLeft.width = this.game.width*0.025;
         this.p2LeftLeft.scale.x *= -1;
         this.p2LeftLeft.inputEnabled = true;
         this.p2LeftLeft.input.useHandCursor = true;
         this.p2LeftLeft.events.onInputDown.add(function() { this.arrowClicked(false,0,true)}, this);
         
-        this.p2RightLeft = this.game.add.sprite(515,180,'settingsArrow');
+        this.p2RightLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.3,'settingsArrow');
         this.p2RightLeft.anchor.setTo(.5);
-        this.p2RightLeft.width = 20;
-        this.p2RightLeft.height = 20;
+        this.p2RightLeft.width = this.game.width*0.025;
+        this.p2RightLeft.width = this.game.width*0.025;
         this.p2RightLeft.scale.x *= -1;
         this.p2RightLeft.inputEnabled = true;
         this.p2RightLeft.input.useHandCursor = true;
         this.p2RightLeft.events.onInputDown.add(function() { this.arrowClicked(false,1,true)}, this);
         
-        this.p2DownLeft = this.game.add.sprite(515,215,'settingsArrow');
+        this.p2DownLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.35,'settingsArrow');
         this.p2DownLeft.anchor.setTo(.5);
-        this.p2DownLeft.width = 20;
-        this.p2DownLeft.height = 20;
+        this.p2DownLeft.width = this.game.width*0.025;
+        this.p2DownLeft.width = this.game.width*0.025;
         this.p2DownLeft.scale.x *= -1;
         this.p2DownLeft.inputEnabled = true;
         this.p2DownLeft.input.useHandCursor = true;
         this.p2DownLeft.events.onInputDown.add(function() { this.arrowClicked(false,2,true)}, this);
         
-        this.p2RotateLLeft = this.game.add.sprite(515,250,'settingsArrow');
+        this.p2RotateLLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.4,'settingsArrow');
         this.p2RotateLLeft.anchor.setTo(.5);
-        this.p2RotateLLeft.width = 20;
-        this.p2RotateLLeft.height = 20;
+        this.p2RotateLLeft.width = this.game.width*0.025;
+        this.p2RotateLLeft.width = this.game.width*0.025;
         this.p2RotateLLeft.scale.x *= -1;
         this.p2RotateLLeft.inputEnabled = true;
         this.p2RotateLLeft.input.useHandCursor = true;
         this.p2RotateLLeft.events.onInputDown.add(function() { this.arrowClicked(false,3,true)}, this);
         
-        this.p2RotateRLeft = this.game.add.sprite(515,285,'settingsArrow');
+        this.p2RotateRLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.45,'settingsArrow');
         this.p2RotateRLeft.anchor.setTo(.5);
-        this.p2RotateRLeft.width = 20;
-        this.p2RotateRLeft.height = 20;
+        this.p2RotateRLeft.width = this.game.width*0.025;
+        this.p2RotateRLeft.width = this.game.width*0.025;
         this.p2RotateRLeft.scale.x *= -1;
         this.p2RotateRLeft.inputEnabled = true;
         this.p2RotateRLeft.input.useHandCursor = true;
         this.p2RotateRLeft.events.onInputDown.add(function() { this.arrowClicked(false,4,true)}, this);
         
-        this.p2LeftKeyText = this.game.add.text(560,150,this.indexToKeys[this.game.global['player2KeyIndexArray'][0]]);
+        this.p2LeftKeyText = this.game.add.text(this.game.width*0.8,this.game.height*0.255,this.indexToKeys[this.game.global['player2KeyIndexArray'][0]]);
         this.p2LeftKeyText.font = 'Press Start 2P';
-        this.p2LeftKeyText.fontSize = 13;
+        this.p2LeftKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p2LeftKeyText.anchor.setTo(.5);
         this.p2LeftKeyText.font = 'Press Start 2P';
         this.p2LeftKeyText.stroke = '#000000';
         this.p2LeftKeyText.strokeThickness = 6;
         this.p2LeftKeyText.fill = '#ffffff';
         
-        this.p2RightKeyText = this.game.add.text(560,185,this.indexToKeys[this.game.global['player2KeyIndexArray'][1]]);
+        this.p2RightKeyText = this.game.add.text(this.game.width*0.8,this.game.height*0.305,this.indexToKeys[this.game.global['player2KeyIndexArray'][1]]);
         this.p2RightKeyText.font = 'Press Start 2P';
-        this.p2RightKeyText.fontSize = 13;
+        this.p2RightKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p2RightKeyText.anchor.setTo(.5);
         this.p2RightKeyText.font = 'Press Start 2P';
         this.p2RightKeyText.stroke = '#000000';
         this.p2RightKeyText.strokeThickness = 6;
         this.p2RightKeyText.fill = '#ffffff';
         
-        this.p2DownKeyText = this.game.add.text(560,220,this.indexToKeys[this.game.global['player2KeyIndexArray'][2]]);
+        this.p2DownKeyText = this.game.add.text(this.game.width*0.8,this.game.height*0.355,this.indexToKeys[this.game.global['player2KeyIndexArray'][2]]);
         this.p2DownKeyText.font = 'Press Start 2P';
-        this.p2DownKeyText.fontSize = 13;
+        this.p2DownKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p2DownKeyText.anchor.setTo(.5);
         this.p2DownKeyText.font = 'Press Start 2P';
         this.p2DownKeyText.stroke = '#000000';
         this.p2DownKeyText.strokeThickness = 6;
         this.p2DownKeyText.fill = '#ffffff';
         
-        this.p2RotateLKeyText = this.game.add.text(560,255,this.indexToKeys[this.game.global['player2KeyIndexArray'][3]]);
+        this.p2RotateLKeyText = this.game.add.text(this.game.width*0.8,this.game.height*0.405,this.indexToKeys[this.game.global['player2KeyIndexArray'][3]]);
         this.p2RotateLKeyText.font = 'Press Start 2P';
-        this.p2RotateLKeyText.fontSize = 13;
+        this.p2RotateLKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p2RotateLKeyText.anchor.setTo(.5);
         this.p2RotateLKeyText.font = 'Press Start 2P';
         this.p2RotateLKeyText.stroke = '#000000';
         this.p2RotateLKeyText.strokeThickness = 6;
         this.p2RotateLKeyText.fill = '#ffffff';
         
-        this.p2RotateRKeyText = this.game.add.text(560,290,this.indexToKeys[this.game.global['player2KeyIndexArray'][4]]);
+        this.p2RotateRKeyText = this.game.add.text(this.game.width*0.8,this.game.height*0.455,this.indexToKeys[this.game.global['player2KeyIndexArray'][4]]);
         this.p2RotateRKeyText.font = 'Press Start 2P';
-        this.p2RotateRKeyText.fontSize = 13;
+        this.p2RotateRKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.p2RotateRKeyText.anchor.setTo(.5);
         this.p2RotateRKeyText.font = 'Press Start 2P';
         this.p2RotateRKeyText.stroke = '#000000';
         this.p2RotateRKeyText.strokeThickness = 6;
         this.p2RotateRKeyText.fill = '#ffffff';
         
-        this.difficultyLeftArrow = this.game.add.sprite(this.game.world.centerX+25,350,'settingsArrow');
+        this.difficultyLeftArrow = this.game.add.sprite(this.game.width*0.54,this.game.height*0.55,'settingsArrow');
         this.difficultyLeftArrow.anchor.setTo(.5);
-        this.difficultyLeftArrow.width = 20;
-        this.difficultyLeftArrow.height = 20;
+        this.difficultyLeftArrow.width = this.game.width*0.025;
+        this.difficultyLeftArrow.width = this.game.width*0.025;
         this.difficultyLeftArrow.scale.x *= -1;
         this.difficultyLeftArrow.inputEnabled = true;
         this.difficultyLeftArrow.input.useHandCursor = true;
         this.difficultyLeftArrow.events.onInputDown.add(this.decreaseDiff, this);
         
-        this.difficultyRightArrow = this.game.add.sprite(this.game.world.centerX+175,350,'settingsArrow');
+        this.difficultyRightArrow = this.game.add.sprite(this.game.width*0.66,this.game.height*0.55,'settingsArrow');
         this.difficultyRightArrow.anchor.setTo(.5);
-        this.difficultyRightArrow.width = 20;
-        this.difficultyRightArrow.height = 20;
+        this.difficultyRightArrow.width = this.game.width*0.025;
+        this.difficultyRightArrow.width = this.game.width*0.025;
         this.difficultyRightArrow.inputEnabled = true;
         this.difficultyRightArrow.input.useHandCursor = true;
         this.difficultyRightArrow.events.onInputDown.add(this.increaseDiff, this);
@@ -475,20 +475,18 @@ PuyoPuyo.SettingsState = {
         this.gameDiffTextArray = ['EASY', 'NORMAL', 'HARD'];
         this.gameDiffConstantsArray = [.66666667, 1, 2];
         
-        this.difficultyText = this.game.add.text(this.game.world.centerX+100,353,this.gameDiffTextArray[this.currDifficulty]);
+        this.difficultyText = this.game.add.text(this.game.width*0.6,this.game.height*0.555,this.gameDiffTextArray[this.currDifficulty]);
         this.difficultyText.font = 'Press Start 2P';
-        this.difficultyText.fontSize = 13;
+        this.difficultyText.fontSize = (this.game.height*0.02).toString() + 'px';
         this.difficultyText.anchor.setTo(.5);
-        this.difficultyText.font = 'Press Start 2P';
         this.difficultyText.stroke = '#000000';
         this.difficultyText.strokeThickness = 6;
         this.difficultyText.fill = '#ffffff';
         
-        this.difficultyLabel = this.game.add.text(this.game.world.centerX-75,353, "DIFFICULTY:");
+        this.difficultyLabel = this.game.add.text(this.game.width*0.44,this.game.height*0.555, "DIFFICULTY:");
         this.difficultyLabel.font = 'Press Start 2P';
-        this.difficultyLabel.fontSize = 13;
+        this.difficultyLabel.fontSize = (this.game.height*0.02).toString() + 'px';
         this.difficultyLabel.anchor.setTo(.5);
-        this.difficultyLabel.font = 'Press Start 2P';
         this.difficultyLabel.stroke = '#000000';
         this.difficultyLabel.strokeThickness = 6;
         this.difficultyLabel.fill = '#ffffff';
