@@ -34,6 +34,8 @@ class testBlob {
     
     create(x, y) {
         this.blob = this.game.add.sprite(x,y,this.src);
+        this.blob.width = this.colWidth;
+        this.blob.height = this.rowHeight;
     }
     
     moveLeft() {

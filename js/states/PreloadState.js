@@ -14,7 +14,7 @@ PuyoPuyo.PreloadState = {
         this.load.image('greenCircle', 'img/greenCircle.png');
         this.load.image('yellowCircle', 'img/yellowCircle.png');
         this.load.image('purpleCircle', 'img/purpleCircle.png');
-        this.load.image('whiteCircle', 'img/whiteCircle.png');
+        this.load.image('whiteCircle', 'img/clearBlob.png');
         this.load.image('blackCircle', 'img/blackCircle.png');
         this.load.image('redParticle', 'img/redParticle.png');
         this.load.image('yellowParticle', 'img/yellowParticle.png');
