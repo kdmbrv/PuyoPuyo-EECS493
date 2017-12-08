@@ -223,9 +223,7 @@ class PlayerBoard {
         this.spawnNewPuyo();
         var self = this;
         setInterval(function(){
-            console.log(self.autoDownwardTimerConstant);
             self.autoDownwardTimerConstant *= 8/10;
-            
         }, 30000);
     }
     
@@ -954,6 +952,7 @@ class PlayerBoard {
                 }
             }
         }
+        this.updateSprites();
         return droppedBlock;
     }
     
@@ -976,6 +975,54 @@ class PlayerBoard {
         this.blobGrid[newY][x] = this.blobGrid[y][x];
         this.blobGrid[y][x].drop(newY-y);
         //this.print();
+    }
+    
+    updateSprites() {
+        this.updateSpriteCompass();
+        this.updateSpriteConnections();
+    }
+    
+    updateSpriteCompass() {
+        for(var i = 0; i < this.rows; i++) {
+            for(var j = 0; j < this.cols; j++) {
+                if(this.grid[i][j] != 0) {
+                    if(i < this.rows -1 && this.grid[i+1][j] == this.grid[i][j]) {
+                        this.blobGrid[i][j].south = true;
+                    }
+                    else {
+                        this.blobGrid[i][j].south = false;
+                    }
+                    if(i > 0 && this.grid[i-1][j] == this.grid[i][j]) {
+                        this.blobGrid[i][j].north = true;
+                    }
+                    else {
+                        this.blobGrid[i][j].north = false;
+                    }
+                    if(j < this.cols-1 && this.grid[i][j+1] == this.grid[i][j]) {
+                        this.blobGrid[i][j].east = true;
+                    }
+                    else {
+                        this.blobGrid[i][j].east = false;
+                    }
+                    if(j > 0 && this.grid[i][j-1] == this.grid[i][j]) {
+                        this.blobGrid[i][j].west = true;
+                    }
+                    else {
+                        this.blobGrid[i][j].west = false;
+                    }
+                }
+            }
+        }
+    }
+    
+    updateSpriteConnections() {
+        for(var i = 0; i < this.rows; i++) {
+            for(var j = 0; j < this.cols; j++) {
+                if(this.grid[i][j] != 0 && this.grid[i][j] != 6) {
+                    this.blobGrid[i][j].addConnection(this.blobGrid[i][j].north,this.blobGrid[i][j].south,this.blobGrid[i][j].east,this.blobGrid[i][j].west);
+                }
+            }
+        }
     }
     
     unlockHorizontalMovement() {

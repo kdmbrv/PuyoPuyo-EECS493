@@ -74,7 +74,9 @@ PuyoPuyo.SettingsState = {
         }
         console.log(this.indexToUsed);
         
-        this.backgroundWall = this.game.add.tileSprite(0,0,this.game.width, this.game.height, 'settingBackGroundPic');
+        this.background = this.game.add.sprite(0,0,'book');
+        this.background.width = this.game.width;
+        this.background.height = this.game.height;
         this.titleText = this.game.add.text(this.game.world.centerX, this.game.height*0.1, "Settings");
         this.titleText.fontSize = (this.game.height*0.1).toString() + 'px';
         this.titleText.anchor.setTo(.5);

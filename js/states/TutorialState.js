@@ -8,7 +8,7 @@ PuyoPuyo.TutorialState = {
         this.textArray = [
             "In Puyo Puyo, pairs of blobs constantly fall down the game screen with which you create color chains and matches to score points and block out your opponent.", 
             "Blobs come in a variety of colors, but always fall in pairs. Blob pairs will fall until one player fills to the top of their screen. These pairs can be moved side to side or rotated into arrangements to create chains of matching colors.",
-            "There are two boards, with player 1 on the left and player 2 on the right. Player 1 uses A, S, and D keys to move their blobs left, right, or down while player 2 uses the arrow key. P1 uses C and V to rotate left and right while player 2 uses N and M.",
+            "There are two boards, with player 1 on the left and player 2 on the right. Player 1 uses A, S, and D keys to move their blobs left, right, or down while player 2 uses the arrow keys. P1 uses the W key to rotate while player 2 uses the up arrow. These controls can be adjusted in the settings menu.",
             "Blobs of matching colors that are directly neighboring create chains. Once a chain reaches a length of 4 or more, it is removed from the game screen and the player is awarded points. This will also create clear bubbles for the opponent.",
             "When a player creates a chain, the opponent will recieve 1 or more clear blobs. These blobs block any colored blobs from being chained through them. These are useful to force the opponent's stack to grow, pushing them closer to losing.", 
             "The game ends when one player's stack reaches the top of the game screen. The points earned from completed chains are then compared and the player with more points wins the game!"
@@ -93,7 +93,7 @@ PuyoPuyo.TutorialState = {
         this.text = this.game.add.text(this.game.width * 0.05, this.game.height * 0.25, this.textArray[0], this.textStyle);
         this.text.fontSize = (this.game.height * 0.05).toString() + 'px';
 
-        this.videoSpriteArray[0].visible = true;
+        //this.videoSpriteArray[0].visible = true;
         this.videoArray[0].play(true);
     },
     
@@ -104,7 +104,7 @@ PuyoPuyo.TutorialState = {
         if(this.currentPage == this.numPages) {
             this.rightArrow.visible = true;
         }
-        this.videoSpriteArray[this.currentPage].visible = false;
+        //this.videoSpriteArray[this.currentPage].visible = false;
         
         this.currentPage--;
         //change title
@@ -115,7 +115,7 @@ PuyoPuyo.TutorialState = {
         this.text.setText(this.textArray[this.currentPage]);
         
         //change video
-        this.videoSpriteArray[this.currentPage].visible = true;
+        //this.videoSpriteArray[this.currentPage].visible = true;
         this.videoArray[this.currentPage].play(true);
         
         if(this.currentPage === 0) {
@@ -131,7 +131,7 @@ PuyoPuyo.TutorialState = {
             this.leftArrow.visible = true;
         }
         
-        this.videoSpriteArray[this.currentPage].visible = false;
+        //this.videoSpriteArray[this.currentPage].visible = false;
         this.currentPage++;
         
         //change title
@@ -145,7 +145,7 @@ PuyoPuyo.TutorialState = {
         
         
         //change video
-        this.videoSpriteArray[this.currentPage].visible = true;
+        //this.videoSpriteArray[this.currentPage].visible = true;
         this.videoArray[this.currentPage].play(true);
         
         
