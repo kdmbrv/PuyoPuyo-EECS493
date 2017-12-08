@@ -151,7 +151,7 @@ class PlayerBoard {
     //Eventually want to pass in the size and coords for where the board will be placed
     //I believe so that the logic for the InGameState just has to worry about passing in
     //the right numbers... may be wrong though
-    constructor(game, state, xOffset, yOffset, width, leftKey, rightKey, downKey, rotateLKey, rotateRKey, player1) {
+    constructor(game, state, xOffset, yOffset, width, leftKey, rightKey, downKey, rotateLKey, player1) {
         this.game = game;
         this.state = state;
         this.grid = [];
@@ -162,7 +162,7 @@ class PlayerBoard {
 	    this.rightKey = game.input.keyboard.addKey(rightKey);
 	    this.downKey = game.input.keyboard.addKey(downKey);
 	    this.rotateLKey = game.input.keyboard.addKey(rotateLKey);
-	    this.rotateRKey = game.input.keyboard.addKey(rotateRKey);
+	    //this.rotateRKey = game.input.keyboard.addKey(rotateRKey);
         this.horizontalLock = false;
         this.rotateLock = false;
         this.verticalLock = false;
@@ -515,7 +515,7 @@ class PlayerBoard {
     }
     
     //Checks if the blob pair can rotate right
-    canRotateRight() {
+    /*canRotateRight() {
         if(!this.rotateRKey.isDown || this.rotateLock) {
             return false;
         }
@@ -591,7 +591,7 @@ class PlayerBoard {
                 return false;
             }
         }
-    }
+    }*/
     
     //Checks if the blob pair can move left
     canMoveLeft() {
@@ -1048,12 +1048,12 @@ class PlayerBoard {
                                                         this.unlockRotation, this);
             //this.print();
         }
-        else if(!this.gameOver && this.canRotateRight()) {
+        /*else if(!this.gameOver && this.canRotateRight()) {
             this.rotateLock = true;
             this.rotationTimer = this.game.time.events.add(this.rotationLockTimerConstant, 
                                                         this.unlockRotation, this);
             //this.print();
-        }
+        }*/
     }
 };
 
@@ -1279,17 +1279,15 @@ PuyoPuyo.game.global = {
     'player1LeftKey' : Phaser.Keyboard.A,
     'player1RightKey' : Phaser.Keyboard.D,
     'player1DownKey' : Phaser.Keyboard.S,
-    'player1RotateLKey' : Phaser.Keyboard.C,
-    'player1RotateRKey' : Phaser.Keyboard.V,
+    'player1RotateLKey' : Phaser.Keyboard.W,
     'player2LeftKey' : Phaser.Keyboard.LEFT,
     'player2RightKey' : Phaser.Keyboard.RIGHT,
     'player2DownKey' : Phaser.Keyboard.DOWN,
-    'player2RotateLKey' : Phaser.Keyboard.N,
-    'player2RotateRKey' : Phaser.Keyboard.M,
+    'player2RotateLKey' : Phaser.Keyboard.UP,
     
-    'player1KeyIndexArray' : {0 : 22, 1 : 24, 2 : 23, 3 : 33, 4 : 34},
+    'player1KeyIndexArray' : {0 : 22, 1 : 24, 2 : 23, 3 : 24},
     
-    'player2KeyIndexArray' : {0 : 41, 1 : 42, 2 : 43, 3 : 39, 4 : 40}
+    'player2KeyIndexArray' : {0 : 41, 1 : 42, 2 : 43, 3 : 44}
 },
 
 PuyoPuyo.game.state.add('PreloadState', PuyoPuyo.PreloadState);

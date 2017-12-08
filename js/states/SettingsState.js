@@ -126,21 +126,13 @@ PuyoPuyo.SettingsState = {
         this.downText1.strokeThickness = 6;
         this.downText1.fill = '#ffffff';
         
-        this.rotateLeftText1 = this.game.add.text(this.game.width*0.15, this.game.height*0.4, "Rotate L:");
+        this.rotateLeftText1 = this.game.add.text(this.game.width*0.15, this.game.height*0.4, "Rotate:");
         this.rotateLeftText1.fontSize = (this.game.height*0.02).toString() + 'px';
         this.rotateLeftText1.anchor.setTo(.5);
         this.rotateLeftText1.font = 'Press Start 2P';
         this.rotateLeftText1.stroke = '#000000';
         this.rotateLeftText1.strokeThickness = 6;
         this.rotateLeftText1.fill = '#ffffff';
-        
-        this.rotateRightText1 = this.game.add.text(this.game.width*0.15, this.game.height*0.45, "Rotate R:");
-        this.rotateRightText1.fontSize = (this.game.height*0.02).toString() + 'px';
-        this.rotateRightText1.anchor.setTo(.5);
-        this.rotateRightText1.font = 'Press Start 2P';
-        this.rotateRightText1.stroke = '#000000';
-        this.rotateRightText1.strokeThickness = 6;
-        this.rotateRightText1.fill = '#ffffff';
         
         this.leftText2 = this.game.add.text(this.game.width*0.65, this.game.height*0.25, "Left:");
         this.leftText2.fontSize = (this.game.height*0.02).toString() + 'px';
@@ -166,21 +158,13 @@ PuyoPuyo.SettingsState = {
         this.downText2.strokeThickness = 6;
         this.downText2.fill = '#ffffff';
     
-        this.rotateLeftText2 = this.game.add.text(this.game.width*0.65, this.game.height*0.4, "Rotate L:");
+        this.rotateLeftText2 = this.game.add.text(this.game.width*0.65, this.game.height*0.4, "Rotate:");
         this.rotateLeftText2.fontSize = (this.game.height*0.02).toString() + 'px';
         this.rotateLeftText2.anchor.setTo(.5);
         this.rotateLeftText2.font = 'Press Start 2P';
         this.rotateLeftText2.stroke = '#000000';
         this.rotateLeftText2.strokeThickness = 6;
         this.rotateLeftText2.fill = '#ffffff';
-    
-        this.rotateRightText2 = this.game.add.text(this.game.width*0.65, this.game.height*0.45, "Rotate R:");
-        this.rotateRightText2.fontSize = (this.game.height*0.02).toString() + 'px';
-        this.rotateRightText2.anchor.setTo(.5);
-        this.rotateRightText2.font = 'Press Start 2P';
-        this.rotateRightText2.stroke = '#000000';
-        this.rotateRightText2.strokeThickness = 6;
-        this.rotateRightText2.fill = '#ffffff';
         
         this.saveButton = this.game.add.sprite(this.game.world.centerX, this.game.height*0.9, 'save');
         this.saveButton.height = this.game.height*0.1;
@@ -224,14 +208,6 @@ PuyoPuyo.SettingsState = {
         this.p1RotateLRight.input.useHandCursor = true;
         this.p1RotateLRight.events.onInputDown.add(function() { this.arrowClicked(true,3,false)}, this);
         
-        this.p1RotateRRight = this.game.add.sprite(this.game.width*0.35, this.game.height*0.45, 'settingsArrow');
-        this.p1RotateRRight.anchor.setTo(.5);
-        this.p1RotateRRight.width = this.game.width*0.025;
-        this.p1RotateRRight.height = this.game.width*0.025;
-        this.p1RotateRRight.inputEnabled = true;
-        this.p1RotateRRight.input.useHandCursor = true;
-        this.p1RotateRRight.events.onInputDown.add(function() { this.arrowClicked(true,4,false)}, this);
-        
         this.p1LeftLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.25, 'settingsArrow');
         this.p1LeftLeft.anchor.setTo(.5);
         this.p1LeftLeft.width = this.game.width*0.025;
@@ -267,15 +243,6 @@ PuyoPuyo.SettingsState = {
         this.p1RotateLLeft.inputEnabled = true;
         this.p1RotateLLeft.input.useHandCursor = true;
         this.p1RotateLLeft.events.onInputDown.add(function() { this.arrowClicked(true,3,true)}, this);
-        
-        this.p1RotateRLeft = this.game.add.sprite(this.game.width*0.25, this.game.height*0.45, 'settingsArrow');
-        this.p1RotateRLeft.anchor.setTo(.5);
-        this.p1RotateRLeft.width = this.game.width*0.025;
-        this.p1RotateRLeft.height = this.game.width*0.025;
-        this.p1RotateRLeft.scale.x *= -1;
-        this.p1RotateRLeft.inputEnabled = true;
-        this.p1RotateRLeft.input.useHandCursor = true;
-        this.p1RotateRLeft.events.onInputDown.add(function() { this.arrowClicked(true,4,true)}, this);
         
         //The text within the arrows
         this.p1LeftKeyText = this.game.add.text(this.game.width*0.3, this.game.height*0.255, this.indexToKeys[this.game.global['player1KeyIndexArray'][0]]);
@@ -314,15 +281,6 @@ PuyoPuyo.SettingsState = {
         this.p1RotateLKeyText.strokeThickness = 6;
         this.p1RotateLKeyText.fill = '#ffffff';
         
-        this.p1RotateRKeyText = this.game.add.text(this.game.width*0.3, this.game.height*0.455, this.indexToKeys[this.game.global['player1KeyIndexArray'][4]]);
-        this.p1RotateRKeyText.font = 'Press Start 2P';
-        this.p1RotateRKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
-        this.p1RotateRKeyText.anchor.setTo(.5);
-        this.p1RotateRKeyText.font = 'Press Start 2P';
-        this.p1RotateRKeyText.stroke = '#000000';
-        this.p1RotateRKeyText.strokeThickness = 6;
-        this.p1RotateRKeyText.fill = '#ffffff';
-        
         //p2 Side
         //Again the terrible arrow names correspond to "player + control + left/right arrow"
         this.p2LeftRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.25,'settingsArrow');
@@ -356,14 +314,6 @@ PuyoPuyo.SettingsState = {
         this.p2RotateLRight.inputEnabled = true;
         this.p2RotateLRight.input.useHandCursor = true;
         this.p2RotateLRight.events.onInputDown.add(function() { this.arrowClicked(false,3,false)}, this);
-        
-        this.p2RotateRRight = this.game.add.sprite(this.game.width*0.85,this.game.height*0.45,'settingsArrow');
-        this.p2RotateRRight.anchor.setTo(.5);
-        this.p2RotateRRight.width = this.game.width*0.025;
-        this.p2RotateRRight.height = this.game.width*0.025;
-        this.p2RotateRRight.inputEnabled = true;
-        this.p2RotateRRight.input.useHandCursor = true;
-        this.p2RotateRRight.events.onInputDown.add(function() { this.arrowClicked(false,4,false)}, this);
         
         this.p2LeftLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.25,'settingsArrow');
         this.p2LeftLeft.anchor.setTo(.5);
@@ -401,15 +351,6 @@ PuyoPuyo.SettingsState = {
         this.p2RotateLLeft.input.useHandCursor = true;
         this.p2RotateLLeft.events.onInputDown.add(function() { this.arrowClicked(false,3,true)}, this);
         
-        this.p2RotateRLeft = this.game.add.sprite(this.game.width*0.75,this.game.height*0.45,'settingsArrow');
-        this.p2RotateRLeft.anchor.setTo(.5);
-        this.p2RotateRLeft.width = this.game.width*0.025;
-        this.p2RotateRLeft.height = this.game.width*0.025;
-        this.p2RotateRLeft.scale.x *= -1;
-        this.p2RotateRLeft.inputEnabled = true;
-        this.p2RotateRLeft.input.useHandCursor = true;
-        this.p2RotateRLeft.events.onInputDown.add(function() { this.arrowClicked(false,4,true)}, this);
-        
         this.p2LeftKeyText = this.game.add.text(this.game.width*0.8,this.game.height*0.255,this.indexToKeys[this.game.global['player2KeyIndexArray'][0]]);
         this.p2LeftKeyText.font = 'Press Start 2P';
         this.p2LeftKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
@@ -445,15 +386,6 @@ PuyoPuyo.SettingsState = {
         this.p2RotateLKeyText.stroke = '#000000';
         this.p2RotateLKeyText.strokeThickness = 6;
         this.p2RotateLKeyText.fill = '#ffffff';
-        
-        this.p2RotateRKeyText = this.game.add.text(this.game.width*0.8,this.game.height*0.455,this.indexToKeys[this.game.global['player2KeyIndexArray'][4]]);
-        this.p2RotateRKeyText.font = 'Press Start 2P';
-        this.p2RotateRKeyText.fontSize = (this.game.height*0.02).toString() + 'px';
-        this.p2RotateRKeyText.anchor.setTo(.5);
-        this.p2RotateRKeyText.font = 'Press Start 2P';
-        this.p2RotateRKeyText.stroke = '#000000';
-        this.p2RotateRKeyText.strokeThickness = 6;
-        this.p2RotateRKeyText.fill = '#ffffff';
         
         this.difficultyLeftArrow = this.game.add.sprite(this.game.width*0.54,this.game.height*0.55,'settingsArrow');
         this.difficultyLeftArrow.anchor.setTo(.5);
@@ -491,8 +423,8 @@ PuyoPuyo.SettingsState = {
         this.difficultyLabel.strokeThickness = 6;
         this.difficultyLabel.fill = '#ffffff';
         
-        this.player1KeyTextArray = [this.p1LeftKeyText, this.p1RightKeyText, this.p1DownKeyText, this.p1RotateLKeyText, this.p1RotateRKeyText];
-        this.player2KeyTextArray = [this.p2LeftKeyText, this.p2RightKeyText, this.p2DownKeyText, this.p2RotateLKeyText, this.p2RotateRKeyText];
+        this.player1KeyTextArray = [this.p1LeftKeyText, this.p1RightKeyText, this.p1DownKeyText, this.p1RotateLKeyText];
+        this.player2KeyTextArray = [this.p2LeftKeyText, this.p2RightKeyText, this.p2DownKeyText, this.p2RotateLKeyText];
     
         this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.enter.onDown.add(this.goToMainMenu, this);
@@ -521,12 +453,10 @@ PuyoPuyo.SettingsState = {
         this.game.global['player1RightKey'] = this.indexToKeyboard[this.game.global['player1KeyIndexArray'][1]]
         this.game.global['player1DownKey'] = this.indexToKeyboard[this.game.global['player1KeyIndexArray'][2]]
         this.game.global['player1RotateLKey'] = this.indexToKeyboard[this.game.global['player1KeyIndexArray'][3]]
-        this.game.global['player1RotateRKey'] = this.indexToKeyboard[this.game.global['player1KeyIndexArray'][4]]
         this.game.global['player2LeftKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][0]]
         this.game.global['player2RightKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][1]]
         this.game.global['player2DownKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][2]]
         this.game.global['player2RotateLKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][3]]
-        this.game.global['player2RotateRKey'] = this.indexToKeyboard[this.game.global['player2KeyIndexArray'][4]]
         this.state.start("MainMenuState"); 
     },
     

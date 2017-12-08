@@ -14,8 +14,8 @@ PuyoPuyo.InGameState = {
         //text = this.game.add.text(0, 0, "inspect with console to play", style);
         //Eventually will pass in x and y placement coords as well as size
         //Can now pass in the controls so making a second board should be pretty easy
-        this.player1Board = new PlayerBoard(this.game, this, this.game.width * 0.05, this.game.height * 0.05, this.game.width * 0.3, this.game.global['player1LeftKey'], this.game.global['player1RightKey'], this.game.global['player1DownKey'], this.game.global['player1RotateLKey'], this.game.global['player1RotateRKey'], true);
-        this.player2Board = new PlayerBoard(this.game, this, this.game.width * 0.65, this.game.height * 0.05, this.game.width * 0.3, this.game.global['player2LeftKey'], this.game.global['player2RightKey'], this.game.global['player2DownKey'], this.game.global['player2RotateLKey'], this.game.global['player2RotateRKey'], false);
+        this.player1Board = new PlayerBoard(this.game, this, this.game.width * 0.05, this.game.height * 0.05, this.game.width * 0.3, this.game.global['player1LeftKey'], this.game.global['player1RightKey'], this.game.global['player1DownKey'], this.game.global['player1RotateLKey'], true);
+        this.player2Board = new PlayerBoard(this.game, this, this.game.width * 0.65, this.game.height * 0.05, this.game.width * 0.3, this.game.global['player2LeftKey'], this.game.global['player2RightKey'], this.game.global['player2DownKey'], this.game.global['player2RotateLKey'], false);
         this.player1Board.print();
         this.player1Board.create();
         this.player2Board.create();
