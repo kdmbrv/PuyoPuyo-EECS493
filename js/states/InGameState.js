@@ -104,11 +104,11 @@ PuyoPuyo.InGameState = {
         this.pauseMenuTitle.strokeThickness = 3;
         this.pauseMenuTitle.visible = false;
         
-        this.resumeButton = this.game.add.sprite(this.game.world.centerX, this.game.height * 0.42, 'whiteButton');
+        this.resumeButton = this.game.add.sprite(this.game.world.centerX, this.game.height * 0.41, 'whiteButton');
         this.resumeButton.anchor.setTo(.5);
         this.resumeButton.visible = false;
-        this.resumeButton.width = this.game.width * 0.22;
-        this.resumeButton.height = this.game.height * 0.13;
+        this.resumeButton.width = this.game.width * 0.18;
+        this.resumeButton.height = this.game.height * 0.1;
         this.resumeButton.inputEnabled = true;
         this.resumeButton.input.useHandCursor = true;
         this.resumeButton.events.onInputDown.add(this.resume, this);
@@ -118,16 +118,16 @@ PuyoPuyo.InGameState = {
         this.resumeButtonText.anchor.setTo(.5);
         this.resumeButtonText.font = 'Chewy';
         this.resumeButtonText.fill = '#364aff';
-        this.resumeButtonText.fontSize = (this.game.height * 0.09).toString() + 'px';
+        this.resumeButtonText.fontSize = (this.game.height * 0.07).toString() + 'px';
         this.resumeButtonText.stroke = '#000000';
         this.resumeButtonText.strokeThickness = 3;
         this.resumeButtonText.visible = false;
         
-        this.resetButton = this.game.add.sprite(this.game.world.centerX, this.game.height * 0.55, 'whiteButton');
+        this.resetButton = this.game.add.sprite(this.game.world.centerX, this.game.height * 0.54, 'whiteButton');
         this.resetButton.anchor.setTo(.5);
         this.resetButton.visible = false;
-        this.resetButton.width = this.game.width * 0.22;
-        this.resetButton.height = this.game.height * 0.13;
+        this.resetButton.width = this.game.width * 0.18;
+        this.resetButton.height = this.game.height * 0.1;
         this.resetButton.inputEnabled = true;
         this.resetButton.input.useHandCursor = true;
         this.resetButton.events.onInputDown.add(this.resetWhenPaused, this);
@@ -137,16 +137,16 @@ PuyoPuyo.InGameState = {
         this.resetButtonText.anchor.setTo(.5);
         this.resetButtonText.font = 'Chewy';
         this.resetButtonText.fill = '#364aff';
-        this.resetButtonText.fontSize = (this.game.height * 0.09).toString() + 'px';
+        this.resetButtonText.fontSize = (this.game.height * 0.07).toString() + 'px';
         this.resetButtonText.stroke = '#000000';
         this.resetButtonText.strokeThickness = 3;
         this.resetButtonText.visible = false;
         
-        this.quitButton = this.game.add.sprite(this.game.world.centerX, this.game.height * 0.68, 'whiteButton');
+        this.quitButton = this.game.add.sprite(this.game.world.centerX, this.game.height * 0.67, 'whiteButton');
         this.quitButton.anchor.setTo(.5);
         this.quitButton.visible = false;
-        this.quitButton.width = this.game.width * 0.22;
-        this.quitButton.height = this.game.height * 0.13;
+        this.quitButton.width = this.game.width * 0.18;
+        this.quitButton.height = this.game.height * 0.1;
         this.quitButton.inputEnabled = true;
         this.quitButton.input.useHandCursor = true;
         this.quitButton.events.onInputDown.add(this.quit, this);
@@ -155,7 +155,7 @@ PuyoPuyo.InGameState = {
         this.quitButtonText.anchor.setTo(.5);
         this.quitButtonText.font = 'Chewy';
         this.quitButtonText.fill = '#364aff';
-        this.quitButtonText.fontSize = (this.game.height * 0.09).toString() + 'px';
+        this.quitButtonText.fontSize = (this.game.height * 0.07).toString() + 'px';
         this.quitButtonText.stroke = '#000000';
         this.quitButtonText.strokeThickness = 3;
         this.quitButtonText.visible = false;

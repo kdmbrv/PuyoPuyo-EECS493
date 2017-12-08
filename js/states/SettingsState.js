@@ -167,8 +167,8 @@ PuyoPuyo.SettingsState = {
         this.rotateLeftText2.fill = '#ffffff';
         
         this.saveButton = this.game.add.sprite(this.game.world.centerX, this.game.height*0.9, 'save');
-        this.saveButton.height = this.game.height*0.1;
-        this.saveButton.width = this.game.width*0.2;
+        this.saveButton.height = this.game.height*0.07;
+        this.saveButton.width = this.game.width*0.1;
         this.saveButton.anchor.setTo(.5);
         this.saveButton.inputEnabled = true;
         this.saveButton.input.useHandCursor = true;
