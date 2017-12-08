@@ -224,6 +224,7 @@ class PlayerBoard {
         var self = this;
         setInterval(function(){
             self.autoDownwardTimerConstant *= 8/10;
+            console.log(self.autoDownwardTimerConstant);
         }, 30000);
     }
     
@@ -1338,7 +1339,7 @@ PuyoPuyo.game.global = {
     'player2DownKey' : Phaser.Keyboard.DOWN,
     'player2RotateLKey' : Phaser.Keyboard.UP,
     
-    'player1KeyIndexArray' : {0 : 22, 1 : 24, 2 : 23, 3 : 24},
+    'player1KeyIndexArray' : {0 : 22, 1 : 24, 2 : 23, 3 : 11},
     
     'player2KeyIndexArray' : {0 : 41, 1 : 42, 2 : 43, 3 : 44}
 },
