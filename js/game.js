@@ -221,6 +221,12 @@ class PlayerBoard {
     //Spawn first pair
     create() {
         this.spawnNewPuyo();
+        var self = this;
+        setInterval(function(){
+            console.log(self.autoDownwardTimerConstant);
+            self.autoDownwardTimerConstant *= 8/10;
+            
+        }, 30000);
     }
     
     incrementNuisanceCount(num) {
