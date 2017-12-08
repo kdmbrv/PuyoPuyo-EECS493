@@ -14,7 +14,7 @@ PuyoPuyo.PreloadState = {
         this.load.image('greenCircle', 'img/greenCircle.png');
         this.load.image('yellowCircle', 'img/yellowCircle.png');
         this.load.image('purpleCircle', 'img/purpleCircle.png');
-        this.load.image('whiteCircle', 'img/whiteCircle.png');
+        this.load.image('whiteCircle', 'img/clearBlob.png');
         this.load.image('blackCircle', 'img/blackCircle.png');
         this.load.image('redParticle', 'img/redParticle.png');
         this.load.image('yellowParticle', 'img/yellowParticle.png');
@@ -33,8 +33,8 @@ PuyoPuyo.PreloadState = {
         this.load.image('settingsArrow', 'img/settingsArrow.png');
         this.load.image('exit', 'img/exit.png');
         this.load.image('save', 'img/save.png');
-        this.load.spritesheet('puyo', 'img/puyo.png', 16, 16);
-        this.load.spritesheet('mm_blob', 'img/blob.png', 18, 16);
+        this.load.spritesheet('puyo', 'img/hiresBlobs.png', 128, 128);
+        this.load.spritesheet('mm_blob', 'img/mmBlob.png', 144, 128);
         this.load.image('menu', 'img/menu_background.png');
         this.load.image('logo', 'img/logo.png');
         this.load.image('tutorial_graphic', 'img/tutorial.png');
@@ -45,9 +45,15 @@ PuyoPuyo.PreloadState = {
         this.load.image('wood', 'img/wood.png');
         this.game.load.video('tutorial1', 'img/tutorial1.mp4');
         this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+        
+        if(this.game.scale.aspectRatio > 1.44444) {
+            this.game.scale.setGameSize(this.game.scale.height * 1.44444, this.game.scale.height);
+        } else {
+            this.game.scale.setGameSize(this.game.scale.width, this.game.scale.width / 1.44444);
+        }
     },
     create: function() {
         console.log("here");
-        PuyoPuyo.game.state.start("MainMenuState");
+        this.game.state.start("MainMenuState");
     }
 };

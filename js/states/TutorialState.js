@@ -22,18 +22,18 @@ PuyoPuyo.TutorialState = {
         this.background.height = this.game.height;
         
         //Add all buttons on screen
-        this.rightArrow = this.game.add.sprite(this.game.width*17/20,this.game.height*39/50,'arrow');
-        this.rightArrow.width = 50;
-        this.rightArrow.height = 40;
+        this.rightArrow = this.game.add.sprite(this.game.width*17/20,this.game.height*0.9,'arrow');
+        this.rightArrow.width = this.game.width*0.1;
+        this.rightArrow.height = this.game.height*0.08;
         this.rightArrow.anchor.x = .5;
         this.rightArrow.anchor.x = .5;
         this.rightArrow.inputEnabled = true;
         this.rightArrow.input.useHandCursor = true;
         this.rightArrow.events.onInputDown.add(this.rightArrowClick, this);
         
-        this.leftArrow = this.game.add.sprite(this.game.width*3/20,this.game.height*39/50,'arrow');
-        this.leftArrow.width = 50;
-        this.leftArrow.height = 40;
+        this.leftArrow = this.game.add.sprite(this.game.width*3/20,this.game.height*0.9,'arrow');
+        this.leftArrow.width = this.game.width*0.1;
+        this.leftArrow.height = this.game.height*0.08;
         this.leftArrow.anchor.x = .5;
         this.leftArrow.anchor.x = .5;
         this.leftArrow.scale.x *= -1;
@@ -49,48 +49,49 @@ PuyoPuyo.TutorialState = {
         this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.enter.onDown.add(this.goToMainMenu, this);
         
-        this.exitButton = this.game.add.sprite(this.game.world.centerX, this.game.height*41/50, 'exit');
+        this.exitButton = this.game.add.sprite(this.game.world.centerX, this.game.height*0.9, 'exit');
         this.exitButton.anchor.setTo(.5);
-        this.exitButton.width = 70;
-        this.exitButton.height = 60;
+        this.exitButton.width = this.game.width*0.1;
+        this.exitButton.height = this.game.height*0.08;;
         this.exitButton.inputEnabled = true;
         this.exitButton.input.useHandCursor = true;
         this.exitButton.events.onInputDown.add(this.goToMainMenu, this);
         
-        this.titleText = this.game.add.text(195, 70, this.titleArray[0]);
-        this.titleText.anchor.setTo(0.5);
+        this.titleText = this.game.add.text(this.game.width * 0.05, this.game.height * 0.05, this.titleArray[0]);
+        this.titleText.anchor.setTo(0);
         this.titleText.font = 'Berkshire Swash';
-        this.titleText.fontSize = 50;
+        this.titleText.fontSize = (this.game.height * 0.17).toString() + 'px';
         
         this.video1 = this.game.add.video('tutorial1');
-        this.videoSprite1 = this.video1.addToWorld(460, 200, 0.5, 0.5, .2, .2);
+        this.videoSprite1 = this.video1.addToWorld(this.game.width * 0.7, this.game.height * 0.1, 0, 0, this.game.width/3000, this.game.width/3000);
         this.videoSprite1.visible = false;
         
         this.video2 = this.game.add.video('tutorial1');
-        this.videoSprite2 = this.video2.addToWorld(460, 200, 0.5, 0.5, .2, .2);
+        this.videoSprite2 = this.video2.addToWorld(this.game.width * 0.7, this.game.height * 0.1, 0, 0, this.game.width/3000, this.game.width/3000);
         this.videoSprite2.visible = false;
         
         this.video3 = this.game.add.video('tutorial1');
-        this.videoSprite3 = this.video3.addToWorld(460, 200, 0.5, 0.5, .2, .2);
+        this.videoSprite3 = this.video3.addToWorld(this.game.width * 0.7, this.game.height * 0.1, 0, 0, this.game.width/3000, this.game.width/3000);
         this.videoSprite3.visible = false;
         
         this.video4 = this.game.add.video('tutorial1');
-        this.videoSprite4 = this.video4.addToWorld(460, 200, 0.5, 0.5, .2, .2);
+        this.videoSprite4 = this.video4.addToWorld(this.game.width * 0.7, this.game.height * 0.1, 0, 0, this.game.width/3000, this.game.width/3000);
         this.videoSprite4.visible = false;
         
         this.video5 = this.game.add.video('tutorial1');
-        this.videoSprite5 = this.video5.addToWorld(460, 200, 0.5, 0.5, .2, .2);
+        this.videoSprite5 = this.video5.addToWorld(this.game.width * 0.7, this.game.height * 0.1, 0, 0, this.game.width/3000, this.game.width/3000);
         this.videoSprite5.visible = false;
         
         this.video6 = this.game.add.video('tutorial1');
-        this.videoSprite6 = this.video5.addToWorld(460, 200, 0.5, 0.5, .2, .2);
+        this.videoSprite6 = this.video5.addToWorld(this.game.width * 0.7, this.game.height * 0.1, 0, 0, this.game.width/3000, this.game.width/3000);
         this.videoSprite6.visible = false;
         
         this.videoArray = [this.video1, this.video2, this.video3, this.video4, this.video5, this.video6];
         this.videoSpriteArray = [this.videoSprite1, this.videoSprite2, this.videoSprite3, this.videoSprite4, this.videoSprite5, this.videoSprite6];
 
-        this.textStyle = { font: '14pt Arial', fill: 'black', align: 'left', wordWrap: true, wordWrapWidth: 250 };
-        this.text = this.game.add.text(75, 100, this.textArray[0], this.textStyle);
+        this.textStyle = { font: '14pt Arial', fill: 'black', align: 'left', wordWrap: true, wordWrapWidth: this.game.width * 0.6 };
+        this.text = this.game.add.text(this.game.width * 0.05, this.game.height * 0.25, this.textArray[0], this.textStyle);
+        this.text.fontSize = (this.game.height * 0.05).toString() + 'px';
 
         this.videoSpriteArray[0].visible = true;
         this.videoArray[0].play(true);
