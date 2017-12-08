@@ -77,8 +77,8 @@ PuyoPuyo.MainMenuState = {
         this.logo.y = this.game.height / 9;
         this.logo.anchor.x = 0.5;
         this.logo.anchor.y = 0.5;
-        this.logo.height = this.game.height * (50/224);
-        this.logo.width = this.game.width * (170/320);
+        this.logo.height = this.game.height * 0.25;
+        this.logo.width = this.game.width * 0.5;
         
         // Add menu
         this.menu = this.game.add.sprite(0, 0, 'menu');
@@ -86,45 +86,45 @@ PuyoPuyo.MainMenuState = {
         this.menu.y = this.game.height / 2  + 10;
         this.menu.anchor.x = 0.5;
         this.menu.anchor.y = 0.5;
-        this.menu.height = this.game.height * (150/224);
-        this.menu.width = this.game.width * (200/320);
+        this.menu.height = this.game.height * 0.7;
+        this.menu.width = this.game.width * 0.65;
         
         // Add menu options
-        this.play_text = this.game.add.text(250, 120, "Play");
+        this.play_text = this.game.add.text(this.game.width * 0.35, this.game.height * 0.26, "Play");
         this.play_text.anchor.setTo(0);
         this.play_text.font = 'Chewy';
-        this.play_text.fontSize = 45;
+        this.play_text.fontSize = (this.game.height * 0.1).toString() + 'px';
         this.play_text.fill = '#364aff';
         this.play_text.stroke = '#000000';
         this.play_text.strokeThickness = 5;
         
-        this.tutorial_text = this.game.add.text(250, 170, "Tutorial");
+        this.tutorial_text = this.game.add.text(this.game.width * 0.35, this.game.height * 0.38, "Tutorial");
         this.tutorial_text.anchor.setTo(0);
         this.tutorial_text.font = 'Chewy';
-        this.tutorial_text.fontSize = 45;
+        this.tutorial_text.fontSize = (this.game.height * 0.1).toString() + 'px';
         this.tutorial_text.fill = '#fffb38';
         this.tutorial_text.stroke = '#000000';
         this.tutorial_text.strokeThickness = 5;
         
-        this.settings_text = this.game.add.text(250, 230, "Settings");
+        this.settings_text = this.game.add.text(this.game.width * 0.35, this.game.height * 0.5, "Settings");
         this.settings_text.anchor.setTo(0);
         this.settings_text.font = 'Chewy';
-        this.settings_text.fontSize = 45;
+        this.settings_text.fontSize = (this.game.height * 0.1).toString() + 'px';
         this.settings_text.fill = '#790ea3';
         this.settings_text.stroke = '#000000';
         this.settings_text.strokeThickness = 5;
         
-        this.exit_text = this.game.add.text(250, 285, "Exit");
+        this.exit_text = this.game.add.text(this.game.width * 0.35, this.game.height * 0.62, "Exit");
         this.exit_text.anchor.setTo(0);
         this.exit_text.font = 'Chewy';
-        this.exit_text.fontSize = 45;
+        this.exit_text.fontSize = (this.game.height * 0.1).toString() + 'px';
         this.exit_text.fill = '#55ff37';
         this.exit_text.stroke = '#000000';
         this.exit_text.strokeThickness = 5;
         
         this.sprite = this.add.sprite(0, 0, 'mm_blob');
-        this.sprite.x = this.game.width * (100/320);
-        this.sprite.y = this.game.height * (79/224);
+        this.sprite.x = this.game.width * 0.3;
+        this.sprite.y = this.game.height * 0.4;
         this.sprite.anchor.x = 0.5;
         this.sprite.anchor.y = 0.5;
         this.sprite.height = this.game.height * (16/224);

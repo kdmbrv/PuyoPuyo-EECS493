@@ -34,6 +34,8 @@ class testBlob {
     
     create(x, y) {
         this.blob = this.game.add.sprite(x,y,this.src);
+        this.blob.width = this.colWidth;
+        this.blob.height = this.rowHeight;
     }
     
     moveLeft() {
@@ -94,10 +96,50 @@ class testBlob {
         }
     }
     drop(numSpacesDropped) {
-        this.blob.y += numSpacesDropped*this.rowHeight;
+        console.log("dropping");
+        var blobMovement = this.game.add.tween(this.blob);
+        let destination = this.blob.y + numSpacesDropped*this.rowHeight
+        blobMovement.to({y:destination}, 200);
+        blobMovement.start();
+        //this.blob.y += numSpacesDropped*this.rowHeight;
     }
     destroy() {
-        this.blob.destroy();
+        this.blob.loadTexture("blackCircle");
+        //this.eraseBlob();
+        var emitter = this.game.add.emitter(this.blob.x + 17, this.blob.y + 17, 100);
+        if(this.src == 'redCircle') {
+            console.log("1");
+            emitter.makeParticles('redParticle');
+        }
+        else if(this.src == 'blueCircle') {
+            console.log("2");
+            emitter.makeParticles('blueParticle');
+        }
+        else if(this.src == 'yellowCircle') {
+            console.log("3");
+            emitter.makeParticles('yellowParticle');
+        }
+        else if(this.src == 'purpleCircle') {
+            console.log("4");
+            emitter.makeParticles('purpleParticle');
+        }
+        else if(this.src == 'greenCircle') {
+            console.log("5");
+            emitter.makeParticles('greenParticle');
+        }
+        else {
+            console.log("6");
+            emitter.makeParticles('whiteParticle');
+        }
+        emitter.gravity = 0;
+        emitter.start(true,200,null,100);
+        this.game.time.events.add(200, this.eraseBlob,this);
+    }
+    eraseBlob() {
+        console.log(this.blob);
+        if(this.blob) {
+            this.blob.destroy();
+        }
     }
 };
 
@@ -109,8 +151,8 @@ class PlayerBoard {
     //Eventually want to pass in the size and coords for where the board will be placed
     //I believe so that the logic for the InGameState just has to worry about passing in
     //the right numbers... may be wrong though
-    constructor(game, state, xOffset, leftKey, rightKey, downKey, rotateLKey, rotateRKey, player1) {
-        this.game = game
+    constructor(game, state, xOffset, yOffset, width, leftKey, rightKey, downKey, rotateLKey, player1) {
+        this.game = game;
         this.state = state;
         this.grid = [];
         this.blobGrid = [];
@@ -120,7 +162,7 @@ class PlayerBoard {
 	    this.rightKey = game.input.keyboard.addKey(rightKey);
 	    this.downKey = game.input.keyboard.addKey(downKey);
 	    this.rotateLKey = game.input.keyboard.addKey(rotateLKey);
-	    this.rotateRKey = game.input.keyboard.addKey(rotateRKey);
+	    //this.rotateRKey = game.input.keyboard.addKey(rotateRKey);
         this.horizontalLock = false;
         this.rotateLock = false;
         this.verticalLock = false;
@@ -134,12 +176,12 @@ class PlayerBoard {
         this.rows = 12;
         this.cols = 6;
         this.puyoVariations = 5;
-        this.colWidth = 34;
-        this.rowHeight = 34;
+        this.colWidth = width / 6;
+        this.rowHeight = this.colWidth;
         this.xOffset = xOffset;
-        this.yOffset = 20;
-        this.width = 204 // example;
-        this.height = 408 // example;
+        this.yOffset = yOffset;
+        this.width = width; // example;
+        this.height = this.rowHeight * this.rows; // example;
         
         //timer Constants
         this.horizontalLockTimerConstant = Phaser.Timer.SECOND/10;
@@ -179,12 +221,16 @@ class PlayerBoard {
     //Spawn first pair
     create() {
         this.spawnNewPuyo();
+        var self = this;
+        setInterval(function(){
+            self.autoDownwardTimerConstant *= 8/10;
+        }, 30000);
     }
     
     incrementNuisanceCount(num) {
-        console.log(num);
+        //console.log(num);
         this.nuisanceCount += num;
-        console.log(this.nuisanceCount);
+        //console.log(this.nuisanceCount);
     }
     
     //Prints the game board in the console
@@ -219,10 +265,51 @@ class PlayerBoard {
         this.horizontalLock = true;
         this.verticalLock = true;
         this.rotateLock = true;
-        this.findChains();
-        this.dropNuisance();
-        this.spawnTimer = this.game.time.events.add(this.spawnTimerConstant, this.spawnNewPuyo, this);
-        this.print();
+        let self = this;
+        
+        //Update last puyos for connections
+        if(this.puyo1y > 0 && this.grid[this.puyo1y-1][this.puyo1x] == this.puyo1) {
+            this.blob1.addConnection(true, false, false, false);
+            this.blobGrid[this.puyo1y-1][this.puyo1x].addConnection(false, true, false, false);
+        }
+        if(this.puyo1y < this.rows-1 && this.grid[this.puyo1y+1][this.puyo1x] == this.puyo1) {
+            this.blob1.addConnection(false, true, false, false);
+            this.blobGrid[this.puyo1y+1][this.puyo1x].addConnection(true, false, false, false);
+        }
+        if(this.puyo1x > 0 && this.grid[this.puyo1y][this.puyo1x-1] == this.puyo1) {
+            this.blob1.addConnection(false, false, false, true);
+            this.blobGrid[this.puyo1y][this.puyo1x-1].addConnection(false, false, true, false);
+        }
+        if(this.puyo1x < this.cols-1 && this.grid[this.puyo1y][this.puyo1x+1] == this.puyo1) {
+            this.blob1.addConnection(false, false, true, false);
+            this.blobGrid[this.puyo1y][this.puyo1x+1].addConnection(false, false, false, true);
+        }
+        
+        if(this.puyo2y > 0 && this.grid[this.puyo2y-1][this.puyo2x] == this.puyo2) {
+            this.blob2.addConnection(true, false, false, false);
+            this.blobGrid[this.puyo2y-1][this.puyo2x].addConnection(false, true, false, false);
+        }
+        if(this.puyo2y < this.rows-1 && this.grid[this.puyo2y+1][this.puyo2x] == this.puyo2) {
+            this.blob2.addConnection(false, true, false, false);
+            this.blobGrid[this.puyo2y+1][this.puyo2x].addConnection(true, false, false, false);
+        }
+        if(this.puyo2x > 0 && this.grid[this.puyo2y][this.puyo2x-1] == this.puyo2) {
+            this.blob2.addConnection(false, false, false, true);
+            this.blobGrid[this.puyo2y][this.puyo2x-1].addConnection(false, false, true, false);
+        }
+        if(this.puyo2x < this.cols-1 && this.grid[this.puyo2y][this.puyo2x+1] == this.puyo2) {
+            this.blob2.addConnection(false, false, true, false);
+            this.blobGrid[this.puyo2y][this.puyo2x+1].addConnection(false, false, false, true);
+        }
+        
+        
+        this.findChains(function() {
+            console.log("finished chains?");
+            self.dropNuisance();
+            self.spawnTimer = self.game.time.events.add(self.spawnTimerConstant, self.spawnNewPuyo, self);
+            //self.print();
+        });
+        console.log("FINISHED");
     }
     
     // New random color variable for next 
@@ -272,20 +359,20 @@ class PlayerBoard {
         this.puyo2 = this.nextBlob2Color;
         this.newNextColor();
         this.puyo1x = 2;
-        this.puyo1y = 0
+        this.puyo1y = 0;
         this.puyo2x = 2;
         this.puyo2y = 1;
         this.grid[0][2] = this.puyo1;
         this.grid[1][2] = this.puyo2;
-        this.blob1 = new testBlob(0,2, this.puyo1, this.game, this.rowHeight, this.colWidth);
-        this.blob2 = new testBlob(1,2,this.puyo2, this.game, this.rowHeight, this.colWidth);
+        this.blob1 = new Puyo(0,2, this.puyo1, this.game, this.rowHeight, this.colWidth);
+        this.blob2 = new Puyo(1,2, this.puyo2, this.game, this.rowHeight, this.colWidth);
         this.blobGrid[0][2] = this.blob1;
         this.blobGrid[1][2] = this.blob2;
         this.blob1.create(this.xOffset + 2*this.colWidth, this.yOffset);
         this.blob2.create(this.xOffset + 2*this.colWidth, this.yOffset + this.rowHeight);
         this.movementTimer = this.game.time.events.loop(this.autoDownwardTimerConstant, 
                                                                     this.movePuyo, this);
-        this.print();
+        //this.print();
     }
     
     //Automatic downward movement of blob every second(default)
@@ -349,7 +436,7 @@ class PlayerBoard {
         this.blob2.moveDown();
         this.grid[this.puyo1y][this.puyo1x] = this.puyo1;
         this.grid[this.puyo2y][this.puyo2x] = this.puyo2;
-        this.print();
+        //this.print();
     }
     
     //Checks to see if the blob pair can rotate left
@@ -432,7 +519,7 @@ class PlayerBoard {
     }
     
     //Checks if the blob pair can rotate right
-    canRotateRight() {
+    /*canRotateRight() {
         if(!this.rotateRKey.isDown || this.rotateLock) {
             return false;
         }
@@ -508,7 +595,7 @@ class PlayerBoard {
                 return false;
             }
         }
-    }
+    }*/
     
     //Checks if the blob pair can move left
     canMoveLeft() {
@@ -723,7 +810,7 @@ class PlayerBoard {
     }
     
         //Checks game board for chains
-    findChains() {
+    findChains(callback, depth) {
         this.checkedGrid = [];
         for(var i = 0; i < this.rows; i++) {
             this.checkedGrid.push([]);
@@ -758,9 +845,26 @@ class PlayerBoard {
                 }
             }
         }
-        if(this.dropAllBlocks()) {
-            this.findChains();
-        }
+        //Carry out destroy animation - done (except for particles)
+        //pause all other timers - 
+        //this.pauseGame();
+        //lock all movement
+        //after the destroy animation time, drop the blobs
+        //rinse repeat
+        console.log("paused");
+        this.chainsTimer = this.game.time.events.add(200, function() {
+            console.log("running timer");
+            if(this.dropAllBlocks()) {
+                console.log("dropped some blocks");
+                this.game.time.events.add(500, function() { 
+                    this.findChains(callback) 
+                }, this);
+            }
+            else {
+                callback();
+            }
+            console.log("resuming game");  
+        }, this);
     }
     
     //Recursive helper function to help check for chains
@@ -838,6 +942,7 @@ class PlayerBoard {
     //be new chains, and the finding chains process will
     //bre repeated
     dropAllBlocks() {
+        console.log("dropping all blocks");
         var droppedBlock = false;
         for(var i = this.rows-2; i >= 0; i--) {
             for(var j = 0; j < this.cols; j++) {
@@ -847,6 +952,7 @@ class PlayerBoard {
                 }
             }
         }
+        this.updateSprites();
         return droppedBlock;
     }
     
@@ -868,7 +974,55 @@ class PlayerBoard {
         this.grid[newY][x] = variation;
         this.blobGrid[newY][x] = this.blobGrid[y][x];
         this.blobGrid[y][x].drop(newY-y);
-        this.print();
+        //this.print();
+    }
+    
+    updateSprites() {
+        this.updateSpriteCompass();
+        this.updateSpriteConnections();
+    }
+    
+    updateSpriteCompass() {
+        for(var i = 0; i < this.rows; i++) {
+            for(var j = 0; j < this.cols; j++) {
+                if(this.grid[i][j] != 0) {
+                    if(i < this.rows -1 && this.grid[i+1][j] == this.grid[i][j]) {
+                        this.blobGrid[i][j].south = true;
+                    }
+                    else {
+                        this.blobGrid[i][j].south = false;
+                    }
+                    if(i > 0 && this.grid[i-1][j] == this.grid[i][j]) {
+                        this.blobGrid[i][j].north = true;
+                    }
+                    else {
+                        this.blobGrid[i][j].north = false;
+                    }
+                    if(j < this.cols-1 && this.grid[i][j+1] == this.grid[i][j]) {
+                        this.blobGrid[i][j].east = true;
+                    }
+                    else {
+                        this.blobGrid[i][j].east = false;
+                    }
+                    if(j > 0 && this.grid[i][j-1] == this.grid[i][j]) {
+                        this.blobGrid[i][j].west = true;
+                    }
+                    else {
+                        this.blobGrid[i][j].west = false;
+                    }
+                }
+            }
+        }
+    }
+    
+    updateSpriteConnections() {
+        for(var i = 0; i < this.rows; i++) {
+            for(var j = 0; j < this.cols; j++) {
+                if(this.grid[i][j] != 0 && this.grid[i][j] != 6) {
+                    this.blobGrid[i][j].addConnection(this.blobGrid[i][j].north,this.blobGrid[i][j].south,this.blobGrid[i][j].east,this.blobGrid[i][j].west);
+                }
+            }
+        }
     }
     
     unlockHorizontalMovement() {
@@ -904,7 +1058,7 @@ class PlayerBoard {
             this.horizontalLock = true;
             this.horizontalTimer = this.game.time.events.add(this.horizontalLockTimerConstant, 
                                                     this.unlockHorizontalMovement, this);
-            this.print();
+            //this.print();
         }
         else if (!this.gameOver && this.canMoveRight()) {
             this.grid[this.puyo1y][this.puyo1x] = 0;
@@ -920,7 +1074,7 @@ class PlayerBoard {
             this.horizontalLock = true;
             this.horizontalTimer = this.game.time.events.add(this.horizontalLockTimerConstant, 
                                                     this.unlockHorizontalMovement, this);
-            this.print();
+            //this.print();
         }
         else if (!this.gameOver && this.canMoveDown()) {
             this.score += 10;
@@ -939,20 +1093,20 @@ class PlayerBoard {
             this.verticalTimer = this.game.time.events.add(this.verticalLockTimerConstant, 
                                                     this.unlockVerticalMovement, this);
             this.game.time.events.remove(this.movementTimer);
-            this.print();
+            //this.print();
         }
         else if(!this.gameOver && this.canRotateLeft()) {
             this.rotateLock = true;
             this.rotationTimer = this.game.time.events.add(this.rotationLockTimerConstant, 
                                                         this.unlockRotation, this);
-            this.print();
+            //this.print();
         }
-        else if(!this.gameOver && this.canRotateRight()) {
+        /*else if(!this.gameOver && this.canRotateRight()) {
             this.rotateLock = true;
             this.rotationTimer = this.game.time.events.add(this.rotationLockTimerConstant, 
                                                         this.unlockRotation, this);
-            this.print();
-        }
+            //this.print();
+        }*/
     }
 };
 
@@ -1010,21 +1164,151 @@ class PuyoSprites {
 };
 
 class Puyo {
-    constructor(name, game, x, y) {
-        this.frameNum = PuyoSprites.nameToIndex(name);
+    constructor(row, col, variation, game, rowHeight, colWidth) {
+        this.color = "";
+        switch(variation - 1)
+        {
+            case 0: this.color += "Red"; break;
+            case 1: this.color += "Yellow"; break;
+            case 2: this.color += "Green"; break;
+            case 3: this.color += "Blue"; break;
+            case 4: this.color += "Purple"; break;
+            default: console.log("UNDEFINED COLOR!"); break;
+        }
+        this.north = false;
+        this.south = false;
+        this.east = false;
+        this.west = false;
+        this.frameNum = PuyoSprites.nameToIndex(this.color + "0000");
         this.game = game;
-        this.x = x;
-        this.y = y
+        this.row = row;
+        this.col = col;
+        this.variation = variation;
+        this.game = game;
+        this.rowHeight = rowHeight;
+        this.colWidth = colWidth;
     }
     
-    create() {
-        this.sprite = this.game.add.sprite(this.x, this.y, 'puyo');
-        this.sprite.frame = this.frameNum;
+    create(x, y) {
+        this.blob = this.game.add.sprite(x, y, 'puyo');
+        this.blob.frame = this.frameNum;
+        this.blob.width = this.colWidth;
+        this.blob.height = this.rowHeight;
     }
     
-    changeFrame(name) {
-        this.frameNum = PuyoSprites.nameToIndex(name);
-        this.sprite.frame = this.frameNum;
+    addConnection(north, south, east, west) {
+        console.log("Adding sprite connection");
+        
+        if(north) {
+            this.north = true;
+        }
+        if(south) {
+            this.south = true;
+        }
+        if(east) {
+            this.east = true;
+        }
+        if(west) {
+            this.west = true;
+        }
+        this.frameNum = PuyoSprites.nameToIndex(this.color + (this.south?'1':'0') + (this.north?'1':'0') + (this.west?'1':'0') + (this.east?'1':'0'));
+        this.blob.frame = this.frameNum;
+    }
+    
+    moveLeft() {
+        this.blob.x -= this.colWidth;
+    }
+    
+    moveRight() {
+        this.blob.x += this.colWidth;
+    }
+    
+    moveDown() {
+        this.blob.y += this.rowHeight;
+    }
+    
+    rotateLeft(type) {
+        //x++, y--
+        if(type == 0) {
+            this.blob.x += this.colWidth;
+            this.blob.y -= this.rowHeight; 
+        }
+        //x--, y++
+        else if(type == 1) {
+            this.blob.x -= this.colWidth;
+            this.blob.y += this.rowHeight;
+        }
+        //x--, y--
+        else if(type == 2) {
+            this.blob.x -= this.colWidth;
+            this.blob.y -= this.rowHeight;
+        }
+        //x++, y++
+        else if(type == 3) {
+            this.blob.x += this.colWidth;
+            this.blob.y += this.rowHeight;
+        }
+    }
+    
+    rotateRight(type) {
+        //x--, y--
+        if(type == 0) {
+            this.blob.x -= this.colWidth;
+            this.blob.y -= this.rowHeight; 
+        }
+        //x++, y++
+        else if(type == 1) {
+            this.blob.x += this.colWidth;
+            this.blob.y += this.rowHeight;
+        }
+        //x--, y++
+        else if(type == 2) {
+            this.blob.x -= this.colWidth;
+            this.blob.y += this.rowHeight;
+        }
+        //x++, y--
+        else if(type == 3) {
+            this.blob.x += this.colWidth;
+            this.blob.y -= this.rowHeight;
+        }
+    }
+    
+    drop(numSpacesDropped) {
+        var blobMovement = this.game.add.tween(this.blob);
+        let destination = this.blob.y + numSpacesDropped*this.rowHeight
+        blobMovement.to({y:destination}, 200);
+        blobMovement.start();
+    }
+    
+    destroy() {
+        var emitter = this.game.add.emitter(this.blob.x + 17, this.blob.y + 17, 100);
+        if(this.color == 'Red') {
+            emitter.makeParticles('redParticle');
+        }
+        else if(this.color == 'Blue') {
+            emitter.makeParticles('blueParticle');
+        }
+        else if(this.color == 'Yellow') {
+            emitter.makeParticles('yellowParticle');
+        }
+        else if(this.color == 'Purple') {
+            emitter.makeParticles('purpleParticle');
+        }
+        else if(this.color == 'Green') {
+            emitter.makeParticles('greenParticle');
+        }
+        else {
+            emitter.makeParticles('whiteParticle');
+        }
+        emitter.gravity = 0;
+        emitter.start(true, 200, null, 100);
+        this.game.time.events.add(200, this.erase,this);
+    }
+    
+    erase() {
+        if(this.blob) {
+            this.blob.destroy();
+        }
     }
 };
 
@@ -1039,7 +1323,7 @@ WebFontConfig = {
     }
 };
 
-PuyoPuyo.game = new Phaser.Game(650, 450, Phaser.AUTO, '', '', false, false);
+PuyoPuyo.game = new Phaser.Game('100', '100', Phaser.AUTO);
 
 //Set Initial Controls
 PuyoPuyo.game.global = {
@@ -1048,17 +1332,15 @@ PuyoPuyo.game.global = {
     'player1LeftKey' : Phaser.Keyboard.A,
     'player1RightKey' : Phaser.Keyboard.D,
     'player1DownKey' : Phaser.Keyboard.S,
-    'player1RotateLKey' : Phaser.Keyboard.C,
-    'player1RotateRKey' : Phaser.Keyboard.V,
+    'player1RotateLKey' : Phaser.Keyboard.W,
     'player2LeftKey' : Phaser.Keyboard.LEFT,
     'player2RightKey' : Phaser.Keyboard.RIGHT,
     'player2DownKey' : Phaser.Keyboard.DOWN,
-    'player2RotateLKey' : Phaser.Keyboard.N,
-    'player2RotateRKey' : Phaser.Keyboard.M,
+    'player2RotateLKey' : Phaser.Keyboard.UP,
     
-    'player1KeyIndexArray' : {0 : 22, 1 : 24, 2 : 23, 3 : 34, 4 : 35},
+    'player1KeyIndexArray' : {0 : 22, 1 : 24, 2 : 23, 3 : 24},
     
-    'player2KeyIndexArray' : {0 : 41, 1 : 42, 2 : 43, 3 : 37, 4 : 38}
+    'player2KeyIndexArray' : {0 : 41, 1 : 42, 2 : 43, 3 : 44}
 },
 
 PuyoPuyo.game.state.add('PreloadState', PuyoPuyo.PreloadState);
