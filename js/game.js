@@ -925,7 +925,7 @@ class PlayerBoard {
             this.grid[y][x-1] = 0;
             this.blobGrid[y][x-1].destroy();
         }
-        if(x+1 < this.cols && this.grid[x+1] == 6) {
+        if(x+1 < this.cols && this.grid[y][x+1] == 6) {
             this.checkedGrid[y][x+1] = 0;
             this.grid[y][x+1] = 0;
             this.blobGrid[y][x+1].destroy();

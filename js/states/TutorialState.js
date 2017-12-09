@@ -49,7 +49,7 @@ PuyoPuyo.TutorialState = {
         this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.enter.onDown.add(this.goToMainMenu, this);
         
-        this.exitButton = this.game.add.sprite(this.game.world.centerX, this.game.height*0.9, 'exit');
+        this.exitButton = this.game.add.sprite(this.game.world.centerX, this.game.height*0.92, 'exit');
         this.exitButton.anchor.setTo(.5);
         this.exitButton.width = this.game.width*0.1;
         this.exitButton.height = this.game.height*0.08;;
@@ -136,11 +136,17 @@ PuyoPuyo.TutorialState = {
         
         this.p1Text = this.game.add.text(this.game.width * .71, this.game.height * .24, "P1", this.textStyle);
         this.p2Text = this.game.add.text(this.game.width * .91, this.game.height * .24, "P2", this.textStyle);
+        this.p1Text.fontSize = (this.game.height * 0.05).toString() + 'px';
+        this.p2Text.fontSize = (this.game.height * 0.05).toString() + 'px';
         
-        this.leftText = this.game.add.text(this.game.width * .79, this.game.height * .31, "LEFT", this.textStyle);
-        this.downText = this.game.add.text(this.game.width * .78, this.game.height * .41, "DOWN", this.textStyle);
-        this.rightText = this.game.add.text(this.game.width * .78, this.game.height * .51, "RIGHT", this.textStyle);
-        this.rotateText = this.game.add.text(this.game.width * .77, this.game.height * .61, "ROTATE", this.textStyle);
+        this.leftText = this.game.add.text(this.game.width * .78, this.game.height * .31, "LEFT", this.textStyle);
+        this.downText = this.game.add.text(this.game.width * .77, this.game.height * .41, "DOWN", this.textStyle);
+        this.rightText = this.game.add.text(this.game.width * .77, this.game.height * .51, "RIGHT", this.textStyle);
+        this.rotateText = this.game.add.text(this.game.width * .76, this.game.height * .61, "ROTATE", this.textStyle);
+        this.leftText.fontSize = (this.game.height * 0.05).toString() + 'px';
+        this.downText.fontSize = (this.game.height * 0.05).toString() + 'px';
+        this.rightText.fontSize = (this.game.height * 0.05).toString() + 'px';
+        this.rotateText.fontSize = (this.game.height * 0.05).toString() + 'px';
         
         this.videoArray = [this.video1, this.video2, this.video3, this.video4];
         this.videoSpriteArray = [this.videoSprite1, this.videoSprite2, this.videoSprite3, this.videoSprite4];
