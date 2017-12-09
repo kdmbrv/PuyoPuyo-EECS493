@@ -97,6 +97,9 @@ PuyoPuyo.MainMenuState = {
         this.play_text.fill = '#364aff';
         this.play_text.stroke = '#000000';
         this.play_text.strokeThickness = 5;
+        this.play_text.inputEnabled = true;
+        this.play_text.input.useHandCursor = true;
+        this.play_text.events.onInputDown.add(this.startGame, this);
         
         this.tutorial_text = this.game.add.text(this.game.width * 0.35, this.game.height * 0.38, "Tutorial");
         this.tutorial_text.anchor.setTo(0);
@@ -105,6 +108,9 @@ PuyoPuyo.MainMenuState = {
         this.tutorial_text.fill = '#fffb38';
         this.tutorial_text.stroke = '#000000';
         this.tutorial_text.strokeThickness = 5;
+        this.tutorial_text.inputEnabled = true;
+        this.tutorial_text.input.useHandCursor = true;
+        this.tutorial_text.events.onInputDown.add(this.startTutorial, this);
         
         this.settings_text = this.game.add.text(this.game.width * 0.35, this.game.height * 0.5, "Settings");
         this.settings_text.anchor.setTo(0);
@@ -113,6 +119,9 @@ PuyoPuyo.MainMenuState = {
         this.settings_text.fill = '#790ea3';
         this.settings_text.stroke = '#000000';
         this.settings_text.strokeThickness = 5;
+        this.settings_text.inputEnabled = true;
+        this.settings_text.input.useHandCursor = true;
+        this.settings_text.events.onInputDown.add(this.startSettings, this);
         
         this.exit_text = this.game.add.text(this.game.width * 0.35, this.game.height * 0.62, "Exit");
         this.exit_text.anchor.setTo(0);
@@ -121,6 +130,9 @@ PuyoPuyo.MainMenuState = {
         this.exit_text.fill = '#55ff37';
         this.exit_text.stroke = '#000000';
         this.exit_text.strokeThickness = 5;
+        this.exit_text.inputEnabled = true;
+        this.exit_text.input.useHandCursor = true;
+        this.exit_text.events.onInputDown.add(this.exit, this);
         
         this.sprite = this.add.sprite(0, 0, 'mm_blob');
         this.sprite.x = this.game.width * 0.3;
@@ -227,5 +239,13 @@ PuyoPuyo.MainMenuState = {
     
     startTutorial() {
         this.state.start('TutorialState');
+    },
+    
+    startSettings() {
+        this.state.start('SettingsState');
+    },
+    
+    exit() {
+        close();
     }
 };
