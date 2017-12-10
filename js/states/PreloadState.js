@@ -43,7 +43,21 @@ PuyoPuyo.PreloadState = {
         this.load.image('settings_graphic', 'img/settings.png');
         this.load.image('black', 'img/black.png');
         this.load.image('wood', 'img/wood.png');
-        this.game.load.video('tutorial1', 'img/tutorial1.mp4');
+        this.game.load.video('tutorial1', 'img/tut1.mp4');
+        this.game.load.video('tutorial2', 'img/tut2.mp4');
+        this.game.load.video('tutorial3', 'img/tut3.mp4');
+        this.game.load.video('tutorial4', 'img/tut4.mp4');
+        
+        //Keys
+        this.load.image('aKey', 'img/a.png');
+        this.load.image('sKey', 'img/s.png');
+        this.load.image('dKey', 'img/d.png');
+        this.load.image('wKey', 'img/w.png');
+        this.load.image('upKey', 'img/cursor-up.png');
+        this.load.image('leftKey', 'img/cursor-left.png');
+        this.load.image('rightKey', 'img/cursor-right.png');
+        this.load.image('downKey', 'img/cursor-down.png');
+        
         this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
         
         if(this.game.scale.aspectRatio > 1.44444) {
